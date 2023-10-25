@@ -8,13 +8,13 @@ import Error from './pages/Error';
 const App = ()=>{
   return(
     <BrowserRouter>
-    <Routes>
+      <Routes>
 
-      <Route path="/home" element={<Home />}/>
-      <Route path="*" element={<Error />}/>
+        <Route exact path="/" element={<Home/>}/>
+        <Route path="*" element={<Error />}/>
 
-    </Routes>
-  </BrowserRouter>
+      </Routes>
+    </BrowserRouter>
 
   )
 }

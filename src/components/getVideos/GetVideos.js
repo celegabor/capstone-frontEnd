@@ -1,0 +1,288 @@
+import React, { useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import CardVideos from '../CardVideos/CardVideos';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faCogs , faEdit , faHeart} from '@fortawesome/free-solid-svg-icons'; 
+import Spinner from 'react-bootstrap/Spinner';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+
+import './getVideos.css';
+
+const GetVideos = () => {
+  const [videos, setVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', video: '', content: '', author: '' });
+  const [editingVideo, setEditingVideo] = useState(null); 
+  const [favoriteVideos, setFavoriteVideos] = useState([]);
+
+  const toggleFavorite = (videoId) => {
+    
+    const index = favoriteVideos.indexOf(videoId);
+    if (index === -1) {
+     
+      setFavoriteVideos([...favoriteVideos, videoId]);
+    } else {
+     
+      const newFavorites = [...favoriteVideos];
+      newFavorites.splice(index, 1);
+      setFavoriteVideos(newFavorites);
+    }
+  }
+
+  const getVideos = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/get`);
+      if (response.ok) {
+        const data = await response.json();
+        setVideos(data.videos);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
+      }
+    } catch (error) {
+      console.error('Errore nel recupero dei video:', error);
+    }
+  }
+
+  const deleteVideo = async (videoId) => {
+    const confirmDelete = window.confirm('Sei sicuro di voler cancellare questo video?');
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/delete/${videoId}`, {
+        method: 'DELETE',
+      });
+      window.location.reload()
+      console.log('cancellato');
+    } catch (error) {
+      console.error('Errore nella cancellazione del video:', error);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+    }
+  };
+
+  const addVideo = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newVideo),
+      });
+
+      if (response.ok) {
+
+        getVideos();
+        setShowModal(false);
+        setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' });
+
+        setTimeout(() => {
+            setIsLoading(false);
+          }, 300);    
+          console.log('aggiunto');
+
+      } else {
+        console.error('Errore durante l\'aggiunta del video');
+      }
+    } catch (error) {
+      console.error('Errore durante l\'aggiunta del video:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const editVideo = (videoId) => {
+    const videoToEdit = videos.find((video) => video._id === videoId);
+    setEditingVideo(videoToEdit);
+  
+    setNewVideo({
+      title: videoToEdit.title,
+      categoryWork: videoToEdit.categoryWork,
+      video: videoToEdit.video,
+      content: videoToEdit.content,
+      author: videoToEdit.author._id,
+    });
+  
+    setShowModal(true);
+  }
+
+  const saveEditedVideo = async () => {
+   
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/put/${editingVideo._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newVideo),
+      });
+
+      if (response.ok) {
+
+        getVideos();
+        setShowModal(false);
+        setEditingVideo(null);
+        setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' })
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300); 
+        console.log('aggiornato');   
+      } else {
+        setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' })
+        console.error('Errore durante la modifica del video');
+      }
+    } catch (error) {
+      setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' })
+      console.error('Errore durante la modifica del video:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+
+  useEffect(() => {
+    getVideos();
+  }, []);
+
+  const renderAddVideoForm = () => {
+    return (
+      <Form>
+        <Form.Group controlId="formTitle">
+          <Form.Label>Titolo</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Inserisci il titolo del video"
+            value={newVideo.title}
+            onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group controlId="formCategoryWork">
+          <Form.Label>Categoria di Lavoro</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Inserisci la categoria di lavoro"
+            value={newVideo.categoryWork}
+            onChange={(e) => setNewVideo({ ...newVideo, categoryWork: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group controlId="formVideo">
+          <Form.Label>Link al Video</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Inserisci il link al video"
+            value={newVideo.video}
+            onChange={(e) => setNewVideo({ ...newVideo, video: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group controlId="formContent">
+          <Form.Label>Contenuto</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            placeholder="Inserisci il contenuto del video"
+            value={newVideo.content}
+            onChange={(e) => setNewVideo({ ...newVideo, content: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group controlId="author">
+          <Form.Label>Link id user</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Inserisci il link del id utente"
+            value={newVideo.author}
+            onChange={(e) => setNewVideo({ ...newVideo, author: e.target.value })}
+          />
+        </Form.Group>
+      </Form>
+    );
+  }
+
+  return (
+    <>
+      {isLoading ? (
+        
+        <div className="d-flex align-items-center justify-content-center text-grey spinner-custom">
+          <Spinner className="text-white" animation="border" role="status">
+          </Spinner>
+          <p className="fs-5 text-white m-3">Caricamento...</p>
+        </div>
+      ) : (
+        
+        <div className="main text-gray d-flex flex-wrap justify-content-center background-color: rgb(72, 69, 69);">
+
+            {/* bottone aggiungi video */}
+            <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
+                <Button variant="light border-2 border-dark button-custom" onClick={() => setShowModal(true)}>
+                <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
+                </Button>
+            </div>
+
+          {videos.map((video) => (
+
+            // singola card filtrata
+            <div className="card-video bg-secondary m-3 p-3" key={video._id}>
+              <CardVideos video={video} />
+              <div className="d-flex justify-content-between w-100">
+                <div>
+                    <Button
+                        className="mx-2 px-3 py-1 ml-2"
+                        variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
+                        onClick={() => toggleFavorite(video._id)} 
+                        >
+                        <FontAwesomeIcon icon={faHeart} />
+                    </Button>
+                </div>
+                <div>
+                    <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                    <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
+                    <FontAwesomeIcon icon={faCogs} />
+                    </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+        </div>
+      )}
+
+    {/* modale x aggiunta post */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header className='custom-bg' closeButton>
+          <Modal.Title >Aggiungi un nuovo video</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {renderAddVideoForm()}
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                Chiudi
+            </Button>
+            {editingVideo ? (
+                <Button variant="primary" onClick={saveEditedVideo}>
+                Aggiorna Video
+                </Button>
+            ) : (
+                <Button variant="primary" onClick={addVideo}>
+                Salva Video
+                </Button>
+            )}
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+
+export default GetVideos;

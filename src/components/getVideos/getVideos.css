@@ -1,0 +1,30 @@
+.main{
+    background-color: rgb(159, 157, 157);
+    padding: 3em 3em;
+    min-height: 100vh;
+}
+
+.card-video{
+    filter: drop-shadow(0 0 10px rgb(14, 14, 14));
+    width: 432px;
+}
+
+.spinner-custom{
+    height: 90vh;
+    background-color: rgb(72, 69, 69);
+    font-size: 2em;
+}
+
+.custom-bg{
+    background-color: rgb(159, 157, 157);
+}
+
+.custom-button-addVideo{
+    background-color: rgb(159, 157, 157);
+    height: 80px;
+}
+
+.button-custom{
+    filter: drop-shadow(0 0 10px rgb(47, 47, 47));
+
+}

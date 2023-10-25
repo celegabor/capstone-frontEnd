@@ -1,0 +1,16 @@
+.img-avatar-author{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.name-author{
+    padding: 0.3em 0.5em;
+
+}
+
+.wrap-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  

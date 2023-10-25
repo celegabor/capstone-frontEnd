@@ -1,0 +1,8 @@
+.button-sidebar{
+    position: fixed;
+    top: 150px;
+    left: 10px;
+    filter: drop-shadow(0 0 5px rgb(52, 51, 51));
+    width: 60px;
+}
+
