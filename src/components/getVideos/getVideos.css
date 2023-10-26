@@ -7,6 +7,7 @@
 .card-video{
     filter: drop-shadow(0 0 10px rgb(14, 14, 14));
     width: 432px;
+    position: relative;
 }
 
 .spinner-custom{
@@ -26,5 +27,33 @@
 
 .button-custom{
     filter: drop-shadow(0 0 10px rgb(47, 47, 47));
+
+}
+
+
+.success-message{
+    width: 100%;
+    line-height: 50px;
+    position: fixed;
+    top: 20px;
+    left: 0;
+    background-color: rgb(49, 95, 2);
+    filter: drop-shadow(0 0 10px rgb(15, 224, 15));
+    color: white;
+    font-size: 2em;
+    text-align: center;
+
+}
+.NOT-success-message{
+    width: 100%;
+    line-height: 50px;
+    position: fixed;
+    top: 20px;
+    left: 0;
+    background-color: rgb(95, 2, 2);
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    filter: drop-shadow(0 0 10px rgb(255, 89, 7));
 
 }

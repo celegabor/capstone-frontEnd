@@ -7,6 +7,7 @@ const PostContext = ({children}) => {
   const [errors, setErrors] = useState(false);
   const [loading, setLoading] = useState(null);
   const [show, setShow] = useState(false);
+  
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

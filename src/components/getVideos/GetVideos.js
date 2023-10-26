@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import CardVideos from '../CardVideos/CardVideos';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCogs , faEdit , faHeart} from '@fortawesome/free-solid-svg-icons'; 
+import { faTrash, faCogs , faEdit , faHeart , faComment} from '@fortawesome/free-solid-svg-icons'; 
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -16,6 +16,8 @@ const GetVideos = () => {
   const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', video: '', content: '', author: '' });
   const [editingVideo, setEditingVideo] = useState(null); 
   const [favoriteVideos, setFavoriteVideos] = useState([]);
+
+const [message, setMessage] = useState('')
 
   const toggleFavorite = (videoId) => {
     
@@ -58,9 +60,22 @@ const GetVideos = () => {
       await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/delete/${videoId}`, {
         method: 'DELETE',
       });
-      window.location.reload()
+      
+      setMessage('Complimenti!!! Il cancellamento è andato a buon fine !!!!!');
+          setTimeout(() => {
+            setMessage('')
+          }, 2500);
+    
+          getVideos();
+        
       console.log('cancellato');
     } catch (error) {
+
+      setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
+        setTimeout(() => {
+          setMessage('');
+        }, 4000);
+
       console.error('Errore nella cancellazione del video:', error);
     } finally {
       setTimeout(() => {
@@ -82,6 +97,11 @@ const GetVideos = () => {
 
       if (response.ok) {
 
+        setMessage('Complimenti!!! Il tuo video è stato CARICATO correttamente !!!!!');
+          setTimeout(() => {
+            setMessage('')
+          }, 2500);
+
         getVideos();
         setShowModal(false);
         setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' });
@@ -95,6 +115,12 @@ const GetVideos = () => {
         console.error('Errore durante l\'aggiunta del video');
       }
     } catch (error) {
+
+      setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
+        setTimeout(() => {
+          setMessage('');
+        }, 4000);
+
       console.error('Errore durante l\'aggiunta del video:', error);
     } finally {
       setIsLoading(false);
@@ -130,6 +156,11 @@ const GetVideos = () => {
 
       if (response.ok) {
 
+        setMessage('Complimenti!!! Il tuo video è stato MODIFICATO correttamente !!!!!');
+          setTimeout(() => {
+            setMessage('')
+          }, 2500);
+
         getVideos();
         setShowModal(false);
         setEditingVideo(null);
@@ -137,14 +168,23 @@ const GetVideos = () => {
         setTimeout(() => {
           setIsLoading(false);
         }, 300); 
-        console.log('aggiornato');   
+        console.log('aggiornato');
+
       } else {
         setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' })
         console.error('Errore durante la modifica del video');
       }
+
     } catch (error) {
+
+      setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
+        setTimeout(() => {
+          setMessage('');
+        }, 4000);
+
       setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' })
       console.error('Errore durante la modifica del video:', error);
+
     } finally {
       setIsLoading(false);
     }
@@ -212,11 +252,12 @@ const GetVideos = () => {
     <>
       {isLoading ? (
         
-        <div className="d-flex align-items-center justify-content-center text-grey spinner-custom">
-          <Spinner className="text-white" animation="border" role="status">
+        <div key={new Date().getTime()+ 'loading'} className="d-flex align-items-center justify-content-center text-grey spinner-custom">
+          <Spinner className="text-white" animation="border" role="status" key="spinner">
           </Spinner>
-          <p className="fs-5 text-white m-3">Caricamento...</p>
+          <p className="fs-5 text-white m-3" key="loading-text">Caricamento...</p>
         </div>
+
       ) : (
         
         <div className="main text-gray d-flex flex-wrap justify-content-center background-color: rgb(72, 69, 69);">
@@ -224,35 +265,42 @@ const GetVideos = () => {
             {/* bottone aggiungi video */}
             <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
                 <Button variant="light border-2 border-dark button-custom" onClick={() => setShowModal(true)}>
-                <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
+                  <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
                 </Button>
             </div>
 
           {videos.map((video) => (
 
-            // singola card filtrata
+
+          <>
+             {/* singola card filtrata */}
             <div className="card-video bg-secondary m-3 p-3" key={video._id}>
               <CardVideos video={video} />
-              <div className="d-flex justify-content-between w-100">
+              <div className="d-flex justify-content-end w-100">
                 <div>
-                    <Button
-                        className="mx-2 px-3 py-1 ml-2"
-                        variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
-                        onClick={() => toggleFavorite(video._id)} 
-                        >
-                        <FontAwesomeIcon icon={faHeart} />
-                    </Button>
-                </div>
-                <div>
-                    <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                  <Button
+                  className="mx-2 px-3 py-1 ml-2"
+                  variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
+                  onClick={() => toggleFavorite(video._id)} 
+                  >
+                    <FontAwesomeIcon icon={faHeart} />
+                  </Button>
+                  <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
                     <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                    <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
+                  </Button>
+                  <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
                     <FontAwesomeIcon icon={faCogs} />
-                    </Button>
+                  </Button>
                 </div>
               </div>
+
+              {/* messaggio chiamate crud */}
             </div>
+              <div className="message-container">
+                {message && <div className={message.includes('NON') ? 'NOT-success-message' : 'success-message'}>{message}</div>}
+              </div>
+          </>
+
           ))}
           
         </div>
