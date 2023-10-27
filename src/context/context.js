@@ -7,13 +7,14 @@ const PostContext = ({children}) => {
   const [errors, setErrors] = useState(false);
   const [loading, setLoading] = useState(null);
   const [show, setShow] = useState(false);
-  
-
+  const [showR, setShowR] = useState(false);
+  const handleCloseR = () => setShowR(false);
+  const handleShowR = () => setShowR(true);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
    return (
-        <PostProvider.Provider value={{products, setProducts, errors, setErrors, loading, setLoading, show, setShow, handleClose, handleShow}}>
+        <PostProvider.Provider value={{products, setProducts, errors, setErrors, loading, setLoading, showR, setShowR, handleCloseR, handleShowR, handleClose, handleShow, show, setShow}}>
             {children}
         </PostProvider.Provider>
    )

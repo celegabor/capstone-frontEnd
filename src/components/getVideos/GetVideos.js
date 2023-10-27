@@ -296,9 +296,9 @@ const [message, setMessage] = useState('')
 
               {/* messaggio chiamate crud */}
             </div>
-              <div className="message-container">
-                {message && <div className={message.includes('NON') ? 'NOT-success-message' : 'success-message'}>{message}</div>}
-              </div>
+            <div className="message-container">
+              {message && <div className={message.includes('NON') ? 'NOT-success-message' : 'success-message'}>{message}</div>}
+            </div>
           </>
 
           ))}

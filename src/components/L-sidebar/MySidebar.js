@@ -10,8 +10,8 @@ const MySidebar = ()=> {
 
   return (
     <div>
-      <Offcanvas show={show} onHide={handleClose}>
-        <Offcanvas.Header className='bg-custom text-light' closeButton>
+      <Offcanvas className="sidebar-left-custom" show={show} onHide={handleClose}>
+        <Offcanvas.Header className='bg-light text-dark' closeButton>
           <Offcanvas.Title>Offcanvas</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className='bg-custom text-secondary d-flex flex-column justify-content-around align-items-center'>

@@ -1,0 +1,10 @@
+.bg-custom{
+    background-color: rgb(0, 0, 0);
+}
+
+.sidebar-left-custom{
+    width: 300px !important;
+    height: 700px;
+    margin-top: 0px;
+}
+  

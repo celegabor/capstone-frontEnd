@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarElement from '../components/navbar/MyNavbar';
 import MyFooter from '../components/footer/MyFooter';
 import Main from '../components/main/Main';
-import MySidebar from '../components/sidebar/MySidebar';
+import MySidebar from '../components/L-sidebar/MySidebar';
+import MySidebarR from '../components/R-sidebar/MyR-Sidebar'
 
 
 const Home = ()=> {
@@ -15,6 +16,7 @@ const Home = ()=> {
       </nav>
       <section>
         <MySidebar/>
+        <MySidebarR/>
       </section>
       <main>
         <Main/>
