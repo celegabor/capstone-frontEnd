@@ -31,7 +31,6 @@ const CardVideos = ({ video }) => {
 
   useEffect(() => {
     getComments();
-    {console.log(comments)}
 
   }, [showComments, video._id]);
 
@@ -121,10 +120,22 @@ const CardVideos = ({ video }) => {
 
       {/* autore */}
       <div className="d-flex p-1">
-        <img className="img-avatar-author" src={video.author.avatar} alt="img autore" />
-        <p className="name-author">
-          {video.author.name} {video.author.lastName}
-        </p>
+        {video.author ? (
+          <>
+            <img className="img-avatar-author" src={video.author.avatar} alt="img autore" />
+            <p className="name-author">
+              {video.author.name} {video.author.lastName}
+            </p>
+          </>
+
+        ) : (
+          <>
+            <img className="img-avatar-author" src="https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg" alt="img autore" />
+            <p className="name-author">
+              Utente Sconosciuto
+            </p>
+          </>
+        )}
       </div>
 
       {/* card videos */}

@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
 import './getVideos.css';
+import useSession from '../../hooks/useSession';
 
 const GetVideos = () => {
   const [videos, setVideos] = useState([]);
@@ -18,6 +19,11 @@ const GetVideos = () => {
   const [favoriteVideos, setFavoriteVideos] = useState([]);
 
 const [message, setMessage] = useState('')
+
+  const session = useSession()
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+
+  console.log(session);
 
   const toggleFavorite = (videoId) => {
     
@@ -36,7 +42,11 @@ const [message, setMessage] = useState('')
   const getVideos = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/get`);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/get`,{
+        headers:{
+          'Authorization': token,
+        }
+      });
       if (response.ok) {
         const data = await response.json();
         setVideos(data.videos);
