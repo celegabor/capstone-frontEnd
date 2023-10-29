@@ -6,3 +6,15 @@
     width: 60px;
 }
 
+.bt-l-custom{
+    position: fixed;
+    top: 110px;
+    right: 10px;
+    filter: drop-shadow(0 0 8px black);
+}
+.bt-r-custom{
+    position: fixed;
+    top: 110px;
+    left: 10px;
+    filter: drop-shadow(0 0 8px black);
+}

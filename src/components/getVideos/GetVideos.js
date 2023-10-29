@@ -6,25 +6,24 @@ import { faTrash, faCogs , faEdit , faHeart , faComment} from '@fortawesome/free
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-
+import {jwtDecode} from "jwt-decode";
 import './getVideos.css';
 import useSession from '../../hooks/useSession';
 
 const GetVideos = () => {
+
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+  const session = useSession()
+
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', video: '', content: '', author: '' });
+  const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', video: '', content: '', author: session.id });
   const [editingVideo, setEditingVideo] = useState(null); 
   const [favoriteVideos, setFavoriteVideos] = useState([]);
 
 const [message, setMessage] = useState('')
-
-  const session = useSession()
-  const token = JSON.parse(localStorage.getItem('loggedInUser'))
-
-  console.log(session);
-
+  
   const toggleFavorite = (videoId) => {
     
     const index = favoriteVideos.indexOf(videoId);
@@ -146,7 +145,7 @@ const [message, setMessage] = useState('')
       categoryWork: videoToEdit.categoryWork,
       video: videoToEdit.video,
       content: videoToEdit.content,
-      author: videoToEdit.author._id,
+      author: session.id,
     });
   
     setShowModal(true);
@@ -245,15 +244,6 @@ const [message, setMessage] = useState('')
             onChange={(e) => setNewVideo({ ...newVideo, content: e.target.value })}
           />
         </Form.Group>
-        <Form.Group controlId="author">
-          <Form.Label>Link id user</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Inserisci il link del id utente"
-            value={newVideo.author}
-            onChange={(e) => setNewVideo({ ...newVideo, author: e.target.value })}
-          />
-        </Form.Group>
       </Form>
     );
   }
@@ -272,44 +262,48 @@ const [message, setMessage] = useState('')
         
         <div className="main text-gray d-flex flex-wrap justify-content-center background-color: rgb(72, 69, 69);">
 
-            {/* bottone aggiungi video */}
-            <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
-                <Button variant="light border-2 border-dark button-custom" onClick={() => setShowModal(true)}>
-                  <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
-                </Button>
-            </div>
+          {/* bottone aggiungi video */}
+          <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
+              <Button variant="light border-2 border-dark button-custom" onClick={() => setShowModal(true)}>
+                <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
+              </Button>
+          </div>
 
           {videos.map((video) => (
-
-
-          <>
-             {/* singola card filtrata */}
-            <div className="card-video bg-secondary m-3 p-3" key={video._id}>
-              <CardVideos video={video} />
-              <div className="d-flex justify-content-end w-100">
-                <div>
-                  <Button
-                  className="mx-2 px-3 py-1 ml-2"
-                  variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
-                  onClick={() => toggleFavorite(video._id)} 
-                  >
-                    <FontAwesomeIcon icon={faHeart} />
-                  </Button>
-                  <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
-                  <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
-                    <FontAwesomeIcon icon={faCogs} />
-                  </Button>
+            <>
+              {/* singola card filtrata */}
+              <div className="card-video bg-secondary m-3 p-3" key={video._id}>
+                <CardVideos video={video} />
+                <div className="d-flex justify-content-end w-100">
+                  <div>
+                    <Button
+                    className="mx-2 px-3 py-1 ml-2"
+                    variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
+                    onClick={() => toggleFavorite(video._id)} 
+                    >
+                      <FontAwesomeIcon icon={faHeart} />
+                    </Button>
+                    {video.author._id === session.id ? (
+                      <>
+                        <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                        <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
+                          <FontAwesomeIcon icon={faCogs} />
+                        </Button>
+                      </>
+                    ) : (null)}
+                  </div>
                 </div>
+
+                {/* messaggio chiamate crud */}
               </div>
 
-              {/* messaggio chiamate crud */}
-            </div>
-            <div className="message-container">
-              {message && <div className={message.includes('NON') ? 'NOT-success-message' : 'success-message'}>{message}</div>}
-            </div>
-          </>
+              {/* contenitore messaggi generali crud */}
+              <div className="message-container">
+                {message && <div className={message.includes('NON') ? 'NOT-success-message' : 'success-message'}>{message}</div>}
+              </div>
+            </>
 
           ))}
           

@@ -3,15 +3,18 @@ import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHammer, faFile , faEdit , faTrash} from '@fortawesome/free-solid-svg-icons'; 
 import './cardVideo.css';
+import useSession from '../../hooks/useSession';
+
 
 const CardVideos = ({ video }) => {
+
+  const session = useSession()  
 
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [editCommentId, setEditCommentId] = useState(null);
   const [editComment, setEditComment] = useState(false)
-  const [idUser, setIdUser] = useState('')
 
   const getComments = () => {
     if (showComments) {
@@ -48,7 +51,7 @@ const CardVideos = ({ video }) => {
       body: JSON.stringify({
         comment: newComment,
         videoId: video._id,
-        author: idUser,
+        author: session.id,
       }),
     })
       .then((response) => response.json())
@@ -180,9 +183,25 @@ const CardVideos = ({ video }) => {
                   <div>
                     <div className="w-100 d-flex flex-row justify-content-between position-relative">
 
+                      {/* controlla se comment.author esiste altimenti imposta valori predefiniti */}
                       <div className="d-flex align-items-center position-relative">
-                        <img className="img-comments" src={comment.author.avatar} alt="niente img" />
-                        <p className="m-3">{comment.author.name} {comment.author.lastName}</p>
+                        {comment.author ? (
+                          <>
+                            <img className="img-avatar-author" src={comment.author.avatar} alt="img autore" />
+                            <p className="name-author">
+                              {comment.author.name} {comment.author.lastName}
+                            </p>
+
+                          </>
+
+                        ) : (
+                          <>
+                            <img className="img-avatar-author" src="https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg" alt="img autore" />
+                            <p className="name-author">
+                              Utente Sconosciuto
+                            </p>
+                          </>
+                        )}
                       </div>
 
                       <div className="d-flex align-items-center position-relative">
@@ -191,12 +210,16 @@ const CardVideos = ({ video }) => {
                           null
                         ):(
                           <div className="d-flex">
-                            <Button className="m-1" variant="success" onClick={() => startEditComment(comment._id)}>
-                              <FontAwesomeIcon icon={faEdit} />
-                            </Button>
-                            <Button className="m-1" variant="danger" onClick={() => deleteComment(comment._id)}>
-                              <FontAwesomeIcon icon={faTrash} />
-                            </Button>
+                            {comment.author && comment.author._id === session.id && (
+                              <>
+                                <Button className="m-1 border border-light" variant="secondary" onClick={() => startEditComment(comment._id)}>
+                                  <FontAwesomeIcon icon={faEdit} />
+                                </Button>
+                                <Button className="m-1 border border-light" variant="secondary" onClick={() => deleteComment(comment._id)}>
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </Button>
+                              </>
+                            )}
                           </div>
 
                         )}
@@ -222,7 +245,7 @@ const CardVideos = ({ video }) => {
                         </Button>
                       </div>
                     ) : (
-                      <p className="mt-4 p-2 p-1 w-100 rounded-3  bg-light text-dark">{comment.comment}</p>
+                      <p className="mt-4 p-2 p-1 w-100 rounded-3  bg-secondary text-light ps-3 border-bottom border-3">{comment.comment}</p>
                     )}
                   </div>
                 </div>
@@ -239,12 +262,7 @@ const CardVideos = ({ video }) => {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                 />
-                <input
-                  className="mt-1 w-100 rounded-4 p-2 ps-3"
-                  type="text"
-                  placeholder="Aggiungi id utente"
-                  onChange={(e) => setIdUser(e.target.value)}
-                />
+                
               </div>
               <Button className="w-50 mx-2 my-1 border border-3 border-gray h-25" variant="dark" onClick={addComment}>
                 Aggiungi
