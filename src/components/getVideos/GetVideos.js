@@ -15,14 +15,19 @@ const GetVideos = () => {
   const token = JSON.parse(localStorage.getItem('loggedInUser'))
   const session = useSession()
 
+  const [file, setFile] = useState(null)
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', video: '', content: '', author: session.id });
+  const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', content: '', author: session.id });
+  // const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', video: '', content: '', author: session.id });
   const [editingVideo, setEditingVideo] = useState(null); 
   const [favoriteVideos, setFavoriteVideos] = useState([]);
+  const [message, setMessage] = useState('')
 
-const [message, setMessage] = useState('')
+  const onChangeSetFile = (e)=>{
+    setFile(e.target.files[0])
+  }
   
   const toggleFavorite = (videoId) => {
     
@@ -94,14 +99,22 @@ const [message, setMessage] = useState('')
   };
 
   const addVideo = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
+
+      const uploadVideo = await uploadFile(file)
+
+        const finalBody = {
+          ...newVideo,
+            video: uploadVideo.video,
+        }
+
       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newVideo),
+        body: JSON.stringify(finalBody),
       });
 
       if (response.ok) {
@@ -199,6 +212,21 @@ const [message, setMessage] = useState('')
     }
   }
 
+  const uploadFile = async (video)=>{
+    const fileData = new FormData()
+    fileData.append('video', video)
+
+    try {
+
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post/upload`,{
+        method: "POST",
+        body: fileData
+      })
+      return await response.json()
+    } catch (e) {
+      console.log(e, 'errore in uploadFile');
+    }
+  }
 
   useEffect(() => {
     getVideos();
@@ -206,7 +234,7 @@ const [message, setMessage] = useState('')
 
   const renderAddVideoForm = () => {
     return (
-      <Form>
+      <Form encType='multipart/form-data' onSubmit={onsubmit}>
         <Form.Group controlId="formTitle">
           <Form.Label>Titolo</Form.Label>
           <Form.Control
@@ -226,14 +254,24 @@ const [message, setMessage] = useState('')
           />
         </Form.Group>
         <Form.Group controlId="formVideo">
+          <Form.Label>Carica video</Form.Label>
+          <Form.Control
+            type="file"
+            name='video'
+            placeholder="Inserisci il link al video"
+            value={newVideo.video}
+            onChange={onChangeSetFile}
+          />
+        </Form.Group>
+        {/* <Form.Group controlId="formVideo">
           <Form.Label>Link al Video</Form.Label>
           <Form.Control
             type="text"
             placeholder="Inserisci il link al video"
             value={newVideo.video}
             onChange={(e) => setNewVideo({ ...newVideo, video: e.target.value })}
-          />
-        </Form.Group>
+          /> 
+        </Form.Group>*/}
         <Form.Group controlId="formContent">
           <Form.Label>Contenuto</Form.Label>
           <Form.Control

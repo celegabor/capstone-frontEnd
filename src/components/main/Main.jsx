@@ -14,11 +14,11 @@ const Main = () => {
   return (
     <>
       <div className='d-flex bg-container p-2 justify-content-between ms-0 w-100'>
-        <Button className="bt-r-custom mx-4 m-1 border border-dark border-2 bg-light text-dark" variant="primary" onClick={handleShowR}>
-          <FontAwesomeIcon icon={faCog} />
+        <Button className="z-2 bt-r-custom mx-4 m-1 border border-dark border-2 bg-light text-dark" variant="primary" onClick={handleShowR}>
+          <FontAwesomeIcon icon={faUser} />
         </Button>
-        <Button className="bt-l-custom mx-4 m-1 border border-dark border-2 bg-light text-dark" variant="secondary" onClick={handleShow}>
-          <FontAwesomeIcon icon={faUser} /> 
+        <Button className="z-2 bt-l-custom mx-4 m-1 border border-dark border-2 bg-light text-dark" variant="secondary" onClick={handleShow}>
+          <FontAwesomeIcon icon={faCog} /> 
         </Button>
       </div>
 

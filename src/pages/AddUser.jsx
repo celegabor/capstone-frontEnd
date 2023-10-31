@@ -3,14 +3,16 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import NavbarElement from '../components/navbar/MyNavbar';
 import FooterElement from '../components/footer/MyFooter';
 import Spinner from 'react-bootstrap/Spinner';
 import { Navigate, useNavigate } from 'react-router-dom'; 
+import Logo from '../img/JobWork.png'
+
 
 import './addUser.css'
 
 const AddUser = () => {
+  const [file, setFile] = useState(null)
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
@@ -26,6 +28,28 @@ const AddUser = () => {
 
   const navigate = useNavigate();
 
+  const onChangeSetFile = (e)=>{
+    setFile(e.target.files[0])
+  }
+
+  const uploadFile = async (avatar) => {
+    const fileData = new FormData();
+    fileData.append('avatar', avatar);
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/cloudUpload`, {
+        method: "POST",
+        
+        body: fileData.json
+        
+      });
+
+  
+      return await response.json();
+    } catch (e) {
+      console.log('errore in uploadfile', e);
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,35 +59,30 @@ const AddUser = () => {
     });
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const uploadAvatar = await uploadFile(file)
     const dobAsNumber = parseInt(userData.dob);
 
-    // controllo vari errori
-    if (isNaN(dobAsNumber) || userData.name.length < 3 || userData.lastName.length < 3 || userData.password.length < 4 || userData.address.lengt < 5 || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email)) {
-      setMessage('Si sono verificati errori nei campi del modulo. Si prega di controllare i dati inseriti.');
-      setTimeout(() => {
-        setMessage('');
-      }, 3000);
-      return; 
-    }
     setIsLoading(true); 
-
+    
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            ...userData,
-            dob: dobAsNumber,
-            
-          }),
-      });
 
+      const finalBody = {
+        ...userData,
+          avatar: uploadAvatar.avatar,
+          dob: dobAsNumber,
+      }
+
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post`,{
+        method:"POST",
+        headers: {
+               'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalBody)
+      })
+      
       if (response.ok) {
         setUserData({
           name: '',
@@ -78,9 +97,9 @@ const AddUser = () => {
         setTimeout(() => {
           setMessage('');
           setIsSuccessful(true);
-          navigate('/home')
+          navigate('/login')
         }, 3000);
-       
+        
       } else {
         setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!');
         setTimeout(() => {
@@ -95,20 +114,21 @@ const AddUser = () => {
         setIsLoading(false); 
       }, 1300);
 
-
     } catch (error) {
         setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
         setTimeout(() => {
           setMessage('');
         }, 4000);
     }
+
   };
 
   return (
       
   <>
-    <nav>
-      <NavbarElement/>
+    <nav className='d-flex justify-content-between p-2 px-5'>
+      <img className='logo' src={Logo} alt='logo site'></img>
+      <Button variant='dark border border-light px-4 my-2' onClick={() => navigate('/')}>Torna indietro</Button>
     </nav>
         
     {isLoading ? (
@@ -127,7 +147,7 @@ const AddUser = () => {
         <>              
           <main className='w-100 d-flex justify-content-center align-items-center flex-column bg-dark py-3 text-light'>
             <h2>Aggiungi Utente</h2>
-            <Form className='bg-secondary px-5 p-2 w-50' noValidate>
+            <Form encType="multipart/form-data" className='bg-secondary px-5 p-2 w-50' noValidate>
 
               {/* name */}
               <Form.Group className='elementsForm' as={Col} controlId="name">
@@ -183,14 +203,12 @@ const AddUser = () => {
                 <Form.Label>link di internet di un avatar</Form.Label>
                 <Form.Control
                   required
-                  type="text"
+                  type="file"
                   name="avatar"
-                  placeholder="Link URL del tuo Avatar"
-                  value={userData.avatar}
-                  onChange={handleChange}
+                  onChange={onChangeSetFile}
                 />
               </Form.Group>
-    
+              
               {/* dob */}
               <Form.Group className='elementsForm' as={Col} controlId="dob">
                 <Form.Label>Data di Nascita</Form.Label>

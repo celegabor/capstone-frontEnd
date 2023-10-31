@@ -125,7 +125,7 @@ const CardVideos = ({ video }) => {
       <div className="d-flex p-1">
         {video.author ? (
           <>
-            <img className="img-avatar-author" src={video.author.avatar} alt="img autore" />
+            <img className="img-avatar-author object-fit-contain" src={video.author.avatar} alt="img autore" />
             <p className="name-author">
               {video.author.name} {video.author.lastName}
             </p>
@@ -186,13 +186,13 @@ const CardVideos = ({ video }) => {
                       {/* controlla se comment.author esiste altimenti imposta valori predefiniti */}
                       <div className="d-flex align-items-center position-relative">
                         {comment.author ? (
-                          <>
-                            <img className="img-avatar-author" src={comment.author.avatar} alt="img autore" />
+                          <div className='d-flex align-items-center'>
+                            <img className="img-avatar-author object-fit-contain" src={comment.author.avatar} alt="img autore" />
                             <p className="name-author">
                               {comment.author.name} {comment.author.lastName}
                             </p>
 
-                          </>
+                          </div>
 
                         ) : (
                           <>
@@ -245,7 +245,7 @@ const CardVideos = ({ video }) => {
                         </Button>
                       </div>
                     ) : (
-                      <p className="mt-4 p-2 p-1 w-100 rounded-3  bg-secondary text-light ps-3 border-bottom border-3">{comment.comment}</p>
+                      <p className="mt-1 mb-0 p-2 p-1 w-100 rounded-3  bg-secondary text-light ps-3 border-bottom border-3">{comment.comment}</p>
                     )}
                   </div>
                 </div>
@@ -253,10 +253,10 @@ const CardVideos = ({ video }) => {
             </div>
           </div>
           {editComment === true ? ( null) : (
-            <div className="w-100  d-flex flex-column align-items-center p-2 border border-4 border-dark rounded-4 my-3">
+            <div className="w-100  d-flex flex-row align-items-center p-1 border border-2 border-dark rounded-4 my-3">
               <div className="w-100">
                 <input
-                  className="mt-1 w-100 rounded-4 p-2 ps-3"
+                  className="mt-1 w-100 rounded-4 p-1 ps-3 border border-3 border-dark"
                   type="text"
                   placeholder="Aggiungi un commento..."
                   value={newComment}
@@ -264,7 +264,7 @@ const CardVideos = ({ video }) => {
                 />
                 
               </div>
-              <Button className="w-50 mx-2 my-1 border border-3 border-gray h-25" variant="dark" onClick={addComment}>
+              <Button className="w-25 mx-2 my-1 border border-2 border-gray rounded-4" variant="dark" onClick={addComment}>
                 Aggiungi
               </Button>
             </div>

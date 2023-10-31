@@ -5,3 +5,9 @@
 .bg-container{
     background-color: rgb(159, 157, 157);
 }
+
+.img-custom-users{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
