@@ -28,6 +28,7 @@ const MyNavbar = ()=> {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
+              <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/home">Home</Nav.Link>
               <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/about">About</Nav.Link>
               <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/contacts">Contacts</Nav.Link>
               <NavDropdown className='border-custom-navbar mx-3 px-3' title="Altro" id="basic-nav-dropdown">

@@ -3,7 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { PostProvider } from '../../context/context';
 import useSession from '../../hooks/useSession';
-import { faHammer, faFile , faEdit , faTrash, faCogs, faMessage} from '@fortawesome/free-solid-svg-icons'; 
+import { faHammer, faFile , faEdit , faTrash, faCogs, faMessage} from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
@@ -15,6 +16,8 @@ const OffCanvasExample = ({ name, ...props }) => {
     const { showR, setShowR, handleCloseR, handleShowR } = useContext(PostProvider);
     const session = useSession()  
     const [users, setUsers] = useState([]);
+
+    const navigate = useNavigate()
 
     useEffect(() => {
       fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get`)
@@ -46,7 +49,9 @@ const OffCanvasExample = ({ name, ...props }) => {
                     <p className='ms-4'>{user.name} {user.lastName}</p>
                   </div>
                   <div className='d-flex'>
-                    <Button variant='secondary' className='border border-dark border-2 mx-2'>
+                    <Button variant='secondary' className='border border-dark border-2 mx-2' onClick={()=>{
+                      navigate('/user')
+                    }}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Button>
                     <Button variant='secondary' className='border border-dark border-2 mx-2'>

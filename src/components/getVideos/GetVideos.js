@@ -34,8 +34,6 @@ const [message, setMessage] = useState('')
     setFile(e.target.files[0])
   }
 
-  console.log(jwtDecode(token));
-
   const uploadFile = async (v) => {
     const formData = new FormData();
     formData.append('video', v);
@@ -356,8 +354,6 @@ const [message, setMessage] = useState('')
                     ) : (null)}
                   </div>
                 </div>
-
-                {/* messaggio chiamate crud */}
               </div>
 
               {/* contenitore messaggi generali crud */}

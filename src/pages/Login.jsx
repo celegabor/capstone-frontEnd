@@ -8,6 +8,7 @@ import './login.css'
 function Login() {
 
   const [loginData, setLoginData] = useState({})
+  const [message, setMessage] = useState('')
   const [login, setLogin] = useState(null)
   const [videoStarted, setVideoStarted] = useState(false);
   const videoRef = useRef(null); 
@@ -38,8 +39,13 @@ function Login() {
 
       if(data.token){
         localStorage.setItem('loggedInUser', JSON.stringify(data.token))
-        console.log('vado a home');
         navigate('/home')
+
+      } else {
+        setMessage('Credenziali NON valide, ricontrolla email e password..');
+        setTimeout(() => {
+          setMessage('')
+        }, 25000);
       }
 
       setLogin(data)
@@ -78,7 +84,7 @@ function Login() {
       </nav>
       <div className='body d-flex flex-column align-items-center justify-content-center bg-dark text-light'>
         <form onSubmit={onSubmit} className='z-3 bg-form-custom border border-3 border-light d-flex flex-column p-5 rounded-5' action="">
-          <label htmlFor="email">Inserisci la tu Email</label>
+          <label htmlFor="email">Inserisci la tua Email</label>
           <input 
           type="email" 
           name="email" 
@@ -96,6 +102,9 @@ function Login() {
           <div className='d-flex justify-content-center'>
             <button className='w-50 mt-4 bg-dark text-light rounded-4 border border-light' type='submit'>Accedi</button>
           </div>
+          <div className="message-container w-100 text-center text-white">
+                {message && <div className={message.includes('NON') ? 'message-alert-login' : 'message-login'}>{message}</div>}
+              </div>
         </form>
 
         <video

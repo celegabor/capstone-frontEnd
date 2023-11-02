@@ -9,6 +9,7 @@ import LandingPage from './pages/LandingPage';
 import Contacts from './pages/Contacts';
 import About from './pages/About';
 import Success from './pages/Success';
+import User from './pages/User';
 
 
 
@@ -29,6 +30,7 @@ const App = ()=>{
 
         <Route element={<ProtectedRoutes/>}>
           <Route path="/home" element={<Home/>}/>
+          <Route path="/user" element={<User/>}/>
         </Route>
 
 
