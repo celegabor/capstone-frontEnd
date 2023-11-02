@@ -12,3 +12,20 @@
     filter: drop-shadow(0 0 10px rgb(0, 0, 0));
     margin-right: 20px;
 }
+
+#basic-nav-dropdown{
+    color: white;
+}
+
+.border-custom-navbar{
+    border-bottom: 2px solid white;
+    border-left: 2px solid white;
+    border-radius: 10px;
+    border-bottom-left-radius: 20px;
+    transition: all 0.1s linear;
+}
+.border-custom-navbar:hover{
+    border: 2px solid white;
+    border-radius: 20px;
+    scale: 1.05;
+}

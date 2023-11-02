@@ -8,6 +8,7 @@ import AddUser from './pages/AddUser';
 import LandingPage from './pages/LandingPage';
 import Contacts from './pages/Contacts';
 import About from './pages/About';
+import Success from './pages/Success';
 
 
 
@@ -23,6 +24,8 @@ const App = ()=>{
         <Route path="/contacts" element={<Contacts/>}/>
         <Route path="*" element={<Error />}/>
         <Route path="/addUser" element={<AddUser />}/>
+        <Route path="/success/:token" element={<Success />}/>
+
 
         <Route element={<ProtectedRoutes/>}>
           <Route path="/home" element={<Home/>}/>

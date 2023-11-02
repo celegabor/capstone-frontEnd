@@ -19,15 +19,41 @@ const GetVideos = () => {
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', content: '', author: session.id });
-  // const [newVideo, setNewVideo] = useState({ title: '', categoryWork: '', video: '', content: '', author: session.id });
+  const [newVideo, setNewVideo] = useState({
+    title: '', 
+    categoryWork: '', 
+    video: '', 
+    content: '', 
+    author: session.id });
   const [editingVideo, setEditingVideo] = useState(null); 
   const [favoriteVideos, setFavoriteVideos] = useState([]);
-  const [message, setMessage] = useState('')
+
+const [message, setMessage] = useState('')
 
   const onChangeSetFile = (e)=>{
     setFile(e.target.files[0])
   }
+
+  console.log(jwtDecode(token));
+
+  const uploadFile = async (v) => {
+    const formData = new FormData();
+    formData.append('video', v);
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      return await response.json()
+
+    } catch (e) {
+      // Gestisci l'errore
+      console.error('Errore durante l\'upload del video:', e);
+
+    }
+  };
   
   const toggleFavorite = (videoId) => {
     
@@ -98,54 +124,67 @@ const GetVideos = () => {
     }
   };
 
-  const addVideo = async () => {
+  const addVideo = async (event) => {
+    event.preventDefault();
     setIsLoading(true);
-    try {
 
-      const uploadVideo = await uploadFile(file)
+    if(file){
+      try {
+  
+        // const videoUrl = await uploadFile(newVideo.video);
+  
+        // if (!videoUrl) {
+        //   setIsLoading(false);
+        //   return;
+        // }
+    
+        // newVideo.video = videoUrl; 
+
+        const uploadVideo = await uploadFile(file)
 
         const finalBody = {
           ...newVideo,
-            video: uploadVideo.video,
+          video: uploadVideo.video
         }
-
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(finalBody),
-      });
-
-      if (response.ok) {
-
-        setMessage('Complimenti!!! Il tuo video è stato CARICATO correttamente !!!!!');
+    
+        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(finalBody),
+        });
+  
+        if (response.ok) {
+  
+          setMessage('Complimenti!!! Il tuo video è stato CARICATO correttamente !!!!!');
+            setTimeout(() => {
+              setMessage('')
+            }, 2500);
+  
+          getVideos();
+          setShowModal(false);
+          setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' });
+  
           setTimeout(() => {
-            setMessage('')
-          }, 2500);
-
-        getVideos();
-        setShowModal(false);
-        setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' });
-
-        setTimeout(() => {
-            setIsLoading(false);
-          }, 300);    
-          console.log('aggiunto');
-
-      } else {
-        console.error('Errore durante l\'aggiunta del video');
+              setIsLoading(false);
+            }, 300);    
+            console.log('aggiunto');
+  
+        } else {
+          console.error('Errore durante l\'aggiunta del video');
+        }
+      } catch (error) {
+  
+        setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
+          setTimeout(() => {
+            setMessage('');
+          }, 4000);
+  
+        console.error('Errore durante l\'aggiunta del video:', error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-
-      setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
-        setTimeout(() => {
-          setMessage('');
-        }, 4000);
-
-      console.error('Errore durante l\'aggiunta del video:', error);
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -212,21 +251,6 @@ const GetVideos = () => {
     }
   }
 
-  const uploadFile = async (video)=>{
-    const fileData = new FormData()
-    fileData.append('video', video)
-
-    try {
-
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post/upload`,{
-        method: "POST",
-        body: fileData
-      })
-      return await response.json()
-    } catch (e) {
-      console.log(e, 'errore in uploadFile');
-    }
-  }
 
   useEffect(() => {
     getVideos();
@@ -234,7 +258,7 @@ const GetVideos = () => {
 
   const renderAddVideoForm = () => {
     return (
-      <Form encType='multipart/form-data' onSubmit={onsubmit}>
+      <Form>
         <Form.Group controlId="formTitle">
           <Form.Label>Titolo</Form.Label>
           <Form.Control
@@ -254,12 +278,11 @@ const GetVideos = () => {
           />
         </Form.Group>
         <Form.Group controlId="formVideo">
-          <Form.Label>Carica video</Form.Label>
+          <Form.Label>Link al Video</Form.Label>
           <Form.Control
+            required
             type="file"
             name='video'
-            placeholder="Inserisci il link al video"
-            value={newVideo.video}
             onChange={onChangeSetFile}
           />
         </Form.Group>
@@ -270,8 +293,8 @@ const GetVideos = () => {
             placeholder="Inserisci il link al video"
             value={newVideo.video}
             onChange={(e) => setNewVideo({ ...newVideo, video: e.target.value })}
-          /> 
-        </Form.Group>*/}
+          />
+        </Form.Group> */}
         <Form.Group controlId="formContent">
           <Form.Label>Contenuto</Form.Label>
           <Form.Control

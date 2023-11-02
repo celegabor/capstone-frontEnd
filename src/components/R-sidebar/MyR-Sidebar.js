@@ -17,7 +17,6 @@ const OffCanvasExample = ({ name, ...props }) => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-      // Esegui una richiesta GET per ottenere la lista degli utenti dal tuo server
       fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get`)
         .then((response) => response.json())
         .then((data) => {
@@ -71,8 +70,8 @@ const OffCanvasExample = ({ name, ...props }) => {
               ) : (
                 <div className='d-flex align-items-center'>
                   <div key={user._id} className="user-card w-100 p-3 d-flex align-items-center border-bottom border-1 border-dark ">
-                    <img className='img-custom-users object-fit-contain' src={user.avatar} alt={`Avatar di ${user.name}`} />
-                    <p className='ms-4'>{user.name} {user.lastName}</p>
+                  <img className="img-custom-users object-fit-contain" src={user.avatar} alt={`Avatar di ${user.name}`} />                    
+                  <p className='ms-4'>{user.name} {user.lastName}</p>
                   </div>
                   <Button variant='secondary' className='border border-dark border-2 mx-2'>
                     <FontAwesomeIcon icon={faMessage} />

@@ -10,3 +10,17 @@
 .bg-form-custom{
     background-color: rgba(0, 0, 0, 0.6);
 }
+
+.custom-login{
+    width: 270px;
+    margin-top: 30px;
+    padding: 10px;
+    
+}
+
+.custom-login img{
+    height: 40px;
+    width: 40px;
+    margin: 0 10px;
+    border-radius: 50%;
+}

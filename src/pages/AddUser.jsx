@@ -18,9 +18,9 @@ const AddUser = () => {
   const [userData, setUserData] = useState({
     name: '',
     lastName: '',
-    avatar: '',
     address: '',
     dob: '',
+    avatar: '',
     email: '',
     password: ''
   });
@@ -32,24 +32,23 @@ const AddUser = () => {
     setFile(e.target.files[0])
   }
 
-  const uploadFile = async (avatar) => {
-    const fileData = new FormData();
-    fileData.append('avatar', avatar);
-
+  const uploadFile = async (img)=>{
+    const formData = new FormData()
+    formData.append('avatar', img)
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/cloudUpload`, {
+      
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/upload`,{
         method: "POST",
-        
-        body: fileData.json
-        
-      });
+        body: formData
+      })
 
-  
-      return await response.json();
+      return await response.json()
+
     } catch (e) {
-      console.log('errore in uploadfile', e);
+      console.log(e);
     }
-  };
+
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -62,67 +61,109 @@ const AddUser = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const uploadAvatar = await uploadFile(file)
-    const dobAsNumber = parseInt(userData.dob);
-
     setIsLoading(true); 
+
+    if(file){
+      try {
+  
+        const uploadAvatar = await uploadFile(file)
+        const dobAsNumber = parseInt(userData.dob);
     
-    try {
-
-      const finalBody = {
-        ...userData,
-          avatar: uploadAvatar.avatar,
-          dob: dobAsNumber,
-      }
-
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post`,{
-        method:"POST",
-        headers: {
-               'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(finalBody)
-      })
-      
-      if (response.ok) {
-        setUserData({
-          name: '',
-          lastName: '',
-          avatar: '',
-          address: '',
-          dob: '',
-          email: '',
-          password: ''
-        });
-        setMessage('Complimenti!!! Utente creato correttamente !!!!');
-        setTimeout(() => {
-          setMessage('');
-          setIsSuccessful(true);
-          navigate('/login')
-        }, 3000);
+        const finalBody = {
+          ...userData,
+            avatar: uploadAvatar.avatar,
+            dob: dobAsNumber,
+        }
+  
+        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post`,{
+          method:"POST",
+          headers: {
+                 'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(finalBody)
+        })
         
-      } else {
-        setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!');
-        setTimeout(() => {
-          setMessage('');
+        if (response.ok) {
+          setUserData({
+            name: '',
+            lastName: '',
+            avatar: '',
+            address: '',
+            dob: '',
+            email: '',
+            password: ''
+          });
+          setMessage('Complimenti!!! Utente creato correttamente !!!!');
+          setTimeout(() => {
+            setMessage('');
+            setIsSuccessful(true);
+            navigate('/login')
+          }, 3000);
+          
+        } else {
+          setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!');
+          setTimeout(() => {
+            setMessage('');
+            setIsSuccessful(true); 
+          }, 3000);
+  
           setIsSuccessful(true); 
-        }, 3000);
-
-        setIsSuccessful(true); 
-      }
-
-      setTimeout(() => {
-        setIsLoading(false); 
-      }, 1300);
-
-    } catch (error) {
-        setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
+        }
+  
         setTimeout(() => {
-          setMessage('');
-        }, 4000);
+          setIsLoading(false); 
+        }, 1300);
+  
+      } catch (error) {
+          setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
+          setTimeout(() => {
+            setMessage('');
+          }, 4000);
+      }
     }
 
   };
 
+
+  // const handleSubmit = async (event)=>{
+
+  //   event.preventDefault();
+
+  //   if(file){
+
+  //     try {
+
+  //       const uploadAvatar = await uploadFile(file);
+  //       console.log(uploadAvatar);
+  //       const dobAsNumber = parseInt(userData.dob);
+
+  //       const finalBody = {
+
+  //         ...userData,
+  //         avatar: uploadAvatar.avatar,
+  //         dob: dobAsNumber
+
+  //       }
+
+  //       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post`,{
+  //         body: JSON.stringify(finalBody),
+  //         headers: {
+  //           "Content-Type": "application/json"
+  //         },
+  //         method: "POST"
+  //       })
+
+  //       return await response.json()
+        
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+
+  //   } else {
+  //     console.log('selezionare almeno un file');
+  //   }
+
+  // }
   return (
       
   <>
@@ -147,7 +188,7 @@ const AddUser = () => {
         <>              
           <main className='w-100 d-flex justify-content-center align-items-center flex-column bg-dark py-3 text-light'>
             <h2>Aggiungi Utente</h2>
-            <Form encType="multipart/form-data" className='bg-secondary px-5 p-2 w-50' noValidate>
+            <Form className='bg-secondary px-5 p-2 w-50' noValidate>
 
               {/* name */}
               <Form.Group className='elementsForm' as={Col} controlId="name">

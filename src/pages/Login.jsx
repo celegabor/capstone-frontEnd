@@ -10,8 +10,7 @@ function Login() {
   const [loginData, setLoginData] = useState({})
   const [login, setLogin] = useState(null)
   const [videoStarted, setVideoStarted] = useState(false);
-  const videoRef = useRef(null); // Riferimento al tag video
-
+  const videoRef = useRef(null); 
   const navigate = useNavigate()
 
   const handleInputChange = (e)=>{
@@ -51,13 +50,20 @@ function Login() {
 
   }
 
+  const redirectHandlerGitHub = ()=>{
+    window.location.href = `${process.env.REACT_APP_SERVER_BASE_URL}/auth/github`
+  }
+  const redirectHandlerGoogle = ()=>{
+    window.location.href = `${process.env.REACT_APP_SERVER_BASE_URL}/auth/google`
+  }
+  
+
   useEffect(() => {
     setVideoStarted(true);
   }, []);
 
 
   const handleVideoEnded = () => {
-    // Quando il video finisce, reimposta il tempo iniziale e avvialo nuovamente
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
       videoRef.current.play();
@@ -94,18 +100,31 @@ function Login() {
 
         <video
           className="video border border-5 border-dark"
-          ref={videoRef} // Collega il riferimento al tag video
-          onEnded={handleVideoEnded} // Gestisci l'evento ended
+          ref={videoRef}
+          onEnded={handleVideoEnded} 
           src={Video}
           autoPlay
           muted={true}
         ></video>
         <div className="filter-video"></div>
-        <div className='mt-5 z-3'>
-          <Button className='border border-light p-2 px-4' variant='secondary' onClick={()=>{
+        <div className='mt-5 w-100 text-center z-3'>
+          <Button className='border border-light w-25 p-3 px-4' variant='secondary' onClick={()=>{
             navigate('/addUser')
           }}>aggiungi utente</Button>
         </div>
+        <div className="d-flex">
+          <Button onClick={()=>redirectHandlerGitHub()} className='custom-login mx-4 z-2 bg-dark text-white'>
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="logo gitHub" />
+              login with GitHub
+          </Button>
+          <Button onClick={()=>redirectHandlerGoogle()} className='custom-login mx-4 z-2 bg-dark text-white'>
+            <img src="https://img.freepik.com/free-icon/google_318-258888.jpg?w=2000" alt="logo gitHub" />
+
+              login with Google
+          </Button>
+
+        </div>
+
       </div>
     </>
     
