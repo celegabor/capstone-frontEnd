@@ -12,16 +12,16 @@ const Contacts = ()=> {
 
     const navigate = useNavigate();
 
-    const facebookLink = "https://www.facebook.com/il_tuo_profilo";
-    const instagramLink = "https://www.instagram.com/il_tuo_profilo";
-    const linkedinLink = "https://www.linkedin.com/in/il_tuo_profilo";
-    const twitterLink = "https://twitter.com/il_tuo_profilo";
+    const facebookLink = "https://www.facebook.com";
+    const instagramLink = "https://www.instagram.com";
+    const linkedinLink = "https://www.linkedin.com";
+    const twitterLink = "https://twitter.com";
 
   return (
     <section className='overflow-hiddden'>
        <nav className="border border-4 border-dark px-5 nav w-100 d-flex align-items-center justify-content-between">
         <img className='logo' src={Logo} alt="" />
-        <Button variant='dark p-2 px-4' onClick={() => navigate('/addUser')}>Torna indietro</Button>
+        <Button variant='dark p-2 px-4' onClick={() => navigate('/home')}>Torna indietro</Button>
       </nav>
       <main className='main-contacts bg-dark d-flex flex-column justify-content-center align-items-center'>
         <h1 className='text-light p-3'>CONTATTI:</h1>
@@ -31,16 +31,16 @@ const Contacts = ()=> {
             <div className='d-flex align-items-center'>
                 <p>Social:</p>
                 <Button variant="light px-2" className="m-1 fs-3 p-0" href={facebookLink} target="_blank">
-                    <FontAwesomeIcon className="m-1 fs-3 p-0" icon={faFacebook} />
+                    <FontAwesomeIcon className="text-primary m-1 fs-3 p-0" icon={faFacebook} />
                 </Button>
-                <Button variant="light px-2" className="m-1 fs-3 p-0" href={instagramLink} target="_blank">
+                <Button variant="light px-2" className="text-danger m-1 fs-3 p-0" href={instagramLink} target="_blank">
                     <FontAwesomeIcon className='mx-2' icon={faInstagram} />
                 </Button>
-                <Button variant="light px-2" className="m-1 fs-3 p-0" href={linkedinLink} target="_blank">
+                <Button variant="light px-2" className="text-info m-1 fs-3 p-0" href={linkedinLink} target="_blank">
                     <FontAwesomeIcon className='mx-2' icon={faLinkedin} />
 
                 </Button>
-                <Button variant="light px-2" className="m-1 fs-3 p-0" href={twitterLink} target="_blank">
+                <Button variant="light px-2" className="text-primary m-1 fs-3 p-0" href={twitterLink} target="_blank">
                     <FontAwesomeIcon className='mx-2' icon={faTwitter} />
                 </Button>
             </div>

@@ -9,6 +9,8 @@ import Form from 'react-bootstrap/Form';
 import {jwtDecode} from "jwt-decode";
 import './getVideos.css';
 import useSession from '../../hooks/useSession';
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 
 const GetVideos = () => {
 
@@ -27,8 +29,12 @@ const GetVideos = () => {
     author: session.id });
   const [editingVideo, setEditingVideo] = useState(null); 
   const [favoriteVideos, setFavoriteVideos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState('')
+  const itemsPerPage = 3
+  const [message, setMessage] = useState('')
 
-const [message, setMessage] = useState('')
+  
 
   const onChangeSetFile = (e)=>{
     setFile(e.target.files[0])
@@ -70,7 +76,7 @@ const [message, setMessage] = useState('')
   const getVideos = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/get`,{
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/get?page=${currentPage}`,{
         headers:{
           'Authorization': token,
         }
@@ -78,6 +84,8 @@ const [message, setMessage] = useState('')
       if (response.ok) {
         const data = await response.json();
         setVideos(data.videos);
+        setTotalPages(data.totalPages);
+
         setTimeout(() => {
           setIsLoading(false);
         }, 300);
@@ -126,7 +134,7 @@ const [message, setMessage] = useState('')
     event.preventDefault();
     setIsLoading(true);
 
-    if(file){
+    // if(file){
       try {
   
         // const videoUrl = await uploadFile(newVideo.video);
@@ -138,19 +146,19 @@ const [message, setMessage] = useState('')
     
         // newVideo.video = videoUrl; 
 
-        const uploadVideo = await uploadFile(file)
+        // const uploadVideo = await uploadFile(file)
 
-        const finalBody = {
-          ...newVideo,
-          video: uploadVideo.video
-        }
+        // const finalBody = {
+        //   ...newVideo,
+        //   video: uploadVideo.video
+        // }
     
         const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(finalBody),
+          body: JSON.stringify(newVideo),
         });
   
         if (response.ok) {
@@ -183,7 +191,7 @@ const [message, setMessage] = useState('')
       } finally {
         setIsLoading(false);
       }
-    }
+    // }
   }
 
   const editVideo = (videoId) => {
@@ -249,10 +257,15 @@ const [message, setMessage] = useState('')
     }
   }
 
+  const handlePagination = (value)=>{
+    setCurrentPage(value)
+  }
+
+
 
   useEffect(() => {
     getVideos();
-  }, []);
+  }, [currentPage]);
 
   const renderAddVideoForm = () => {
     return (
@@ -275,7 +288,7 @@ const [message, setMessage] = useState('')
             onChange={(e) => setNewVideo({ ...newVideo, categoryWork: e.target.value })}
           />
         </Form.Group>
-        <Form.Group controlId="formVideo">
+        {/* <Form.Group controlId="formVideo">
           <Form.Label>Link al Video</Form.Label>
           <Form.Control
             required
@@ -283,8 +296,8 @@ const [message, setMessage] = useState('')
             name='video'
             onChange={onChangeSetFile}
           />
-        </Form.Group>
-        {/* <Form.Group controlId="formVideo">
+        </Form.Group> */}
+        <Form.Group controlId="formVideo">
           <Form.Label>Link al Video</Form.Label>
           <Form.Control
             type="text"
@@ -292,7 +305,7 @@ const [message, setMessage] = useState('')
             value={newVideo.video}
             onChange={(e) => setNewVideo({ ...newVideo, video: e.target.value })}
           />
-        </Form.Group> */}
+        </Form.Group>
         <Form.Group controlId="formContent">
           <Form.Label>Contenuto</Form.Label>
           <Form.Control
@@ -390,6 +403,15 @@ const [message, setMessage] = useState('')
             )}
         </Modal.Footer>
       </Modal>
+
+      <div className='bg-light p-1 border border-5 border-dark m-0'>
+        <ResponsivePagination
+          current={currentPage}
+          total={totalPages}
+          onPageChange={handlePagination}
+        />
+
+      </div>
     </>
   );
 }

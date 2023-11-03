@@ -6,6 +6,8 @@ import useSession from '../../hooks/useSession';
 import { faHammer, faFile , faEdit , faTrash, faCogs, faMessage} from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
+
 
 
 import './sidebarR.css'
@@ -73,18 +75,22 @@ const OffCanvasExample = ({ name, ...props }) => {
               {user._id === session.id ? (
                 null
               ) : (
-                <div className='d-flex align-items-center'>
-                  <div key={user._id} className="user-card w-100 p-3 d-flex align-items-center border-bottom border-1 border-dark ">
-                  <img className="img-custom-users object-fit-contain" src={user.avatar} alt={`Avatar di ${user.name}`} />                    
-                  <p className='ms-4'>{user.name} {user.lastName}</p>
-                  </div>
-                  <Button variant='secondary' className='border border-dark border-2 mx-2'>
-                    <FontAwesomeIcon icon={faMessage} />
-                  </Button>
+                <div className='d-flex align-items-center' key={user._id}>
+                  <Link className='text-decoration-none text-light w-75' to={`/getUserId/${user._id}`}>
+                    <div className="user-card w-100 p-3 d-flex align-items-center border-bottom border-1 border-dark ">
+                      <img className="img-custom-users object-fit-contain" src={user.avatar} alt={`Avatar di ${user.name}`} />                    
+                      <p className='ms-4'>{user.name} {user.lastName}</p>
+                    </div>
+                  </Link>
+                  <Link to={`/getUserId/${user._id}`}>
+                    <Button variant='secondary' className='border border-dark border-2 mx-2'>
+                      <FontAwesomeIcon icon={faMessage} />
+                    </Button>
+                  </Link>
                 </div>
-              )}
-            </>
-          ))}
+                )}
+              </>
+            ))}
 
           </div>
         </Offcanvas.Body>

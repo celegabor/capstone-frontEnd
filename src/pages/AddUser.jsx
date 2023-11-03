@@ -124,46 +124,6 @@ const AddUser = () => {
 
   };
 
-
-  // const handleSubmit = async (event)=>{
-
-  //   event.preventDefault();
-
-  //   if(file){
-
-  //     try {
-
-  //       const uploadAvatar = await uploadFile(file);
-  //       console.log(uploadAvatar);
-  //       const dobAsNumber = parseInt(userData.dob);
-
-  //       const finalBody = {
-
-  //         ...userData,
-  //         avatar: uploadAvatar.avatar,
-  //         dob: dobAsNumber
-
-  //       }
-
-  //       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post`,{
-  //         body: JSON.stringify(finalBody),
-  //         headers: {
-  //           "Content-Type": "application/json"
-  //         },
-  //         method: "POST"
-  //       })
-
-  //       return await response.json()
-        
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-
-  //   } else {
-  //     console.log('selezionare almeno un file');
-  //   }
-
-  // }
   return (
       
   <>
@@ -301,8 +261,8 @@ const AddUser = () => {
                 Aggiungi Utente
               </Button>
               <div className="message-container">
-                    {message && <div className={message.includes('NON') ? 'NOT-success-message-put-user' : 'success-message-put-user'}>{message}</div>}
-                  </div>
+                {message && <div className={message.includes('NON') ? 'NOT-success-message-put-user' : 'success-message-put-user'}>{message}</div>}
+              </div>
             </Form>
           </main>
         </>

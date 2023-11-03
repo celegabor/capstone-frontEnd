@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHammer, faFile , faEdit , faTrash} from '@fortawesome/free-solid-svg-icons'; 
 import './cardVideo.css';
 import useSession from '../../hooks/useSession';
+import { Link } from 'react-router-dom';
+
 
 
 const CardVideos = ({ video }) => {
@@ -125,10 +127,13 @@ const CardVideos = ({ video }) => {
       <div className="d-flex p-1">
         {video.author ? (
           <>
+          <Link className='d-flex p-1 text-decoration-none text-light w-75' to={`/getUserId/${video.author._id}`}>
             <img className="img-avatar-author object-fit-contain" src={video.author.avatar} alt="img autore" />
             <p className="name-author">
               {video.author.name} {video.author.lastName}
             </p>
+
+          </Link>
           </>
 
         ) : (

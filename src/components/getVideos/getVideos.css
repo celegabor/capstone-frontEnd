@@ -57,3 +57,7 @@
     filter: drop-shadow(0 0 10px rgb(255, 89, 7));
 
 }
+
+.container-pagination{
+    background-color: rgb(72, 69, 69);
+}
