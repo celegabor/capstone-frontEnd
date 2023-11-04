@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import CardVideos from '../CardVideos/CardVideos';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCogs , faEdit , faHeart , faComment} from '@fortawesome/free-solid-svg-icons'; 
+import { faTrash, faCogs , faEdit , faHeart } from '@fortawesome/free-solid-svg-icons'; 
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -11,6 +11,7 @@ import './getVideos.css';
 import useSession from '../../hooks/useSession';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
+import { PostProvider } from '../../context/context';
 
 const GetVideos = () => {
 
@@ -23,8 +24,8 @@ const GetVideos = () => {
   const [showModal, setShowModal] = useState(false);
   const [newVideo, setNewVideo] = useState({
     title: '', 
-    categoryWork: '', 
     video: '', 
+    categoryWork: '',
     content: '', 
     author: session.id });
   const [editingVideo, setEditingVideo] = useState(null); 
@@ -33,13 +34,44 @@ const GetVideos = () => {
   const [totalPages, setTotalPages] = useState('')
   const itemsPerPage = 3
   const [message, setMessage] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('');
 
-  
+  const { filters } = useContext(PostProvider);
 
   const onChangeSetFile = (e)=>{
     setFile(e.target.files[0])
   }
 
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };  
+
+  const categories = [
+    'cuoco',
+    'insegnante',
+    'infermiere',
+    'programmatore',
+    'avvocato',
+    'elettricista',
+    'idraulico',
+    'barista',
+    'autista',
+    'architetto',
+    'muratore',
+    'giornalista',
+    'artista',
+    'pompiere',
+    'commerciante',
+    'personal trainer',
+    'medico',
+    'ingegnere',
+    'psicologo',
+    'agricoltore',
+    'falegname',
+    'altro...'
+
+  ];
+  
   const uploadFile = async (v) => {
     const formData = new FormData();
     formData.append('video', v);
@@ -75,14 +107,27 @@ const GetVideos = () => {
 
   const getVideos = async () => {
     setIsLoading(true);
+
     try {
+
+      const filterParams = new URLSearchParams();
+      if (filters.category) {
+        filterParams.append('category', filters.category);
+      }
+      if (filters.keyword) {
+        filterParams.append('keyword', filters.keyword);
+      }
+
       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/get?page=${currentPage}`,{
         headers:{
           'Authorization': token,
         }
       });
+
+
       if (response.ok) {
         const data = await response.json();
+        
         setVideos(data.videos);
         setTotalPages(data.totalPages);
 
@@ -134,6 +179,11 @@ const GetVideos = () => {
     event.preventDefault();
     setIsLoading(true);
 
+    const finalBody = {
+      ...newVideo,
+      categoryWork: selectedCategory, 
+    };
+
     // if(file){
       try {
   
@@ -158,7 +208,7 @@ const GetVideos = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(newVideo),
+          body: JSON.stringify(finalBody),
         });
   
         if (response.ok) {
@@ -170,7 +220,8 @@ const GetVideos = () => {
   
           getVideos();
           setShowModal(false);
-          setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' });
+          setNewVideo({ title: '', video: '', content: '', author: '' });
+          setSelectedCategory('')
   
           setTimeout(() => {
               setIsLoading(false);
@@ -200,8 +251,8 @@ const GetVideos = () => {
   
     setNewVideo({
       title: videoToEdit.title,
-      categoryWork: videoToEdit.categoryWork,
       video: videoToEdit.video,
+      categoryWork: videoToEdit.categoryWork,
       content: videoToEdit.content,
       author: session.id,
     });
@@ -211,6 +262,10 @@ const GetVideos = () => {
 
   const saveEditedVideo = async () => {
    
+    const finalBody = {
+      ...newVideo,
+      categoryWork: selectedCategory, 
+    };
     try {
       setIsLoading(true);
       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/put/${editingVideo._id}`, {
@@ -218,7 +273,7 @@ const GetVideos = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newVideo),
+        body: JSON.stringify(finalBody),
       });
 
       if (response.ok) {
@@ -227,18 +282,20 @@ const GetVideos = () => {
           setTimeout(() => {
             setMessage('')
           }, 2500);
+          console.log('aggiornato', newVideo , selectedCategory);
 
         getVideos();
         setShowModal(false);
         setEditingVideo(null);
-        setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' })
+        setNewVideo({ title: '', video: '', content: '', author: '' })
+        setSelectedCategory('')
         setTimeout(() => {
           setIsLoading(false);
         }, 300); 
-        console.log('aggiornato');
 
       } else {
-        setNewVideo({ title: '', categoryWork: '', video: '', content: '', author: '' })
+        setNewVideo({ title: '', video: '', content: '', author: '' })
+        setSelectedCategory('')
         console.error('Errore durante la modifica del video');
       }
 
@@ -261,11 +318,9 @@ const GetVideos = () => {
     setCurrentPage(value)
   }
 
-
-
   useEffect(() => {
     getVideos();
-  }, [currentPage]);
+  }, [currentPage, filters]);
 
   const renderAddVideoForm = () => {
     return (
@@ -281,12 +336,14 @@ const GetVideos = () => {
         </Form.Group>
         <Form.Group controlId="formCategoryWork">
           <Form.Label>Categoria di Lavoro</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Inserisci la categoria di lavoro"
-            value={newVideo.categoryWork}
-            onChange={(e) => setNewVideo({ ...newVideo, categoryWork: e.target.value })}
-          />
+          <Form.Control as="select" value={newVideo.categoryWork} onChange={handleCategoryChange}>
+            <option value="">Seleziona una categoria</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </Form.Control>
         </Form.Group>
         {/* <Form.Group controlId="formVideo">
           <Form.Label>Link al Video</Form.Label>
@@ -336,28 +393,61 @@ const GetVideos = () => {
         </div>
         {videos.map((video) => (
           <div className="card-video bg-secondary m-3 p-3" key={video._id}>
-            <CardVideos video={video} />
-            <div className="d-flex justify-content-end w-100">
-              <div>
-                <Button
-                  className="mx-2 px-3 py-1 ml-2"
-                  variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
-                  onClick={() => toggleFavorite(video._id)}
-                >
-                  <FontAwesomeIcon icon={faHeart} />
-                </Button>
-                {video.author._id === session.id ? (
+            {filters.category ? (
+              <>
+                {video.categoryWork === filters.category ? (
                   <>
-                    <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                    <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
-                      <FontAwesomeIcon icon={faCogs} />
-                    </Button>
+                    <CardVideos video={video} />
+                    <div className="d-flex justify-content-end w-100">
+                      <div>
+                        <Button
+                          className="mx-2 px-3 py-1 ml-2"
+                          variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
+                          onClick={() => toggleFavorite(video._id)}
+                        >
+                          <FontAwesomeIcon icon={faHeart} />
+                        </Button>
+                        {video.author._id === session.id ? (
+                          <>
+                            <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                              <FontAwesomeIcon icon={faTrash} />
+                            </Button>
+                            <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
+                              <FontAwesomeIcon icon={faCogs} />
+                            </Button>
+                          </>
+                        ) : null}
+                      </div>
+                    </div>
                   </>
-                ) : null}
-              </div>
-            </div>
+                ):( null )}
+              </>
+            ) : (
+              <>
+                <CardVideos video={video} />
+                <div className="d-flex justify-content-end w-100">
+                  <div>
+                    <Button
+                      className="mx-2 px-3 py-1 ml-2"
+                      variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
+                      onClick={() => toggleFavorite(video._id)}
+                    >
+                      <FontAwesomeIcon icon={faHeart} />
+                    </Button>
+                    {video.author._id === session.id ? (
+                      <>
+                        <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                        <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
+                          <FontAwesomeIcon icon={faCogs} />
+                        </Button>
+                      </>
+                    ) : null}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         ))}
         <div className="message-container">

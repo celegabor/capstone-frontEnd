@@ -7,4 +7,17 @@
     height: 700px;
     margin-top: 0px;
 }
-  
+
+.h-custom{
+    height: 60px;
+}
+
+.custom-filters{
+    padding: 10px;
+    background-color: grey;
+}
+
+.selected-custom{
+    border: 2px solid red;
+    background-color: blue;
+}
