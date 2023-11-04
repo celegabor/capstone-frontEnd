@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -25,6 +25,7 @@ const AddUser = () => {
     password: ''
   });
   const [isSuccessful, setIsSuccessful] = useState(false);
+  const [emails, setEmails] = useState([]);
 
   const navigate = useNavigate();
 
@@ -61,6 +62,26 @@ const AddUser = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (userData.password !== userData.confirmPassword) {
+      
+      setMessage('La password e la conferma della password NON corrispondono.');
+
+
+      setTimeout(() => {
+        setMessage('');
+      }, 1500);
+      return;
+    }
+
+    if (emails.includes(userData.email)) {
+      setMessage('Questa email NON è valida perchè è già stata registrata. Si prega di utilizzare un altro indirizzo email.');
+
+      setTimeout(() => {
+        setMessage('');
+      }, 1500);
+      return;
+    }
+
     setIsLoading(true); 
 
     if(file){
@@ -91,8 +112,10 @@ const AddUser = () => {
             address: '',
             dob: '',
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: '', 
           });
+
           setMessage('Complimenti!!! Utente creato correttamente !!!!');
           setTimeout(() => {
             setMessage('');
@@ -123,6 +146,24 @@ const AddUser = () => {
     }
 
   };
+
+  const fetchEmails = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/getEmails`);
+      if (response.ok) {
+        const data = await response.json();
+        setEmails(data.emails);
+      } else {
+        console.log('Errore nel recupero delle email');
+      }
+    } catch (error) {
+      console.log('Errore nel recupero delle email', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmails();
+  }, []);
 
   return (
       
@@ -250,6 +291,22 @@ const AddUser = () => {
                   name="password"
                   placeholder="Password"
                   value={userData.password}
+                  onChange={handleChange}
+                />
+                {userData.password.length < 4 && userData.password.length > 0 && (
+                  <div className="error-message">La password deve essere lunga almeno 4 caratteri.</div>
+                )}
+              </Form.Group>
+
+              {/* confirm password */}
+              <Form.Group className='elementsForm' as={Col} controlId="confirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  required
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  value={userData.confirmPassword}
                   onChange={handleChange}
                 />
                 {userData.password.length < 4 && userData.password.length > 0 && (
