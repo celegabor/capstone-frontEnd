@@ -321,98 +321,80 @@ const GetVideos = () => {
   }
 
   return (
-    <>
-      {isLoading ? (
-        
-        <div key={new Date().getTime()+ 'loading'} className="d-flex align-items-center justify-content-center text-grey spinner-custom">
-          <Spinner className="text-white" animation="border" role="status" key="spinner">
-          </Spinner>
-          <p className="fs-5 text-white m-3" key="loading-text">Caricamento...</p>
-        </div>
-
-      ) : (
-        
-        <div className="main text-gray d-flex flex-wrap justify-content-center background-color: rgb(72, 69, 69);">
-
-          {/* bottone aggiungi video */}
-          <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
-              <Button variant="light border-2 border-dark button-custom" onClick={() => setShowModal(true)}>
-                <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
-              </Button>
-          </div>
-
-          {videos.map((video) => (
-            <>
-              {/* singola card filtrata */}
-              <div className="card-video bg-secondary m-3 p-3" key={video._id}>
-                <CardVideos video={video} />
-                <div className="d-flex justify-content-end w-100">
-                  <div>
-                    <Button
-                    className="mx-2 px-3 py-1 ml-2"
-                    variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
-                    onClick={() => toggleFavorite(video._id)} 
-                    >
-                      <FontAwesomeIcon icon={faHeart} />
-                    </Button>
-                    {video.author._id === session.id ? (
-                      <>
-                        <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
-                          <FontAwesomeIcon icon={faTrash} />
-                        </Button>
-                        <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
-                          <FontAwesomeIcon icon={faCogs} />
-                        </Button>
-                      </>
-                    ) : (null)}
-                  </div>
-                </div>
-              </div>
-
-              {/* contenitore messaggi generali crud */}
-              <div className="message-container">
-                {message && <div className={message.includes('NON') ? 'NOT-success-message' : 'success-message'}>{message}</div>}
-              </div>
-            </>
-
-          ))}
-          
-        </div>
-      )}
-
-    {/* modale x aggiunta post */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header className='custom-bg' closeButton>
-          <Modal.Title >Aggiungi un nuovo video</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {renderAddVideoForm()}
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-                Chiudi
-            </Button>
-            {editingVideo ? (
-                <Button variant="primary" onClick={saveEditedVideo}>
-                Aggiorna Video
-                </Button>
-            ) : (
-                <Button variant="primary" onClick={addVideo}>
-                Salva Video
-                </Button>
-            )}
-        </Modal.Footer>
-      </Modal>
-
-      <div className='bg-light p-1 border border-5 border-dark m-0'>
-        <ResponsivePagination
-          current={currentPage}
-          total={totalPages}
-          onPageChange={handlePagination}
-        />
-
+  <>
+    {isLoading ? (
+      <div className="d-flex align-items-center justify-content-center text-grey spinner-custom">
+        <Spinner className="text-white" animation="border" role="status" key="spinner" />
+        <p className="fs-5 text-white m-3" key="loading-text">Caricamento...</p>
       </div>
-    </>
+    ) : (
+      <div className="main text-gray d-flex flex-wrap justify-content-center background-color: rgb(72, 69, 69);">
+        <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
+          <Button variant="light border-2 border-dark button-custom" onClick={() => setShowModal(true)}>
+            <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
+          </Button>
+        </div>
+        {videos.map((video) => (
+          <div className="card-video bg-secondary m-3 p-3" key={video._id}>
+            <CardVideos video={video} />
+            <div className="d-flex justify-content-end w-100">
+              <div>
+                <Button
+                  className="mx-2 px-3 py-1 ml-2"
+                  variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
+                  onClick={() => toggleFavorite(video._id)}
+                >
+                  <FontAwesomeIcon icon={faHeart} />
+                </Button>
+                {video.author._id === session.id ? (
+                  <>
+                    <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                    <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
+                      <FontAwesomeIcon icon={faCogs} />
+                    </Button>
+                  </>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        ))}
+        <div className="message-container">
+          {message && (
+            <div className={message.includes('NON') ? 'NOT-success-message' : 'success-message'} key="message">
+              {message}
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal.Header className="custom-bg" closeButton>
+        <Modal.Title>Aggiungi un nuovo video</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {renderAddVideoForm()}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowModal(false)}>
+          Chiudi
+        </Button>
+        {editingVideo ? (
+          <Button variant="primary" onClick={saveEditedVideo}>
+            Aggiorna Video
+          </Button>
+        ) : (
+          <Button variant="primary" onClick={addVideo}>
+            Salva Video
+          </Button>
+        )}
+      </Modal.Footer>
+    </Modal>
+    <div className="bg-light p-1 border border-5 border-dark m-0">
+      <ResponsivePagination current={currentPage} total={totalPages} onPageChange={handlePagination} key="pagination" />
+    </div>
+  </>
   );
 }
 

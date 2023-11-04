@@ -1,0 +1,14 @@
+.my-message {
+    text-align: right;
+    list-style: none;
+}
+
+.other-message {
+    text-align: left;
+    list-style: none;
+}
+
+.timestamp-custom{
+    font-size: 0.6em;
+    color: rgb(184, 180, 180);
+}
