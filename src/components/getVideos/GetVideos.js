@@ -19,7 +19,6 @@ const GetVideos = () => {
   const session = useSession()
 
   const [file, setFile] = useState(null)
-  const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newVideo, setNewVideo] = useState({
@@ -36,7 +35,7 @@ const GetVideos = () => {
   const [message, setMessage] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  const { filters } = useContext(PostProvider);
+  const { filters, videos, setVideos } = useContext(PostProvider);
 
   const onChangeSetFile = (e)=>{
     setFile(e.target.files[0])

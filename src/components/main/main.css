@@ -1,20 +1,34 @@
-.button-sidebar{
-    position: fixed;
-    top: 150px;
-    left: 10px;
-    filter: drop-shadow(0 0 5px rgb(52, 51, 51));
-    width: 60px;
-}
-
 .bt-l-custom{
     position: fixed;
     top: 110px;
     right: 10px;
     filter: drop-shadow(0 0 8px black);
+    opacity: 0.3;
+    transition: all 0.2s linear;
+
 }
 .bt-r-custom{
     position: fixed;
     top: 110px;
     left: 10px;
     filter: drop-shadow(0 0 8px black);
+    opacity: 0.3;
+    transition: all 0.2s linear;
+
+}
+
+.bt-search-custom{
+    position: fixed;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 8px black);
+    text-align: center;
+    width: 150px;
+    opacity: 0.3;
+    transition: all 0.2s linear;
+}
+
+.bt-l-custom:hover, .bt-r-custom:hover, .bt-search-custom:hover{
+    opacity: 1;
 }

@@ -22,7 +22,7 @@ const MySidebar = () => {
       <Offcanvas className="sidebar-left-custom" show={show} onHide={handleClose}>
         <Offcanvas.Header className='custom-filters' closeButton>
           <div className='text-dark d-flex flex-column'>
-            <Offcanvas.Title className='text-light bg-dark rounded-3 p-1 mb-2'>Aggiungi un filtro per vedere una sola categoria di video!</Offcanvas.Title>
+            <Offcanvas.Title closeButton className='text-light bg-dark rounded-3 p-1 mb-2'>Aggiungi un filtro per vedere una sola categoria di video!</Offcanvas.Title>
             <Button variant='light' className='w-100 border border-5 border-dark' onClick={() => handleCategoryFilter('')}>Cancella Filtri</Button>
           </div>
         </Offcanvas.Header>

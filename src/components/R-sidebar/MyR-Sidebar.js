@@ -11,9 +11,8 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const OffCanvasRight = ({ name, ...props }) => {
 
-  const { showR, setShowR, handleCloseR, handleShowR } = useContext(PostProvider);
+  const { showR, setShowR, handleCloseR, handleShowR, users, setUsers } = useContext(PostProvider);
   const session = useSession();
-  const [users, setUsers] = useState([]);
   const [messageRecipient, setMessageRecipient] = useState(null);
 
   const handleShowMessagePopup = (userId, userName, userLastName, userAvatar, fromName, fromLastName, fromAvatar) => {
