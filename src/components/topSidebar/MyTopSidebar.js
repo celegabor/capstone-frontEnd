@@ -35,9 +35,6 @@ function OffCanvasTop({ name, ...props }) {
       setFilteredVideos('');
       setFilteredUsers('')
     }
-    console.log(text);
-    console.log(filteredVideos);
-    console.log(filteredUsers);
   };
 
 
@@ -62,7 +59,7 @@ function OffCanvasTop({ name, ...props }) {
           <div>
             {filteredUsers ? (
               <>
-                <h4>Utenti:</h4>
+                <h4 className='w-100 text-center bg-dark border  my-2'>Utenti trovati:</h4>
                 <div className="row">
                   {filteredUsers.map((user) => (
                     <div className='col-sm-12 col-md-6 col-lg-4 text-center' key={user._id}>
@@ -83,7 +80,7 @@ function OffCanvasTop({ name, ...props }) {
               null
             ) : (
               <>
-                <h4>Video:</h4>
+                <h4 className='w-100 text-center bg-dark border  my-2'>Video trovati:</h4>
                 <div className="row">
                   {filteredVideos.map((video) => (
                     <div className='col-sm-12 col-md-6 col-lg-4 text-center' key={video._id}>
