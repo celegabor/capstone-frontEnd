@@ -92,14 +92,7 @@ function OffCanvasTop({ name, ...props }) {
                             <img className='rounded-5 me-1' width='30px' height='30px' alt='img utente' src={video.author.avatar}></img>
                             <p>{video.author.name}{video.author.lastName}</p>
                           </div>
-                          <iframe
-                            width='90%'
-                            height="25%"
-                            src={video.video}
-                            frameBorder="0"
-                            allowFullScreen
-                            title="Video di YouTube"
-                        />
+                          <video controls width='100%' height="315" src={video.video}></video>
                         <div>
                         <p>{video.title}</p>
                         <p className='m-0'>

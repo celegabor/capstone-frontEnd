@@ -31,4 +31,15 @@
     bottom: 8px;
     left: 15px;
 }
+
+@media screen and (max-width: 500px){
+    .modal-comments{
+        font-size: 0.8em;
+    }
+}
+@media screen and (max-width: 350px){
+    .modal-comments{
+        font-size: 0.6em;
+    }
+}
   

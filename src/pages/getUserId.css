@@ -1,0 +1,30 @@
+.div-container-getUserId{
+    padding: 40px;
+}
+
+.title-videos-from{
+    margin: 80px 40px;
+    padding: 1em;
+    border-bottom: 2px solid white;
+}
+
+@media screen and (max-width: 500px) {
+    .div-container-getUserId{
+        padding: 20px;
+    }
+    .title-videos-from{
+        margin: 40px 20px;
+        padding: 1em;
+    }
+    
+}
+
+@media screen and (max-width: 350px) {
+    .div-container-getUserId{
+        padding: 10px;
+    }
+    .title-videos-from{
+        margin: 20px 10px;
+        padding: 1em;
+    }
+}

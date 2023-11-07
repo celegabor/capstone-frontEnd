@@ -3,10 +3,6 @@
     position: relative;
 }
 
-.body form{
-    width: 500px;
-}
-
 .bg-form-custom{
     background-color: rgba(0, 0, 0, 0.6);
 }
@@ -37,4 +33,40 @@
     border-radius: 20px;
     border-bottom: 1px solid white;
     border-left: 1px solid white;
+}
+
+form{
+    width: 400px;
+}
+
+@media screen and (max-width: 700px) {
+    .custom-login{
+        font-size: 0.8em;
+        width: 200px;
+
+    }
+
+    form{
+        margin: 10px;
+    }
+    
+    .custom-login img{
+        height: 30px;
+        width: 30px;
+        margin: 0;
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    form{
+        width: 70%;
+    }
+}
+
+
+@media screen and (max-width: 400px) {
+    form{
+        width: 90%;
+    }
 }

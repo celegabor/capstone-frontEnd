@@ -6,7 +6,6 @@ import { faTrash, faCogs , faEdit , faHeart } from '@fortawesome/free-solid-svg-
 import Spinner from 'react-bootstrap/Spinner';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import {jwtDecode} from "jwt-decode";
 import './getVideos.css';
 import useSession from '../../hooks/useSession';
 import ResponsivePagination from 'react-responsive-pagination';
@@ -18,7 +17,6 @@ const GetVideos = () => {
   const token = JSON.parse(localStorage.getItem('loggedInUser'))
   const session = useSession()
 
-  const [file, setFile] = useState(null)
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [newVideo, setNewVideo] = useState({
@@ -31,15 +29,48 @@ const GetVideos = () => {
   const [favoriteVideos, setFavoriteVideos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState('')
-  const itemsPerPage = 3
   const [message, setMessage] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [file, setFile] = useState(null)
 
   const { filters, videos, setVideos } = useContext(PostProvider);
 
-  const onChangeSetFile = (e)=>{
-    setFile(e.target.files[0])
+
+
+
+// --------------------------------------------
+
+const onChangeSetFile = (e)=>{
+  setFile(e.target.files[0])
+}
+
+const uploadFile = async (video) =>{
+  const fileData = new FormData()
+  fileData.append('video', video)
+  try {
+
+    const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/upload`, {
+      method: "POST",
+      body: fileData
+    })
+
+    return response.json()
+
+  } catch (e) {
+    console.log('errore in uploadFile: ', e);
   }
+
+}
+
+
+
+
+
+// --------------------------------------------
+
+
+
+
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -70,25 +101,6 @@ const GetVideos = () => {
     'altro...'
 
   ];
-  
-  const uploadFile = async (v) => {
-    const formData = new FormData();
-    formData.append('video', v);
-
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post/upload`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      return await response.json()
-
-    } catch (e) {
-      // Gestisci l'errore
-      console.error('Errore durante l\'upload del video:', e);
-
-    }
-  };
   
   const toggleFavorite = (videoId) => {
     
@@ -178,29 +190,21 @@ const GetVideos = () => {
     event.preventDefault();
     setIsLoading(true);
 
-    const finalBody = {
-      ...newVideo,
-      categoryWork: selectedCategory, 
-    };
+    // const finalBody = {
+    //   ...newVideo,
+    //   categoryWork: selectedCategory, 
+    // };
 
-    // if(file){
+    if (file) {
       try {
-  
-        // const videoUrl = await uploadFile(newVideo.video);
-  
-        // if (!videoUrl) {
-        //   setIsLoading(false);
-        //   return;
-        // }
-    
-        // newVideo.video = videoUrl; 
 
-        // const uploadVideo = await uploadFile(file)
+        const uploadVideo = await uploadFile(file)
 
-        // const finalBody = {
-        //   ...newVideo,
-        //   video: uploadVideo.video
-        // }
+        const finalBody = {
+          ...newVideo,
+          categoryWork: selectedCategory, 
+          video: uploadVideo.video
+        };
     
         const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/post`, {
           method: 'POST',
@@ -230,6 +234,9 @@ const GetVideos = () => {
         } else {
           console.error('Errore durante l\'aggiunta del video');
         }
+
+        return response.json()
+
       } catch (error) {
   
         setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
@@ -241,7 +248,10 @@ const GetVideos = () => {
       } finally {
         setIsLoading(false);
       }
-    // }
+      
+    } else {
+      console.log('seleziona un file');
+    }
   }
 
   const editVideo = (videoId) => {
@@ -323,7 +333,10 @@ const GetVideos = () => {
 
   const renderAddVideoForm = () => {
     return (
-      <Form>
+      <Form encType='multipart/form-data'>
+
+{/* -------------------------------------------- */}
+
         <Form.Group controlId="formTitle">
           <Form.Label>Titolo</Form.Label>
           <Form.Control
@@ -333,7 +346,10 @@ const GetVideos = () => {
             onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
           />
         </Form.Group>
-        <Form.Group controlId="formCategoryWork">
+
+{/* -------------------------------------------- */}
+
+        {/* <Form.Group controlId="formCategoryWork">
           <Form.Label>Categoria di Lavoro</Form.Label>
           <Form.Control as="select" value={newVideo.categoryWork} onChange={handleCategoryChange}>
             <option value="">Seleziona una categoria</option>
@@ -343,17 +359,35 @@ const GetVideos = () => {
               </option>
             ))}
           </Form.Control>
+        </Form.Group> */}
+
+        <Form.Group controlId="formCategoryWork">
+          <Form.Label>Categoria di Lavoro</Form.Label>
+          <Form.Control as="select" value={selectedCategory} onChange={handleCategoryChange}>
+            <option value="">Seleziona una categoria</option> {/* Aggiungi questa opzione */}
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </Form.Control>
         </Form.Group>
-        {/* <Form.Group controlId="formVideo">
+
+{/* -------------------------------------------- */}
+
+        <Form.Group controlId="formVideo">
           <Form.Label>Link al Video</Form.Label>
           <Form.Control
-            required
-            type="file"
             name='video'
+            type="file"
             onChange={onChangeSetFile}
+            required
           />
-        </Form.Group> */}
-        <Form.Group controlId="formVideo">
+        </Form.Group>
+
+{/* -------------------------------------------- */}
+
+        {/* <Form.Group controlId="formVideo">
           <Form.Label>Link al Video</Form.Label>
           <Form.Control
             type="text"
@@ -361,7 +395,10 @@ const GetVideos = () => {
             value={newVideo.video}
             onChange={(e) => setNewVideo({ ...newVideo, video: e.target.value })}
           />
-        </Form.Group>
+        </Form.Group> */}
+
+{/* -------------------------------------------- */}
+
         <Form.Group controlId="formContent">
           <Form.Label>Contenuto</Form.Label>
           <Form.Control
@@ -423,7 +460,7 @@ const GetVideos = () => {
               </>
             ) : (
               <>
-                <CardVideos video={video} />
+                <CardVideos className='card-video' video={video} />
                 <div className="d-flex justify-content-end w-100">
                   <div>
                     <Button
@@ -435,7 +472,7 @@ const GetVideos = () => {
                     </Button>
                     {video.author._id === session.id ? (
                       <>
-                        <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                        <Button className=" px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
                           <FontAwesomeIcon icon={faTrash} />
                         </Button>
                         <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>

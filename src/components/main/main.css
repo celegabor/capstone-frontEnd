@@ -31,4 +31,34 @@
 
 .bt-l-custom:hover, .bt-r-custom:hover, .bt-search-custom:hover{
     opacity: 1;
+} 
+
+@media screen and (max-width: 400px){
+    .bt-l-custom{
+        top: 100px;
+    }
+    .bt-r-custom{
+        top: 100px;
+    }
+    
+    .bt-search-custom{
+        top: 100px;
+    }
+}
+@media screen and (max-width: 350px){
+    .bt-l-custom{
+        top: 100px;
+        left: 10px;
+        right: 65%;
+    }
+    .bt-r-custom{
+        top: 145px;
+        left: 10px;
+        right: 70%;
+    }
+    .bt-search-custom{
+        left: 65%;
+        width: 60%;
+        top: 100px;
+    }
 }

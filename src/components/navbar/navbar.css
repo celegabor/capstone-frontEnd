@@ -4,7 +4,7 @@
     padding: 1em;
 }
 
-.logo{
+.logo-navbar{
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -28,4 +28,38 @@
     border: 2px solid white;
     border-radius: 20px;
     scale: 1.05;
+}
+
+.container-navbar{
+    padding: 0 30px;
+}
+
+.button-logout-navbar{
+    padding: 10px 40px !important;
+}
+
+@media screen and (max-width:450px) {
+    .container-navbar{
+        padding: 0;
+    }
+    .logo{
+        margin-right: 0;
+    }
+    .button-logout-navbar{
+        padding: 8px 20px !important;
+    }
+    .navbar-toggle{
+        scale: 0.8;
+    }
+}
+@media screen and (max-width:380px) {
+    .container-navbar{
+        padding: 0;
+    }
+    .logo{
+        margin-right: 0;
+    }
+    .button-logout-navbar{
+        padding: 5px 10px !important;
+    }
 }

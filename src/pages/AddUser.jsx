@@ -165,11 +165,12 @@ const AddUser = () => {
     fetchEmails();
   }, []);
 
+
   return (
       
   <>
-    <nav className='d-flex justify-content-between p-2 px-5'>
-      <img className='logo' src={Logo} alt='logo site'></img>
+    <nav className='d-flex justify-content-between nav-add-user'>
+      <img className='logo-add-user-nav' src={Logo} alt='logo site'></img>
       <Button variant='dark border border-light px-4 my-2' onClick={() => navigate('/')}>Torna indietro</Button>
     </nav>
         
@@ -189,7 +190,7 @@ const AddUser = () => {
         <>              
           <main className='w-100 d-flex justify-content-center align-items-center flex-column bg-dark py-3 text-light'>
             <h2>Aggiungi Utente</h2>
-            <Form className='bg-secondary px-5 p-2 w-50' noValidate>
+            <Form className='bg-secondary' noValidate>
 
               {/* name */}
               <Form.Group className='elementsForm' as={Col} controlId="name">

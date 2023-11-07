@@ -5,8 +5,8 @@ import MyNavbar from '../components/navbar/MyNavbar';
 import { Navigate, useNavigate } from 'react-router-dom'; 
 import { jwtDecode } from 'jwt-decode';
 import Spinner from 'react-bootstrap/Spinner';
-import { faHammer, faFile } from '@fortawesome/free-solid-svg-icons'; 
-
+import { faHammer, faFile, faHome } from '@fortawesome/free-solid-svg-icons'; 
+import './user.css'
 
 
 
@@ -26,15 +26,11 @@ function User() {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [videos, setVideos] = useState([]);
 
-  console.log(videos);
-
   const navigate = useNavigate();
 
   const token = localStorage.getItem('loggedInUser');
   const token2 = JSON.parse(localStorage.getItem('loggedInUser'))
   const decodedToken = jwtDecode(token);
-
-  console.log(decodedToken);
 
   const getVideos = async () => {
     setIsLoading(true);
@@ -319,81 +315,109 @@ function User() {
 
         ) : (  
           <>
-            <div className='bg-dark text-light p-5'>
+            <div className='bg-dark text-light container-user-put'>
               <MyNavbar />
               <h2 className='p-3'>Informazioni sull'utente:</h2>
-              <form className='w-100 text-center'>
-                <div className='w-100 p-2 m-2 d-flex flex-column'>
-                  <label>Immagine profilo:</label>
-                  <div className='w-100 d-flex flex-column align-items-center'>
-                    <img className='border border-4' width={'200px'} src={userFormData.avatar} alt="" />
-                    <input className='w-50 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2' type="file" name='avatar' onChange={onChangeSetFile} />
+              <Button className='px-3' variant='secondary' onClick={() => navigate('/home')}>
+                <FontAwesomeIcon icon={faHome}/>
+              </Button>
+              <form className='w-100 text-center form-user-put'>
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-3"></div>
+                    <div className="col-md-6">
+                      <div className='w-100 p-2 m-2 d-flex flex-column'>
+                        {/* Immagine profilo */}
+                        <label>Immagine profilo:</label>
+                        <div className='w-100 d-flex flex-column align-items-center'>
+                          <img className='border border-4' width={'90%'} src={userFormData.avatar} alt="" />
+                          <input className='w-50 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2' type="file" name='avatar' onChange={onChangeSetFile} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-3"></div>
+                  </div>
+                  <div className="row">
+                    {/* Nome */}
+                    <div className="col-md-6">
+                      <div className='w-100 p-2 d-flex flex-column text-center'>
+                        <label className='text-start'>Nome:</label>
+                        <input
+                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          type="text"
+                          name="name"
+                          value={userFormData.name}
+                          onChange={handleFormChange}
+                        />
+                      </div>
+                    </div>
+                    {/* Cognome */}
+                    <div className="col-md-6">
+                      <div className='d-flex'>
+                        <div className='w-100 p-2 d-flex flex-column'>
+                          <label>Cognome:</label>
+                          <input
+                            className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                            type="text"
+                            name="lastName"
+                            value={userFormData.lastName}
+                            onChange={handleFormChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    {/* Email */}
+                    <div className="col-md-6">
+                      <div className='w-100 p-2 d-flex flex-column'>
+                        <label>Email:</label>
+                        <input
+                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          type="email"
+                          name="email"
+                          value={userFormData.email}
+                          onChange={handleFormChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      {/* Indirizzo */}
+                      <div className='w-100 p-2 d-flex flex-column'>
+                        <label>Indirizzo:</label>
+                        <input
+                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          type="text"
+                          name="address"
+                          value={userFormData.address}
+                          onChange={handleFormChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      {/* Data di Nascita */}
+                      <div className='p-2 d-flex flex-column'>
+                        <label>Data di nascita:</label>
+                        <input
+                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          type="date"
+                          name="dob"
+                          value={userFormData.dob}
+                          onChange={handleFormChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <Button className='border border-2 border-secondary my-3 w-100' variant='dark' type="submit" onClick={handleSubmit}>
+                        Modifica Dati
+                      </Button>
+                    </div>
                   </div>
                 </div>
-
-                {/* nome cognome */}
-                <div className='d-flex'>
-                  <div className='w-100 p-2 m-2 d-flex flex-column text-center'>
-                    <label className='text-start'>Nome:</label>
-                    <input
-                      className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                      type="text"
-                      name="name"
-                      value={userFormData.name}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className='w-100 p-2 m-2 d-flex flex-column'>
-                    <label>Cognome:</label>
-                    <input
-                      className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                      type="text"
-                      name="lastName"
-                      value={userFormData.lastName}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                </div>
-
-                {/* email indirizzo */}
-                <div className='d-flex'>
-                  <div className='w-100 p-2 m-2 d-flex flex-column'>
-                    <label>Email:</label>
-                    <input
-                      className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                      type="email"
-                      name="email"
-                      value={userFormData.email}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className='w-100 p-2 m-2 d-flex flex-column'>
-                    <label>Indirizzo:</label>
-                    <input
-                      className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                      type="text"
-                      name="address"
-                      value={userFormData.address}
-                      onChange={handleFormChange}
-                    />
-                  </div>
-
-                </div>
-
-
-                <div className='p-2 m-2 d-flex flex-column'>
-                  <label>Data di nascita:</label>
-                  <input
-                    className='w-50 bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                    type="date"
-                    name="dob"
-                    value={userFormData.dob}
-                    onChange={handleFormChange}
-                  />
-                </div>
-                <Button className='border border-2 border-secondary my-3 w-100' variant='dark' type="submit" onClick={handleSubmit}>
-                  Modifica Dati
-                </Button>
               </form>
 
               <div className="message-container">
@@ -402,18 +426,13 @@ function User() {
               
               <h4 className='m-5 px-5'>I tuoi video :</h4>
 
-                { videos.map((video) => (
-                  <div className='w-100 d-flex flex-row'>
-                    <div className='w-50 m-0'>
-                      <div className="dettails-post mb-3">
-                          <iframe
-                              width="100%"
-                              height="350"
-                              src={video.video}
-                              frameBorder="0"
-                              allowFullScreen
-                              title="Video di YouTube"
-                          />
+                {videos.map((video) => (
+                  <>
+                    <div className='col-3 col-md-0'></div>
+                    <div key={video._id} className='col-12 col-md-6 mb-4'>
+                      <div className='w-100'>
+                        <div className="dettails-post mb-3">
+                          <video controls width="100%" height="315" src={video.video}></video>
                           <div>
                             <h4>{video.title}</h4>
                             <p className='m-0'>
@@ -424,20 +443,21 @@ function User() {
                               <FontAwesomeIcon className='mx-2' icon={faFile} />
                               <span className='wrap-text'>{video.content}</span>
                             </p>
-                            <div className=" w-100 text-center p-3">
+                            <div className="w-100 text-center p-3">
                               <Button className="w-50" variant="danger" onClick={() => deleteVideo(video._id)}>
                                 Cancella video
                               </Button>
                             </div>
                           </div>
+                        </div>
                       </div>
                     </div>
-
-                  </div>
-
+                    <div className='col-3 col-md-0'></div>
+                  </>
                 ))}
-            </div>
 
+
+            </div>
           </>
           
       )

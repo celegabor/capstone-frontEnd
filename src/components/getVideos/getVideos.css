@@ -61,3 +61,45 @@
 .container-pagination{
     background-color: rgb(72, 69, 69);
 }
+
+.d-custom-addcomment{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.width-custom-button-addcomment{
+    width: 25%;
+}
+
+@media screen and (max-width: 510px) {
+    .card-video{
+        width: 90%;
+    }
+    .main{
+        padding: 1em 1em;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .card-video{
+        height: 620px;
+    }
+    .d-custom-addcomment{
+        flex-direction: column;
+        font-size: 1.3em;
+    }
+    .width-custom-button-addcomment{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 400px) {
+    .card-video{
+        width: 98%;
+        min-width: 220px;
+    }
+    .main{
+        padding: 0.3em 0.3em;
+    }
+}
+

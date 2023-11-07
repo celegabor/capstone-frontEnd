@@ -17,9 +17,6 @@ const MyFooter = ()=> {
           <Nav.Link className='text-light border-bottom mx-2 rounded-5 border-2' href="/home">Home</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link className='text-light border-bottom mx-2 rounded-5 border-2' href='/about'>About</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
           <Nav.Link className='text-light border-bottom mx-2 rounded-5 border-2' href='/contacts'>Contacts</Nav.Link>
         </Nav.Item>
         <Nav.Item>
@@ -27,7 +24,7 @@ const MyFooter = ()=> {
         </Nav.Item>
       </Nav>
       <div className='w-100 text-center'>
-        <img className='logo p-0 m-0' src={Logo} alt='logo site'></img>
+        <img className='logo logo-custom p-0 m-0' src={Logo} alt='logo site'></img>
       </div>
       <div className="text-center mt-4 mb-4">
         <p>Privacy-Policy</p>

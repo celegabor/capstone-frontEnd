@@ -2,3 +2,15 @@
     background: linear-gradient(to top,  rgba(125,126,125,1) 0%,rgba(48, 44, 44) 100%); 
     color: rgb(144, 141, 141);
 }
+
+
+@media screen and (max-width: 384px) {
+    .logo-custom{
+        margin-top: 2em !important;
+    }
+}
+@media screen and (max-width: 237px) {
+    .logo-custom{
+        margin-top: 3.5em !important;
+    }
+}

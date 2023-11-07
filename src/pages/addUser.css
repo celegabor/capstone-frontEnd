@@ -25,6 +25,43 @@
 
 .spinner-container{
     height: 100vh;
-    width: 100vw;
-    
+    width: 100vw; 
+}
+
+main Form{
+    width: 50% !important;
+    padding: 20px 40px;
+}
+
+.nav-add-user{
+    padding: 10px 40px;
+}
+
+.logo-add-user-nav{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid white;
+    filter: drop-shadow(0 0 10px rgb(0, 0, 0));
+}
+
+
+@media screen and (max-width:700px) {
+    main Form{
+        width: 70% !important;
+    }
+}
+@media screen and (max-width:500px) {
+    main Form{
+        width: 80% !important;
+        font-size: 0.8em;
+    }
+}
+@media screen and (max-width:350px) {
+    main Form{
+        padding: 20px 10px;
+    }
+    .nav-add-user{
+        padding: 10px 20px;
+    }
 }

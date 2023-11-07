@@ -23,13 +23,12 @@ const MyNavbar = ()=> {
   return (
     <>
       <Navbar expand="lg" className="custom-background-navbar">
-        <Container className='d-flex justify-content-between px-5'>
-          <img onClick={()=>{ navigate('/')}} className='logo' src={Logo} alt='logo site'></img>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Container className='d-flex justify-content-between container-navbar'>
+          <img onClick={()=>{ navigate('/')}} className='logo-navbar' src={Logo} alt='logo site'></img>
+          <Navbar.Toggle className='navbar-toggle' aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
+            <Nav className="me-auto p-3">
               <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/home">Home</Nav.Link>
-              <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/about">About</Nav.Link>
               <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/contacts">Contacts</Nav.Link>
               <NavDropdown className='border-custom-navbar mx-3 px-3' title="Altro" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -44,7 +43,7 @@ const MyNavbar = ()=> {
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
-          <button className='px-5 p-2 rounded-2 border border-light bg-dark text-light' onClick={handleShowLogoutModal}>LogOut</button>
+          <button className='button-logout-navbar p-2 rounded-2 border border-light bg-dark text-light' onClick={handleShowLogoutModal}>LogOut</button>
         </Container>
     </Navbar>
 
