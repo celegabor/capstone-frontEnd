@@ -19,13 +19,14 @@ function User() {
     dob: '',
     address: '',
     avatar: '',
+    doc:'',
   });
   const [message, setMessage] = useState('');
   const [file, setFile] = useState(null);
+  const [fileDoc, setFileDoc] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [videos, setVideos] = useState([]);
-
   const navigate = useNavigate();
 
   const token = localStorage.getItem('loggedInUser');
@@ -67,7 +68,10 @@ function User() {
       const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get`);
       if (response.ok) {
         const data = await response.json();
-        setUsers(data.users);
+        const filteredUsers = data.users.filter((user) => user._id === decodedToken.id);
+        setUsers([...filteredUsers]);
+
+
       } else {
         console.error('Errore nella richiesta GET:', response.status);
         setTimeout(() => {
@@ -117,9 +121,31 @@ function User() {
     setFile(e.target.files[0]);
   };
 
+  const uploadFileDoc = async (img) => {
+    setIsLoading(true)
+    const formData = new FormData();
+    formData.append('doc', img);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/docUpload`, {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        return await response.json();
+      } else {
+        throw new Error('Errore durante il caricamento dell\'avatar.');
+        
+      }
+
+    } catch (e) {
+      console.error('Errore durante il caricamento dell\'avatar:', e);
+      throw e;
+    }
+  }
+
   const uploadFile = async (img) => {
     setIsLoading(true)
-    console.log('start upload file');
     const formData = new FormData();
     formData.append('avatar', img);
     try {
@@ -144,25 +170,31 @@ function User() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-
-  // se c'è un file(immagine) nuovo
-    if (file) {
-      try {
-        const uploadAvatar = await uploadFile(file);
-        const dobAsNumber = parseInt(userFormData.dob);
   
-        const finalBody = {
-          ...userFormData,
-          avatar: uploadAvatar.avatar,
-          dob: dobAsNumber,
-        };
+    const dobAsNumber = parseInt(userFormData.dob);
+    const updatedData = {
+      ...userFormData,
+      dob: dobAsNumber,
+    };
+  
+    if (file || fileDoc) {
+      try {
+        if (file) {
+          const uploadAvatar = await uploadFile(file);
+          updatedData.avatar = uploadAvatar.avatar;
+        }
+        
+        if (fileDoc) {
+          const uploadDoc = await uploadFileDoc(fileDoc);
+          updatedData.doc = uploadDoc.docUrl;
+        }
   
         const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/put/${decodedToken.id}`, {
           method: "PUT",
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(finalBody)
+          body: JSON.stringify(updatedData),
         });
   
         if (response.ok) {
@@ -173,85 +205,24 @@ function User() {
             address: '',
             dob: '',
             email: '',
-            password: ''
+            password: '',
+            doc: '',
           });
           setMessage('Complimenti!!! Utente MODIFICATO correttamente !!!!');
           setTimeout(() => {
             setMessage('');
             setIsSuccessful(true);
             navigate('/home');
-          }, 3000);
-  
-        } else {
-          setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!');
-          setTimeout(() => {
-            setMessage('');
-            setIsSuccessful(true);
-          }, 2000);
-  
-          setIsSuccessful(true);
-        }
-  
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1300);
-  
-      } catch (error) {
-        console.error('Errore durante il caricamento:', error);
-        setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!');
-        setTimeout(() => {
-          setMessage('');
-          setIsLoading(false)
-        }, 4000);
-      }
-    } else {
-      // Nessun nuovo file selezionato, effettua una chiamata PUT con l'immagine esistente.
-      try {
-        const dobAsNumber = parseInt(userFormData.dob);
-  
-        const finalBody = {
-          ...userFormData,
-          dob: dobAsNumber,
-        };
-  
-        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/put/${decodedToken.id}`, {
-          method: "PUT",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(finalBody)
-        });
-  
-        if (response.ok) {
-          setUserFormData({
-            name: '',
-            lastName: '',
-            address: '',
-            dob: '',
-            email: '',
-            password: ''
-          });
-          setMessage('Complimenti!!! Utente MODIFICATO correttamente !!!!');
-          setTimeout(() => {
-            setMessage('');
-            setIsSuccessful(true);
-            navigate('/home');
-          }, 2000);
-  
+          }, 1500);
         } else {
           setMessage('Mi dispiace.... L\'aggiornamento NON è andato a buon fine !!!!!');
           setTimeout(() => {
             setMessage('');
             setIsSuccessful(true);
           }, 3000);
-  
-          setIsSuccessful(true);
         }
   
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1300);
-  
+        setIsLoading(false);
       } catch (error) {
         console.error('Errore durante l\'aggiornamento:', error);
         setMessage('Mi dispiace.... L\'aggiornamento NON è andato a buon fine !!!!!');
@@ -259,8 +230,12 @@ function User() {
           setMessage('');
         }, 4000);
       }
+    } else {
+      setMessage('Nessuna modifica effettuata.');
+      setIsLoading(false);
     }
   };
+  
   
   const deleteVideo = async (videoId) => {
     const confirmDelete = window.confirm('Sei sicuro di voler cancellare questo video?');
@@ -297,6 +272,12 @@ function User() {
     }
   };
 
+  const handleDocUpload = (e) => {
+    const docFile = e.target.files[0];
+    setFileDoc(docFile);
+  };
+  
+
   return (
     <>
       {isLoading ? (
@@ -306,6 +287,7 @@ function User() {
               <span className="sr-only"></span>
             </Spinner>
             <p>Caricamento...</p>
+            <p className='mt-2'>..attendi qualche secondo!</p>
           </div>
         </>
     
@@ -324,18 +306,37 @@ function User() {
               <form className='w-100 text-center form-user-put'>
                 <div className="container">
                   <div className="row">
-                    <div className="col-md-3"></div>
                     <div className="col-md-6">
                       <div className='w-100 p-2 m-2 d-flex flex-column'>
                         {/* Immagine profilo */}
                         <label>Immagine profilo:</label>
                         <div className='w-100 d-flex flex-column align-items-center'>
-                          <img className='border border-4' width={'90%'} src={userFormData.avatar} alt="" />
-                          <input className='w-50 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2' type="file" name='avatar' onChange={onChangeSetFile} />
+                          {file ? (
+                            <img className='border border-4 ' width={'70%'} height={'80%'} src={URL.createObjectURL(file)} alt="documento" />
+                          ) : (
+                            <img className='border border-4' width={'70%'} height={'80%'} src={users.map((user)=>user.avatar)}alt="immagine profilo" />
+                          )}
+                          <input className='w-100 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2' type="file" name='avatar' onChange={onChangeSetFile} />
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-3"></div>
+                    <div className="col-md-6 uploadDoc">
+                      {/* caricamento immagini "doc" */}
+                      <div className='w-100 p-2 m-2 d-flex flex-column align-items-center'>
+                        <label>Carica immagini "doc":</label>
+                        {fileDoc ? (
+                          <img className='border border-4 ' width={'70%'} height={'80%'} src={URL.createObjectURL(fileDoc)} alt="documento" />
+                        ) : (
+                          <img className='border border-4 ' width={'70%'} height={'80%'} src={users.map((user)=>user.doc)} alt="documento" />
+                        )}
+                        <input
+                          className='w-100 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          type="file"
+                          name="doc"
+                          onChange={handleDocUpload}
+                        />
+                      </div>
+                    </div>                  
                   </div>
                   <div className="row">
                     {/* Nome */}

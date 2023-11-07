@@ -181,6 +181,10 @@ const AddUser = () => {
             <span className="sr-only"></span>
           </Spinner>
           <p>Caricamento...</p>
+
+          <p>..ci vorrà ancora un'attimo...</p>  
+
+
         </div>
       </>
   

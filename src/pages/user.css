@@ -2,6 +2,16 @@
     padding: 0 30px;
 }
 
+.doc-custom{
+    width: 100px;
+    object-fit: contain;
+    transition: all 0.3s linear;
+}
+.doc-custom:hover{
+    width: 80%;
+    object-fit: contain;
+}
+
 @media screen and (max-width:700px) {
     .form-user-put{
         margin: 0;

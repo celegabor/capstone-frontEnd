@@ -68,7 +68,6 @@ function GetUserId() {
     }
   }
 
-
   useEffect(() => {
     getUsers()
     getVideos()
@@ -91,13 +90,12 @@ function GetUserId() {
           <MyNavbar />
           <h2>Dettagli dell'utente:</h2>
           <Button className='px-3' variant='secondary' onClick={() => navigate('/home')}>
-                <FontAwesomeIcon icon={faHome}/>
-              </Button>
+            <FontAwesomeIcon key={user} icon={faHome}/>
+          </Button>
           {user ? (
             <>
               <form className="container w-100 text-center">
                 <div className="row">
-                  <div className="col-md-3"></div>
                   <div className="col-md-6">
                     <div className='w-100 p-2 m-2 d-flex flex-column'>
                       {/* Immagine del profilo */}
@@ -107,7 +105,16 @@ function GetUserId() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-3"></div>
+                  <div className="col-md-6">
+                    <h4>I tuoi documenti:</h4>
+                    <div key={user._id}>
+                      {user.doc && (
+                        <div className='mb-3'>
+                          <img className='doc-custom-byId' alt='document' src={user.doc}></img>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <div className="row">
                   {/* Nome */}
