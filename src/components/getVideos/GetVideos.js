@@ -418,7 +418,6 @@ const uploadFile = async (video) =>{
             <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
           </Button>
         </div>
-        <video src='https://www.youtube.com/watch?v=oP2ht_50c5w'></video>
         {videos.map((video) => (
           <div className="card-video rounded-3 bg-light m-3 p-3" key={video._id}>
             {filters.category ? (
