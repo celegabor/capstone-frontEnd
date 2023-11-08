@@ -2,22 +2,20 @@
     background-color: rgb(0, 0, 0);
 }
 
-.sidebar-left-custom{
-    width: 300px !important;
-    height: 700px;
-    margin-top: 0px;
-}
-
 .h-custom{
     height: 60px;
 }
 
 .custom-filters{
-    padding: 10px;
+    padding: 10px 0;
     background-color: grey;
 }
 
 .selected-custom{
     border: 2px solid red;
     background-color: blue;
+}
+
+.container-buttonsTop-sidebar-left Button{
+    filter: drop-shadow(0 0 4px black);
 }

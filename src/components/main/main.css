@@ -1,6 +1,6 @@
 .bt-l-custom{
     position: fixed;
-    top: 110px;
+    top: 130px;
     right: 10px;
     filter: drop-shadow(0 0 8px black);
     opacity: 0.3;
@@ -9,7 +9,7 @@
 }
 .bt-r-custom{
     position: fixed;
-    top: 110px;
+    top: 130px;
     left: 10px;
     filter: drop-shadow(0 0 8px black);
     opacity: 0.3;
@@ -19,7 +19,7 @@
 
 .bt-search-custom{
     position: fixed;
-    top: 110px;
+    top: 130px;
     left: 50%;
     transform: translateX(-50%);
     filter: drop-shadow(0 0 8px black);

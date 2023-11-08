@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { PostProvider } from '../../context/context';
 import './sidebar.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose} from '@fortawesome/free-solid-svg-icons'; 
+
 
 const MySidebar = () => {
   const { show, setShow, handleClose, handleShow, filters, setFilters } = useContext(PostProvider);
@@ -16,151 +19,156 @@ const MySidebar = () => {
 
   return (
     <div>
-      <Offcanvas className="sidebar-left-custom" show={show} onHide={handleClose}>
-        <Offcanvas.Header className='custom-filters' closeButton>
-          <div className='text-dark d-flex flex-column'>
-            <Offcanvas.Title closeButton className='text-light bg-dark rounded-3 p-1 mb-2'>Aggiungi un filtro per vedere una sola categoria di video!</Offcanvas.Title>
-            <Button variant='light' className='w-100 border border-5 border-dark' onClick={() => handleCategoryFilter('')}>Cancella Filtri</Button>
+      <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas.Header className='bg-light border border-info border-1 custom-filters'>
+          <div className='bg-light text-dark d-flex flex-column'>
+            <Offcanvas.Title className='text-info bg-custom p-1 w-100 text-center mb-2'>Aggiungi un filtro per vedere una sola categoria di video!</Offcanvas.Title>
+            <div className='d-flex bg-light container-buttonsTop-sidebar-left'>
+              <Button variant='outline-dark' className='w-100 border border-5 border-dark m-1' onClick={() => handleCategoryFilter('')}>Cancella Filtri</Button>
+              <Button variant='outline-dark' className='w-100 border border-5 border-dark m-1' onClick={()=>setShow(false)}>
+                <FontAwesomeIcon className='mx-1 text-danger' icon={faClose} />
+                Chiudi</Button>
+            </div>
           </div>
         </Offcanvas.Header>
-        <Offcanvas.Body className='bg-custom text-secondary w-100 justify-content-around align-items-center'>
+        <Offcanvas.Body className='bg-dark text-light w-100 justify-content-around align-items-center'>
           <h4>che video vuoi vedere?</h4>
           <Button
-            variant={activeButton === 'agricoltore' ? 'dark' : 'secondary'}
-            className={activeButton === 'agricoltore' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'agricoltore' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('agricoltore')}
           >
             agricoltore
           </Button>
           <Button
-            variant={activeButton === 'falegname' ? 'dark' : 'secondary'}
-            className={activeButton === 'falegname' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'falegname' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('falegname')}
           >
             falegname
           </Button>
           <Button
-            variant={activeButton === 'ingegnere' ? 'dark' : 'secondary'}
-            className={activeButton === 'ingegnere' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'ingegnere' ? 'outline-info' : null}
+            className= 'w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('ingegnere')}
           >
             ingegnere
           </Button>
           <Button
-            variant={activeButton === 'psicologo' ? 'dark' : 'secondary'}
-            className={activeButton === 'psicologo' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'psicologo' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('psicologo')}
           >
             psicologo
           </Button>
           <Button
-            variant={activeButton === 'personal trainer' ? 'dark' : 'secondary'}
-            className={activeButton === 'personal trainer' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'personal trainer' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('personal trainer')}
           >
             personal trainer
           </Button>
           <Button
-            variant={activeButton === 'medico' ? 'dark' : 'secondary'}
-            className={activeButton === 'medico' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'medico' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('medico')}
           >
             medico
           </Button>
           <Button
-            variant={activeButton === 'architetto' ? 'dark' : 'secondary'}
-            className={activeButton === 'architetto' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'architetto' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('architetto')}
           >
             architetto
           </Button>
           <Button
-            variant={activeButton === 'artista' ? 'dark' : 'secondary'}
-            className={activeButton === 'artista' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'artista' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('artista')}
           >
             artista
           </Button>
           <Button
-            variant={activeButton === 'barista' ? 'dark' : 'secondary'}
-            className={activeButton === 'barista' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'barista' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('barista')}
           >
             barista
           </Button>
           <Button
-            variant={activeButton === 'autista' ? 'dark' : 'secondary'}
-            className={activeButton === 'autista' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'autista' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('autista')}
           >
             autista
           </Button>
           <Button
-            variant={activeButton === 'elettricista' ? 'dark' : 'secondary'}
-            className={activeButton === 'elettricista' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'elettricista' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('elettricista')}
           >
             elettricista
           </Button>
           <Button
-            variant={activeButton === 'idraulico' ? 'dark' : 'secondary'}
-            className={activeButton === 'idraulico' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'idraulico' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('idraulico')}
           >
             idraulico
           </Button>
           <Button
-            variant={activeButton === 'giornalista' ? 'dark' : 'secondary'}
-            className={activeButton === 'giornalista' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'giornalista' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('giornalista')}
           >
             giornalista
           </Button>
           <Button
-            variant={activeButton === 'programmatore' ? 'dark' : 'secondary'}
-            className={activeButton === 'programmatore' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'programmatore' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('programmatore')}
           >
             programmatore
           </Button>
           <Button
-            variant={activeButton === 'infermiere' ? 'dark' : 'secondary'}
-            className={activeButton === 'infermiere' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
-            onClick={() => handleCategoryFilter('infermiere')}
+           variant={activeButton === 'infermiere' ? 'outline-info' : null}
+           className='w-50 my-1 h-custom overflow-scroll text-light'
+           onClick={() => handleCategoryFilter('infermiere')}
           >
             infermiere
           </Button>
           <Button
-            variant={activeButton === 'cuoco' ? 'dark' : 'secondary'}
-            className={activeButton === 'cuoco' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'cuoco' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('cuoco')}
           >
             cuoco
           </Button>
           <Button
-            variant={activeButton === 'muratore' ? 'dark' : 'secondary'}
-            className={activeButton === 'muratore' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'muratore' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('muratore')}
           >
             muratore
           </Button>
           <Button
-            variant={activeButton === 'insegnante' ? 'dark' : 'secondary'}
-            className={activeButton === 'insegnante' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'insegnante' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('insegnante')}
           >
             insegnante
           </Button>
           <Button
-            variant={activeButton === 'avvocato' ? 'dark' : 'secondary'}
-            className={activeButton === 'avvocato' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'avvocato' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('avvocato')}
           >
             avvocato
           </Button>
           <Button
-            variant={activeButton === 'altro..' ? 'dark' : 'secondary'}
-            className={activeButton === 'altro..' ? 'w-50 my-1 border border-3 border-success h-custom overflow-scroll' : 'w-50 my-1 border border-3 border-dark h-custom overflow-scroll'}
+            variant={activeButton === 'altro..' ? 'outline-info' : null}
+            className='w-50 my-1 h-custom overflow-scroll text-light'
             onClick={() => handleCategoryFilter('altro..')}
           >
             altro..

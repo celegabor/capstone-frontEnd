@@ -1,18 +1,21 @@
 .main{
-    background-color: rgb(159, 157, 157);
     padding: 3em 3em;
     min-height: 100vh;
 }
 
+.bg-main-custom{
+    background-color: rgb(231, 227, 227);
+}
+
 .card-video{
-    filter: drop-shadow(0 0 10px rgb(14, 14, 14));
+    filter: drop-shadow(0 0 15px rgb(14, 14, 14));
     width: 432px;
     position: relative;
 }
 
 .spinner-custom{
     height: 90vh;
-    background-color: rgb(72, 69, 69);
+    background-color: rgb(231, 227, 227);
     font-size: 2em;
 }
 
@@ -21,15 +24,12 @@
 }
 
 .custom-button-addVideo{
-    background-color: rgb(159, 157, 157);
     height: 80px;
 }
 
 .button-custom{
     filter: drop-shadow(0 0 10px rgb(47, 47, 47));
-
 }
-
 
 .success-message{
     width: 100%;

@@ -70,24 +70,26 @@ function Login() {
 
   return (
     <>
-      <nav className="bg-dark p-3">
-        <Button variant="secondary border border-light" onClick={() => navigate('/')}>
-          Torna indietro
-        </Button>
-      </nav>
-      <div className="body d-flex flex-column align-items-center justify-content-center bg-dark text-light w-100">
-        <form onSubmit={onSubmit} className="z-3 bg-form-custom border border-3 border-light d-flex flex-column p-3 p-md-5 rounded-5">
+
+      <div className="body d-flex flex-column align-items-center justify-content-center bg-dark border-top border-bottom border-2 border-info text-light w-100">
+        <div className='z-index-custom d-flex justify-content-start w-100 ms-5'>
+          <Button variant="dark" className='border border-info text-info z-indez-custom' onClick={() => navigate('/')}>
+            Torna indietro
+          </Button>
+
+        </div>
+        <form onSubmit={onSubmit} className="z-3 bg-form-custom border border-3 border-secondary d-flex flex-column p-3 p-md-5 rounded-5">
           <label htmlFor="email">Inserisci la tua Email</label>
-          <input type="email" name="email" required onChange={handleInputChange} />
-          <label htmlFor="password" className="mt-3 mt-md-5">
+          <input className='p-1 rounded-2 border border-info border-2' type="email" name="email" required onChange={handleInputChange} />
+          <label htmlFor="password" className="mt-2 mt-md-3">
             Inserisci la tua Password
           </label>
-          <input type="password" name="password" required onChange={handleInputChange} />
+          <input className='p-1 rounded-2 border border-info border-2' type="password" name="password" required onChange={handleInputChange} />
 
           <div className="d-flex justify-content-center">
-            <button className="w-50 mt-4 bg-dark text-light rounded-4 border border-light" type="submit">
+            <Button className="w-50 mt-4 bg-dark text-light rounded-4 border border-info" type="submit">
               Accedi
-            </button>
+            </Button>
           </div>
           <div className="message-container w-100 text-center text-white">
             {message && (
@@ -99,31 +101,31 @@ function Login() {
         </form>
 
         <video
-          className="video border border-5 border-dark"
+          className="video"
           ref={videoRef}
           onEnded={handleVideoEnded}
           src={Video}
           autoPlay
           muted={true}
         ></video>
-        <div className="filter-video"></div>
-        <div className="mt-4 mt-md-5 w-100 text-center z-3">
+        <div className="filter-video border-top border-bottom border-3 border-secondary"></div>
+        <div className="mt-2 mt-md-2 w-100 text-center z-3">
           <Button
-            className="border border-light p-3 px-4"
-            variant="secondary"
+            className="border border-info border-1 text-light p-2 rounded-3 mt-3 px-5"
+            variant="dark"
             onClick={() => {
               navigate('/addUser');
             }}
           >
-            Aggiungi utente
+            Crea Profilo
           </Button>
         </div>
         <div className="d-flex flex-column flex-md-row mt-3 mt-md-4">
-          <Button onClick={redirectHandlerGitHub} className="custom-login mx-4 z-2 bg-dark text-white">
+          <Button onClick={redirectHandlerGitHub} className="custom-login mx-4 z-2 bg-dark border border-secondary text-white">
             <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="logo gitHub" />
             Login with GitHub
           </Button>
-          <Button onClick={redirectHandlerGoogle} className="custom-login mx-4 z-2 bg-dark text-white">
+          <Button onClick={redirectHandlerGoogle} className="border custom-login mx-4 z-2 bg-dark border-secondary text-white">
             <img src="https://img.freepik.com/free-icon/google_318-258888.jpg?w=2000" alt="logo gitHub" />
             Login with Google
           </Button>

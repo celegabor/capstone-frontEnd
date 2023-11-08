@@ -112,13 +112,13 @@ const CardVideos = ({ video }) => {
   };
 
   return (
-    <div className="text-light">
-      <div className="d-flex p-1">
+    <div className="text-dark" >
+      <div className="d-flex">
         {video.author ? (
           <>
-            <Link className='d-flex p-1 text-decoration-none text-light w-75' to={`/getUserId/${video.author._id}`}>
+            <Link className='bg-info border border-bottom-0 border-dark border-2 rounded-top-3 d-flex p-1 text-decoration-none text-dark w-100 d-flex align-items-center' to={`/getUserId/${video.author._id}`}>
               <img className="img-avatar-author object-fit-contain" src={video.author.avatar} alt="img autore" />
-              <p className="name-author">
+              <p className="name-author h-50">
                 {video.author.name} {video.author.lastName}
               </p>
             </Link>
@@ -133,15 +133,15 @@ const CardVideos = ({ video }) => {
         )}
       </div>
       <div className="dettails-post">
-        <video controls width="100%" height="315" src={video.video}></video>
+        <video className='border border-dark border-3 size-custom' controls src={video.video}/>
         <div>
           <h4>{video.title}</h4>
           <p className='m-0'>
-            <FontAwesomeIcon className='mx-2' icon={faHammer} />
+            <FontAwesomeIcon className='mx-2 text-info border-info' icon={faHammer} />
             <span className='wrap-text'>{video.categoryWork}</span>
           </p>
           <p className='m-0 mb-3'>
-            <FontAwesomeIcon className='mx-2' icon={faFile} />
+            <FontAwesomeIcon className='mx-2 text-info border-info' icon={faFile} />
             <span className='wrap-text'>{video.content}</span>
           </p>
         </div>
@@ -149,7 +149,7 @@ const CardVideos = ({ video }) => {
       <div>
         <Button
           variant="dark"
-          className='m-2 custom-show-comments'
+          className='m-2 custom-show-comments text-info border-info'
           onClick={() => setShowComments(!showComments)}
         >
           {showComments ? 'Nascondi commenti' : 'Mostra commenti'}

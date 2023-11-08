@@ -2,11 +2,11 @@
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    border: 2px solid black;
 }
 
 .name-author{
     padding: 0.3em 0.5em;
-
 }
 
 .wrap-text {
@@ -30,6 +30,15 @@
     position: absolute;
     bottom: 8px;
     left: 15px;
+}
+
+.buttons-card-custom{
+    color: rgb(17, 202, 240);
+}
+
+.size-custom{
+    height: 350px;
+    width: 100%;
 }
 
 @media screen and (max-width: 500px){

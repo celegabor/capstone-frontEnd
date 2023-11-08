@@ -34,10 +34,7 @@ const GetVideos = () => {
   const [file, setFile] = useState(null)
 
   const { filters, videos, setVideos } = useContext(PostProvider);
-
-
-
-
+  
 // --------------------------------------------
 
 const onChangeSetFile = (e)=>{
@@ -49,10 +46,12 @@ const uploadFile = async (video) =>{
   fileData.append('video', video)
   try {
 
-    const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/upload`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/videoupload`, {
       method: "POST",
       body: fileData
     })
+
+
 
     return response.json()
 
@@ -187,19 +186,16 @@ const uploadFile = async (video) =>{
   };
 
   const addVideo = async (event) => {
+
     event.preventDefault();
     setIsLoading(true);
 
-    // const finalBody = {
-    //   ...newVideo,
-    //   categoryWork: selectedCategory, 
-    // };
 
     if (file) {
       try {
 
         const uploadVideo = await uploadFile(file)
-
+        console.log(uploadVideo);
         const finalBody = {
           ...newVideo,
           categoryWork: selectedCategory, 
@@ -266,6 +262,7 @@ const uploadFile = async (video) =>{
       author: session.id,
     });
   
+    setSelectedCategory(videoToEdit.categoryWork); 
     setShowModal(true);
   }
 
@@ -349,22 +346,16 @@ const uploadFile = async (video) =>{
 
 {/* -------------------------------------------- */}
 
-        {/* <Form.Group controlId="formCategoryWork">
-          <Form.Label>Categoria di Lavoro</Form.Label>
-          <Form.Control as="select" value={newVideo.categoryWork} onChange={handleCategoryChange}>
-            <option value="">Seleziona una categoria</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group> */}
-
         <Form.Group controlId="formCategoryWork">
           <Form.Label>Categoria di Lavoro</Form.Label>
-          <Form.Control as="select" value={selectedCategory} onChange={handleCategoryChange}>
-            <option value="">Seleziona una categoria</option> {/* Aggiungi questa opzione */}
+          <Form.Control as="select" onChange={handleCategoryChange}>
+
+            {selectedCategory ? (
+              <option>{selectedCategory}</option>
+            ) : (
+              <option>Seleziona una categoria</option>
+            )}
+
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -376,7 +367,7 @@ const uploadFile = async (video) =>{
 {/* -------------------------------------------- */}
 
         <Form.Group controlId="formVideo">
-          <Form.Label>Link al Video</Form.Label>
+          <Form.Label>File Video</Form.Label>
           <Form.Control
             name='video'
             type="file"
@@ -416,37 +407,38 @@ const uploadFile = async (video) =>{
   return (
   <>
     {isLoading ? (
-      <div className="d-flex align-items-center justify-content-center text-grey spinner-custom">
-        <Spinner className="text-white" animation="border" role="status" key="spinner" />
-        <p className="fs-5 text-white m-3" key="loading-text">Caricamento...</p>
+      <div className="d-flex align-items-center justify-content-center text-dark spinner-custom">
+        <Spinner className="text-dark" animation="border" role="status" key="spinner" />
+        <p className="fs-5 text-dark m-3" key="loading-text">Caricamento...</p>
       </div>
     ) : (
-      <div className="main text-gray d-flex flex-wrap justify-content-center background-color: rgb(72, 69, 69);">
+      <div className="main bg-main-custom text-gray d-flex flex-wrap justify-content-center background-color: rgb(72, 69, 69);">
         <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
           <Button variant="light border-2 border-dark button-custom" onClick={() => setShowModal(true)}>
             <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
           </Button>
         </div>
+        <video src='https://www.youtube.com/watch?v=oP2ht_50c5w'></video>
         {videos.map((video) => (
-          <div className="card-video bg-secondary m-3 p-3" key={video._id}>
+          <div className="card-video rounded-3 bg-light m-3 p-3" key={video._id}>
             {filters.category ? (
               <>
                 {video.categoryWork === filters.category ? (
                   <>
                     <CardVideos video={video} />
-                    <div className="d-flex justify-content-end w-100">
+                    <div className="d-flex justify-content-end w-100 height-custom">
                       <div>
                         <Button
                           className="mx-2 px-3 py-1 ml-2"
-                          variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
+                          variant={favoriteVideos.includes(video._id) ? "danger" : "info"}
                           onClick={() => toggleFavorite(video._id)}
                         >
                           <FontAwesomeIcon icon={faHeart} />
                         </Button>
                         {video.author._id === session.id ? (
                           <>
-                            <Button className="px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
-                              <FontAwesomeIcon icon={faTrash} />
+                            <Button className="text-info border-info px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
+                              <FontAwesomeIcon className='text-info' icon={faTrash} />
                             </Button>
                             <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
                               <FontAwesomeIcon icon={faCogs} />
@@ -468,15 +460,15 @@ const uploadFile = async (video) =>{
                       variant={favoriteVideos.includes(video._id) ? "danger" : "dark"}
                       onClick={() => toggleFavorite(video._id)}
                     >
-                      <FontAwesomeIcon icon={faHeart} />
+                      <FontAwesomeIcon className='buttons-card-custom' icon={faHeart} />
                     </Button>
                     {video.author._id === session.id ? (
                       <>
                         <Button className=" px-3 py-1" variant="dark" onClick={() => deleteVideo(video._id)}>
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon className='buttons-card-custom' icon={faTrash} />
                         </Button>
                         <Button className=" mx-2 px-3 py-1 ml-2" variant="dark" onClick={() => editVideo(video._id)}>
-                          <FontAwesomeIcon icon={faCogs} />
+                          <FontAwesomeIcon className='buttons-card-custom' icon={faCogs} />
                         </Button>
                       </>
                     ) : null}
@@ -496,14 +488,16 @@ const uploadFile = async (video) =>{
       </div>
     )}
     <Modal show={showModal} onHide={() => setShowModal(false)}>
-      <Modal.Header className="custom-bg" closeButton>
-        <Modal.Title>Aggiungi un nuovo video</Modal.Title>
+      <Modal.Header className="bg-dark border border-info" closeButton>
+        <Modal.Title className='text-info'>{editingVideo ? 'Modifica Video' : 'Aggiungi un nuovo video'}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className='bg-gray text-info'>
         {renderAddVideoForm()}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowModal(false)}>
+        <Button variant="secondary" onClick={() => {
+          window.location.reload()
+          }}>
           Chiudi
         </Button>
         {editingVideo ? (
@@ -517,6 +511,7 @@ const uploadFile = async (video) =>{
         )}
       </Modal.Footer>
     </Modal>
+
     <div className="bg-light p-1 border border-5 border-dark m-0">
       <ResponsivePagination current={currentPage} total={totalPages} onPageChange={handlePagination} key="pagination" />
     </div>

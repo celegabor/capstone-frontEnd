@@ -59,7 +59,10 @@ function OffCanvasTop({ name, ...props }) {
           <div>
             {filteredUsers ? (
               <>
-                <h4 className='w-100 text-center bg-dark border  my-2'>Utenti trovati:</h4>
+                {filteredUsers ? (null) : (
+                  <h4 className='w-100 text-center bg-dark border  my-2'>Utenti trovati:</h4>
+                )}
+                
                 <div className="row">
                   {filteredUsers.map((user) => (
                     <div className='col-sm-12 col-md-6 col-lg-4 text-center' key={user._id}>
@@ -80,7 +83,9 @@ function OffCanvasTop({ name, ...props }) {
               null
             ) : (
               <>
-                <h4 className='w-100 text-center bg-dark border  my-2'>Video trovati:</h4>
+                {filteredVideos ? (null) : (
+                  <h4 className='w-100 text-center bg-dark border  my-2'>Video trovati:</h4>
+                )}
                 <div className="row">
                   {filteredVideos.map((video) => (
                     <div className='col-sm-12 col-md-6 col-lg-4 text-center' key={video._id}>

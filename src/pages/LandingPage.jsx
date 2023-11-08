@@ -32,7 +32,7 @@ function LandingPage() {
     <section className="section">
       <nav className="border border-4 border-dark px-5 nav w-100 d-flex align-items-center justify-content-between">
         <img className="logo" src={Logo} alt="" />
-        <Button variant="dark" className='button-login-landing p-2 px-4' onClick={() => navigate('/addUser')}>
+        <Button variant="dark" className='button-login-landing p-2 px-4 text-info border border-info' onClick={() => navigate('/addUser')}>
           Crea un tuo profilo
         </Button>
       </nav>
@@ -55,17 +55,21 @@ function LandingPage() {
           <p>
             Questo è un esempio di un Jumbotron in React con Bootstrap.
           </p>
-          <hr className="my-4" />
+          <hr className="my-4 text-info" />
           <p>Puoi personalizzare questo contenuto come desideri.</p>
         </div>
         <div className="button-container-create w-100 d-flex justify-content-center">
-          <Button variant="secondary" className="w-50 border border-light p-2 px-4 m-5" onClick={() => navigate('/login')}>
+          <Button variant="dark" className="w-50 border border-info p-2 px-4 m-5 text-info" onClick={() => navigate('/login')}>
             Accedi al tuo profilo
           </Button>
         </div>
       </div>
 
       <main className="p-5 main-landingpage bg-dark text-white">
+
+        <hr className='text-info '></hr>
+
+
         <div className="row align-items-center my-5">
           <div className="col-md-6">
             <h2 className="text-center">Cos'è JobWork?</h2>
@@ -77,6 +81,9 @@ function LandingPage() {
             <img className="images" src={ScambioIMG} alt="img scambio" />
           </div>
         </div>
+
+        <hr className='text-info '></hr>
+
         <div className="row align-items-center my-5">
           <div className="col-md-6 text-center">
             <img className="images" src={Screen} alt="img scambio" />
@@ -88,6 +95,9 @@ function LandingPage() {
             </p>
           </div>
         </div>
+
+        <hr className='text-info '></hr>
+
         <div className="row align-items-center my-5">
           <div className="col-md-6">
             <h2 className="text-center">Quanto costa JobWork?</h2>
@@ -99,12 +109,18 @@ function LandingPage() {
             <img className="images" src={Cash} alt="img scambio" />
           </div>
         </div>
+
+        <hr className='text-info '></hr>
+
         <div className="pt-5 d-flex flex-column align-items-center">
           <h4 className="w-100 p-5 text-custom text-center">Non hai ancora un profilo? Clicca qui sotto per crearlo subito!!</h4>
-          <Button variant="secondary border border-light p-2 px-4" onClick={() => navigate('/addUser')}>
+          <Button variant="dark" className='border border-info text-info p-2 px-4' onClick={() => navigate('/addUser')}>
             Clicca qua per creare un profilo..
           </Button>
         </div>
+
+        <hr className='mt-5 text-info '></hr>
+
       </main>
       <footer className="w-100 bg-light text-center w-100">
         <div className="custom-background p-3">

@@ -5,11 +5,19 @@
 .title-videos-from{
     margin: 80px 40px;
     padding: 1em;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid rgb(5, 188, 249);
 }
 .doc-custom-byId{
     width: 80%;
     object-fit: contain;
+}
+
+.filter-custom{
+    filter: drop-shadow(0 0 10px black);
+}
+
+.bg-getUserId-custom{
+    background-color: rgb(231, 227, 227);
 }
 
 

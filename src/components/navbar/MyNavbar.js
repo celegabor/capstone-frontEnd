@@ -22,28 +22,17 @@ const MyNavbar = ()=> {
   
   return (
     <>
-      <Navbar expand="lg" className="custom-background-navbar">
+      <Navbar expand="lg" className="custom-background-navbar z-index-custom">
         <Container className='d-flex justify-content-between container-navbar'>
           <img onClick={()=>{ navigate('/')}} className='logo-navbar' src={Logo} alt='logo site'></img>
           <Navbar.Toggle className='navbar-toggle' aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto p-3">
-              <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/home">Home</Nav.Link>
-              <Nav.Link className='border-custom-navbar mx-3 px-3 text-light' href="/contacts">Contacts</Nav.Link>
-              <NavDropdown className='border-custom-navbar mx-3 px-3' title="Altro" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
+              <Nav.Link className='border-custom-navbar mx-2 m-1 px-5' href="/home">Home</Nav.Link>
+              <Nav.Link className='border-custom-navbar mx-2 m-1 px-5' href="/contacts">Contacts</Nav.Link>
             </Nav>
           </Navbar.Collapse>
-          <button className='button-logout-navbar p-2 rounded-2 border border-light bg-dark text-light' onClick={handleShowLogoutModal}>LogOut</button>
+          <Button variant='info' className='border-custom-navbar mx-2 m-1 px-5' onClick={handleShowLogoutModal}>LogOut</Button>
         </Container>
     </Navbar>
 
@@ -51,15 +40,15 @@ const MyNavbar = ()=> {
       <Modal.Header closeButton>
         <Modal.Title className='w-100 text-center'>...conferma Logout...</Modal.Title>
       </Modal.Header>
-      <Modal.Body className='bg-dark text-light p-4'>
+      <Modal.Body className='bg-dark text-info p-4'>
         Sei sicuro di voler effettuare il logout?
       </Modal.Body>
-      <Modal.Footer className='bg-dark text-light p-4'>
-        <Button variant="secondary border border-2" onClick={() => setShowLogoutModal(false)}>
+      <Modal.Footer className='border-top border-info bg-dark text-light p-4'>
+        <Button variant="outline-info" onClick={() => setShowLogoutModal(false)}>
           Annulla
         </Button>
         <Button
-          variant="dark border border-2"
+          variant="outline-danger"
           onClick={() => {
             // Cancella l'elemento 'loggedInUser' dal Local Storage
             localStorage.removeItem('loggedInUser');

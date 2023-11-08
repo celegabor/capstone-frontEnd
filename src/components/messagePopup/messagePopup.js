@@ -24,12 +24,21 @@ function MessagePopup({ show, onHide, from, to, name, lastName, avatar, fromName
                 setIsLoading(false);
             });
     }
+    console.log();
 
-    const myMessages = messages.filter(
-        (message) =>
-            (message.from._id === from && message.to === to) ||
-            (message.from._id === to && message.to === from)
-    ).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const myMessages = messages
+    .filter((message) => {
+        if (
+        (message.from && message.to) &&
+        ((message.from._id === from && message.to === to) ||
+        (message.from._id === to && message.to === from))
+        ) {
+        return true;
+        }
+        return false;
+    })
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
 
     const handleCreateMessage = () => {
         const messageData = {
@@ -74,11 +83,11 @@ function MessagePopup({ show, onHide, from, to, name, lastName, avatar, fromName
                 <Modal className='container-popup-message' show={show} onHide={onHide} centered>
                     <div className='message-popup'>
                         <Modal.Header className='bg-dark border border-3 border-light text-light' closeButton key="modal-header">
-                            La tua chat con <b className='ms-1'><i>{name} {lastName}</i></b>
+                            La tua chat con <b className='ms-1 text-info'><i>{name} {lastName}</i></b>
                         </Modal.Header>
                         <Modal.Body className='h-100 bg-dark border border-3 border-light text-light' key="modal-body">
                             <div key={from}>
-                                <ul>
+                                <ul className='p-0 m-0'>
                                     {myMessages.map((message) => (
                                         <React.Fragment key={message._id}>
                                             {message ? (
@@ -92,10 +101,10 @@ function MessagePopup({ show, onHide, from, to, name, lastName, avatar, fromName
                                                     >
                                                         <div className='d-flex align-items-center justify-content-end m-0'>
                                                             <p className='ms-2 mt-3 text-light'>{fromName} {fromLastName}</p>
-                                                            <img width='50px' height='50px' src={fromAvatar} alt='img avatar' className='avatar-image rounded-5 border border-secondary border-2' />
+                                                            <img width='50px' height='50px' src={fromAvatar} alt='img avatar' className='avatar-image ms-2 rounded-5 border border-info border-2' />
                                                         </div>
                                                         <div className='d-flex justify-content-end'>
-                                                            <p className='m-0 bg-light text-dark text-center w-50 p-1 rounded-2'>
+                                                            <p className='m-0 bg-dark border border-info text-info text-center w-50 p-1 rounded-2'>
                                                                 {message.message}
                                                             </p>
                                                         </div>
@@ -114,11 +123,11 @@ function MessagePopup({ show, onHide, from, to, name, lastName, avatar, fromName
                                                         className='other-message'
                                                     >
                                                         <div className='d-flex align-items-center'>
-                                                            <img width='50px' height='50px' src={avatar} alt='img avatar' className='avatar-image rounded-5 border border-secondary border-2' />
-                                                            <p className='ms-2 mt-3 text-secondary'>{name}{lastName}</p>
+                                                            <img width='50px' height='50px' src={avatar} alt='img avatar' className='avatar-image rounded-5 border border-light border-2' />
+                                                            <p className='ms-2 mt-3 text-info'>{name}{lastName}</p>
                                                         </div>
                                                         <div className='d-flex justify-content-start'>
-                                                            <p className='bg-secondary text-light text-center w-50 p-1 rounded-2'>
+                                                            <p className='bg-dark border text-light text-center w-50 p-1 m-0 rounded-2'>
                                                                 {message.message}
                                                             </p>
                                                         </div>
@@ -149,7 +158,7 @@ function MessagePopup({ show, onHide, from, to, name, lastName, avatar, fromName
                                             onChange={(e) => setNewMessage(e.target.value)}
                                         />
                                     </div>
-                                    <Button variant='light my-2' onClick={handleCreateMessage} key="create-message-button">Crea</Button>
+                                    <Button variant='secondary' className='border-info my-2' onClick={handleCreateMessage} key="create-message-button">Crea</Button>
                                 </div>
                             </div>
                         </Modal.Body>

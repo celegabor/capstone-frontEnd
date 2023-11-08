@@ -1,5 +1,6 @@
 .custom-background{
-    background: linear-gradient(to top,  rgba(125,126,125,1) 0%,rgba(48, 44, 44) 100%); 
+    /* background: linear-gradient(to top,  rgba(125,126,125,1) 0%,rgba(33, 37, 42) 100%);  */
+    background: linear-gradient(to top,  rgba(17, 202, 240) 0%,rgba(231, 227, 227) 100%); 
     color: rgb(144, 141, 141);
 }
 

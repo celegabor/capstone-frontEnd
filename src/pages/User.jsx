@@ -297,169 +297,174 @@ function User() {
 
         ) : (  
           <>
-            <div className='bg-dark text-light container-user-put'>
-              <MyNavbar />
-              <h2 className='p-3'>Informazioni sull'utente:</h2>
-              <Button className='px-3' variant='secondary' onClick={() => navigate('/home')}>
-                <FontAwesomeIcon icon={faHome}/>
+            <div className='bg-dark text-light container-user-put' key="container-user-put">
+              <MyNavbar key="navbar" />
+              <h2 className='p-3' key="user-info-title">Informazioni sull'utente:</h2>
+              <Button className='px-3' variant='secondary' onClick={() => navigate('/home')} key="home-button">
+                <FontAwesomeIcon icon={faHome} key="home-icon" />
               </Button>
-              <form className='w-100 text-center form-user-put'>
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className='w-100 p-2 m-2 d-flex flex-column'>
+              <form className='w-100 text-center form-user-put' key="user-form">
+                <div className="container" key="user-form-container">
+                  <div className="row" key="user-form-row-1">
+                    <div className="col-md-6" key="user-form-col-1">
+                      <div className='w-100 p-2 m-2 d-flex flex-column' key="user-avatar-container">
                         {/* Immagine profilo */}
-                        <label>Immagine profilo:</label>
-                        <div className='w-100 d-flex flex-column align-items-center'>
+                        <label key="avatar-label">Immagine profilo:</label>
+                        <div className='w-100 d-flex flex-column align-items-center' key="avatar-input-container">
                           {file ? (
-                            <img className='border border-4 ' width={'70%'} height={'80%'} src={URL.createObjectURL(file)} alt="documento" />
+                            <img className='border border-4' width={'70%'} height={'80%'} src={URL.createObjectURL(file)} alt="documento" key="avatar-image" />
                           ) : (
-                            <img className='border border-4' width={'70%'} height={'80%'} src={users.map((user)=>user.avatar)}alt="immagine profilo" />
+                            <img className='border border-4' width={'70%'} height={'80%'} src={users.map((user) => user.avatar)} alt="immagine profilo" key="avatar-image-default" />
                           )}
-                          <input className='w-100 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2' type="file" name='avatar' onChange={onChangeSetFile} />
+                          <input className='w-100 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2' type="file" name='avatar' onChange={onChangeSetFile} key="avatar-input" />
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6 uploadDoc">
+                    <div className="col-md-6 uploadDoc" key="user-form-col-2">
                       {/* caricamento immagini "doc" */}
-                      <div className='w-100 p-2 m-2 d-flex flex-column align-items-center'>
-                        <label>Carica immagini "doc":</label>
+                      <div className='w-100 p-2 m-2 d-flex flex-column align-items-center' key="doc-container">
+                        <label key="doc-label">Carica immagini "doc":</label>
                         {fileDoc ? (
-                          <img className='border border-4 ' width={'70%'} height={'80%'} src={URL.createObjectURL(fileDoc)} alt="documento" />
+                          <img className='border border-4' width={'70%'} height={'80%'} src={URL.createObjectURL(fileDoc)} alt="documento" key="doc-image" />
                         ) : (
-                          <img className='border border-4 ' width={'70%'} height={'80%'} src={users.map((user)=>user.doc)} alt="documento" />
+                          <img className='border border-4' width={'70%'} height={'80%'} src={users.map((user) => user.doc)} alt="documento" key="doc-image-default" />
                         )}
                         <input
                           className='w-100 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2'
                           type="file"
                           name="doc"
                           onChange={handleDocUpload}
+                          key="doc-input"
                         />
                       </div>
-                    </div>                  
+                    </div>
                   </div>
-                  <div className="row">
+                  <div className="row" key="user-form-row-2">
                     {/* Nome */}
-                    <div className="col-md-6">
-                      <div className='w-100 p-2 d-flex flex-column text-center'>
-                        <label className='text-start'>Nome:</label>
+                    <div className="col-md-6" key="user-form-name-col">
+                      <div className='w-100 p-2 d-flex flex-column text-center' key="name-container">
+                        <label className='text-start' key="name-label">Nome:</label>
                         <input
                           className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
                           type="text"
                           name="name"
                           value={userFormData.name}
                           onChange={handleFormChange}
+                          key="name-input"
                         />
                       </div>
                     </div>
                     {/* Cognome */}
-                    <div className="col-md-6">
-                      <div className='d-flex'>
-                        <div className='w-100 p-2 d-flex flex-column'>
-                          <label>Cognome:</label>
+                    <div className="col-md-6" key="user-form-lastName-col">
+                      <div className='d-flex' key="lastName-container">
+                        <div className='w-100 p-2 d-flex flex-column' key="lastName-column">
+                          <label key="lastName-label">Cognome:</label>
                           <input
                             className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
                             type="text"
                             name="lastName"
                             value={userFormData.lastName}
                             onChange={handleFormChange}
+                            key="lastName-input"
                           />
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="row">
+                  <div className="row" key="user-form-row-3">
                     {/* Email */}
-                    <div className="col-md-6">
-                      <div className='w-100 p-2 d-flex flex-column'>
-                        <label>Email:</label>
+                    <div className="col-md-6" key="user-form-email-col">
+                      <div className='w-100 p-2 d-flex flex-column' key="email-container">
+                        <label key="email-label">Email:</label>
                         <input
                           className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
                           type="email"
                           name="email"
                           value={userFormData.email}
                           onChange={handleFormChange}
+                          key="email-input"
                         />
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-6" key="user-form-address-col">
                       {/* Indirizzo */}
-                      <div className='w-100 p-2 d-flex flex-column'>
-                        <label>Indirizzo:</label>
+                      <div className='w-100 p-2 d-flex flex-column' key="address-container">
+                        <label key="address-label">Indirizzo:</label>
                         <input
                           className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
                           type="text"
                           name="address"
                           value={userFormData.address}
                           onChange={handleFormChange}
+                          key="address-input"
                         />
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-6">
+                  <div className="row" key="user-form-row-4">
+                    <div className="col-md-6" key="user-form-dob-col">
                       {/* Data di Nascita */}
-                      <div className='p-2 d-flex flex-column'>
-                        <label>Data di nascita:</label>
+                      <div className='p-2 d-flex flex-column' key="dob-container">
+                        <label key="dob-label">Data di nascita:</label>
                         <input
                           className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
                           type="date"
                           name="dob"
                           value={userFormData.dob}
                           onChange={handleFormChange}
+                          key="dob-input"
                         />
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <Button className='border border-2 border-secondary my-3 w-100' variant='dark' type="submit" onClick={handleSubmit}>
+                  <div className="row" key="user-form-row-5">
+                    <div className="col-md-12" key="submit-button-col">
+                      <Button className='border border-2 border-secondary my-3 w-100' variant='dark' type="submit" onClick={handleSubmit} key="submit-button">
                         Modifica Dati
                       </Button>
                     </div>
                   </div>
                 </div>
               </form>
-
-              <div className="message-container">
-                {message && <div className={message.includes('NON') ? 'NOT-success-message-put-user' : 'success-message-put-user'}>{message}</div>}
+          
+              <div className="message-container" key="message-container">
+                {message && <div className={message.includes('NON') ? 'NOT-success-message-put-user' : 'success-message-put-user'} key="message">{message}</div>}
               </div>
-              
-              <h4 className='m-5 px-5'>I tuoi video :</h4>
-
-                {videos.map((video) => (
-                  <>
-                    <div className='col-3 col-md-0'></div>
-                    <div key={video._id} className='col-12 col-md-6 mb-4'>
-                      <div className='w-100'>
-                        <div className="dettails-post mb-3">
-                          <video controls width="100%" height="315" src={video.video}></video>
-                          <div>
-                            <h4>{video.title}</h4>
-                            <p className='m-0'>
-                              <FontAwesomeIcon className='mx-2' icon={faHammer} />
-                              <span className='wrap-text'>{video.categoryWork}</span>
-                            </p>
-                            <p className='m-0 mb-3'>
-                              <FontAwesomeIcon className='mx-2' icon={faFile} />
-                              <span className='wrap-text'>{video.content}</span>
-                            </p>
-                            <div className="w-100 text-center p-3">
-                              <Button className="w-50" variant="danger" onClick={() => deleteVideo(video._id)}>
-                                Cancella video
-                              </Button>
-                            </div>
+          
+              <h4 className='m-5 px-5' key="user-videos-title">I tuoi video :</h4>
+          
+              {videos.map((video) => (
+                <div key={`video-${video._id}`}>
+                  <div className='col-3 col-md-0' key={`video-col-1-${video._id}`}></div>
+                  <div className='col-12 col-md-6 mb-4' key={`video-${video._id}`}>
+                    <div key={`video-container-${video._id}`}>
+                      <div className="dettails-post mb-3" key={`video-post-${video._id}`}>
+                        <video controls width="100%" height="315" src={video.video} key={`video-source-${video._id}`}></video>
+                        <div key={`video-details-${video._id}`}>
+                          <h4 key={`video-title-${video._id}`}>{video.title}</h4>
+                          <p className='m-0' key={`video-category-${video._id}`}>
+                            <FontAwesomeIcon className='mx-2' icon={faHammer} key={`video-category-icon-${video._id}`} />
+                            <span className='wrap-text' key={`video-category-text-${video._id}`}>{video.categoryWork}</span>
+                          </p>
+                          <p className='m-0 mb-3' key={`video-content-${video._id}`}>
+                            <FontAwesomeIcon className='mx-2' icon={faFile} key={`video-content-icon-${video._id}`} />
+                            <span className='wrap-text' key={`video-content-text-${video._id}`}>{video.content}</span>
+                          </p>
+                          <div className="w-100 text-center p-3" key={`delete-video-button-${video._id}`}>
+                            <Button className="w-50" variant="danger" onClick={() => deleteVideo(video._id)} key={`delete-video-button-${video._id}`}>
+                              Cancella video
+                            </Button>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className='col-3 col-md-0'></div>
-                  </>
-                ))}
-
-
+                  </div>
+                  <div className='col-3 col-md-0' key={`video-col-2-${video._id}`}></div>
+                </div>
+              ))}
             </div>
-          </>
+        </>
+        
           
       )
     }

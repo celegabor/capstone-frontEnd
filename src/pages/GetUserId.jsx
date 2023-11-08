@@ -86,145 +86,149 @@ function GetUserId() {
         </>
     
         ) : (
-        <div className="bg-dark text-light div-container-getUserId">
+        <div className="bg-dark text-light">
           <MyNavbar />
-          <h2>Dettagli dell'utente:</h2>
-          <Button className='px-3' variant='secondary' onClick={() => navigate('/home')}>
-            <FontAwesomeIcon key={user} icon={faHome}/>
-          </Button>
-          {user ? (
-            <>
-              <form className="container w-100 text-center">
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className='w-100 p-2 m-2 d-flex flex-column'>
-                      {/* Immagine del profilo */}
-                      <label>Immagine profilo:</label>
-                      <div className='w-100 d-flex flex-column align-items-center'>
-                        <img className='border border-4' width={'90%'} src={user.avatar} alt={`Avatar di ${user.name}`} />
+          <div className='div-container-getUserId bg-getUserId-custom' key="user-details-container">
+            <h2>Dettagli dell'utente:</h2>
+            <Button className='px-3 border border-info' variant='secondary' onClick={() => navigate('/home')}>
+              <FontAwesomeIcon className='text-info' icon={faHome} key="home-icon" />
+            </Button>
+            {user ? (
+              <>
+                <form className="container w-100 text-center" key="user-details-form">
+                  <div className="row" key="user-details-row-1">
+                    <div className="col-md-6" key="user-details-col-1">
+                        {/* Immagine del profilo */}
+                      <div className='w-100 p-2 m-2 d-flex flex-column mt-2'>
+                        <label className='fs-4 text-info' key="user-details-avatar-label">Immagine profilo:</label>
+                        <div className='w-100 d-flex flex-column align-items-center mt-4' key="user-details-avatar-container">
+                          <img className='filter-custom border border-4' width={'90%'} src={user.avatar} alt={`Avatar di ${user.name}`} key="user-avatar" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-md-6" key="user-details-col-2">
+                      <div key={user._id}>
+                        {user.doc && (
+                          <div className='mb-3' key="user-doc-container">
+                            <label className='fs-4 text-info' key="user-details-doc-title">I tuoi documenti (fai uno screenShot):</label>
+                            <img className='mt-3 filter-custom doc-custom-byId' alt='document' src={user.doc} key="user-doc-image"></img>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <h4>I tuoi documenti:</h4>
-                    <div key={user._id}>
-                      {user.doc && (
-                        <div className='mb-3'>
-                          <img className='doc-custom-byId' alt='document' src={user.doc}></img>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  {/* Nome */}
-                  <div className="col-md-6">
-                    <div className='w-100 p-2 d-flex flex-column text-center'>
-                      <label className='text-start'>Nome:</label>
-                      <input
-                        className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                        type="text"
-                        name="name"
-                        value={user.name}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-                  {/* Cognome */}
-                  <div className="col-md-6">
-                    <div className='d-flex'>
-                      <div className='w-100 p-2 d-flex flex-column'>
-                        <label>Cognome:</label>
+                  <div className="row" key="user-details-row-2">
+                    {/* Nome */}
+                    <div className="col-md-6" key="user-details-name-col">
+                      <div className='w-100 p-2 d-flex flex-column text-center filter-custom'>
+                        <label className='text-center text-dark bg-info rounded-top-3' key="user-details-name-label">Nome:</label>
                         <input
-                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          className='bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2'
                           type="text"
-                          name="lastName"
-                          value={user.lastName}
+                          name="name"
+                          value={user.name}
                           readOnly
+                          key="user-name-input"
+                        />
+                      </div>
+                    </div>
+                    {/* Cognome */}
+                    <div className="col-md-6" key="user-details-lastName-col">
+                      <div className='d-flex filter-custom' key="user-details-cognome-div">
+                        <div className='w-100 p-2 d-flex flex-column' key="user-details-cognome-column">
+                        <label className='text-center text-dark bg-info rounded-top-3' key="user-details-name-label">Cognome:</label>
+                          <input
+                            className='bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2'
+                            type="text"
+                            name="lastName"
+                            value={user.lastName}
+                            readOnly
+                            key="user-lastName-input"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row" key="user-details-row-3">
+                    {/* Email */}
+                    <div className="col-md-6" key="user-details-email-col">
+                      <div className='w-100 p-2 d-flex flex-column filter-custom' key="user-details-email-div">
+                      <label className='text-center text-dark bg-info rounded-top-3' key="user-details-name-label">Email:</label>
+                        <input
+                          className='bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2'
+                          type="email"
+                          name="email"
+                          value={user.email}
+                          readOnly
+                          key="user-email-input"
+                        />
+                      </div>
+                    </div>
+                    {/* Indirizzo  */}
+                    <div className="col-md-6" key="user-details-address-col">
+                      <div className='w-100 p-2 d-flex flex-column filter-custom' key="user-details-address-div">
+                      <label className='text-center text-dark bg-info rounded-top-3' key="user-details-name-label">Indirizzo:</label>                        <input
+                          className='bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2'
+                          type="text"
+                          name="address"
+                          value={user.address}
+                          readOnly
+                          key="user-address-input"
                         />
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="row">
-                  {/* Email */}
-                  <div className="col-md-6">
-                    <div className='w-100 p-2 d-flex flex-column'>
-                      <label>Email:</label>
-                      <input
-                        className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                        type="email"
-                        name="email"
-                        value={user.email}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-                  {/* Indirizzo  */}
-                  <div className="col-md-6">
-                    <div className='w-100 p-2 d-flex flex-column'>
-                      <label>Indirizzo:</label>
-                      <input
-                        className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                        type="text"
-                        name="address"
-                        value={user.address}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
+                  <div className="row" key="user-details-row-4">
                     {/* Data di Nascita */}
-                  <div className="col-md-6">
-                    <div className='w-100 p-2 d-flex flex-column'>
-                      <label>Data di nascita:</label>
-                      <input
-                        className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                        type="date"
-                        name="dob"
-                        value={user.dob}
-                        readOnly
-                      />
+                    <div className="col-md-6" key="user-details-dob-col">
+                      <div className='w-100 p-2 d-flex flex-column filter-custom' key="user-details-dob-div">
+                      <label className='text-center text-dark bg-info rounded-top-3' key="user-details-name-label">Cognome:</label>                        <input
+                          className='bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2'
+                          type="date"
+                          name="dob"
+                          value={user.dob}
+                          readOnly
+                          key="user-dob-input"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                </form>
 
-              <h4 className='title-videos-from'>i video di
-              <i className='ms-2'><b>{user.name} {user.lastName}</b></i>  :</h4>
+                <h4 className='title-videos-from' key="user-videos-title">i video di
+                  <i className='ms-2' key="user-videos-username"><b>{user.name} {user.lastName}</b></i> :</h4>
 
-              {videos.map((video) => (
-                <>
-                  <div className='col-3 col-md-0'></div>
-                  <div key={video._id} className='col-12 col-md-6 mb-4'>
-                    <div className="w-100">
-                      <div className="dettails-post mb-3">
-                        <video controls width='100%' height="315" src={video.video}></video>
-                        <div>
-                          <h4>{video.title}</h4>
-                          <p className="m-0">
-                            <FontAwesomeIcon className="mx-2" icon={faHammer} />
-                            <span className="wrap-text">{video.categoryWork}</span>
-                          </p>
-                          <p className="m-0 mb-3">
-                            <FontAwesomeIcon className="mx-2" icon={faFile} />
-                            <span className="wrap-text">{video.content}</span>
-                          </p>
+                {videos.map((video) => (
+                  <div className='row' key={video._id}>
+                    <div className='col-3 col-md-0' key="video-col-1"></div>
+                    <div className='col-12 col-md-6 mb-4' key={`video-${video._id}`}>
+                      <div className="w-100" key={`video-details-${video._id}`}>
+                        <div className="dettails-post mb-3" key={`video-post-details-${video._id}`}>
+                          <video controls width='100%' height="315" src={video.video} key={`video-source-${video._id}`}></video>
+                          <div key={`video-details-${video._id}`}>
+                            <h4 key={`video-title-${video._id}`}>{video.title}</h4>
+                            <p className="m-0" key={`video-category-${video._id}`}>
+                              <FontAwesomeIcon className="mx-2 text-info" icon={faHammer} key={`video-category-icon-${video._id}`} />
+                              <span className="wrap-text" key={`video-category-text-${video._id}`}>{video.categoryWork}</span>
+                            </p>
+                            <p className="m-0 mb-3" key={`video-content-${video._id}`}>
+                              <FontAwesomeIcon className="mx-2 text-info" icon={faFile} key={`video-content-icon-${video._id}`} />
+                              <span className="wrap-text" key={`video-content-text-${video._id}`}>{video.content}</span>
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
-
+                    <div className='col-3 col-md-0' key="video-col-2"></div>
                   </div>
-                  <div className='col-3 col-md-0'></div>
-                </>
+                ))}
 
-              ))}
-
-            </>
-          ) : (
-            <p>Caricamento in corso...</p>
-          )}
+              </>
+            ) : (
+              <p key="loading-text">Caricamento in corso...</p>
+            )}
+          </div>
         </div>
         )}
     </>
