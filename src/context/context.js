@@ -15,6 +15,31 @@ const PostContext = ({ children }) => {
   const [videos, setVideos] = useState([]);
   const [users, setUsers] = useState([]);
 
+  const categories = [
+    "cuoco",
+    "insegnante",
+    "infermiere",
+    "programmatore",
+    "avvocato",
+    "elettricista",
+    "idraulico",
+    "barista",
+    "autista",
+    "architetto",
+    "muratore",
+    "giornalista",
+    "artista",
+    "pompiere",
+    "commerciante",
+    "personal trainer",
+    "medico",
+    "ingegnere",
+    "psicologo",
+    "agricoltore",
+    "falegname",
+    "altro...",
+  ];
+
   const handleCloseTop = () => setShowTop(false);
   const handleShowTop = () => setShowTop(true);
   const handleCloseR = () => setShowR(false);
@@ -23,7 +48,7 @@ const PostContext = ({ children }) => {
   const handleShow = () => setShow(true);
 
   return (
-    <PostProvider.Provider value={{ products, setProducts, errors, setErrors, loading, setLoading, showR, setShowR, handleCloseR, handleShowR, handleClose, handleShow, show, setShow, filters, setFilters, showTop, setShowTop, handleCloseTop, handleShowTop, videos, setVideos, users, setUsers}}>
+    <PostProvider.Provider value={{ products, setProducts, errors, setErrors, loading, setLoading, showR, setShowR, handleCloseR, handleShowR, handleClose, handleShow, show, setShow, filters, setFilters, showTop, setShowTop, handleCloseTop, handleShowTop, videos, setVideos, users, setUsers, categories}}>
       {children}
     </PostProvider.Provider>
   );

@@ -7,7 +7,6 @@ import ProtectedRoutes from './middelware/ProtectedRoutes';
 import AddUser from './pages/AddUser';
 import LandingPage from './pages/LandingPage';
 import Contacts from './pages/Contacts';
-import About from './pages/About';
 import Success from './pages/Success';
 import User from './pages/User';
 import GetUserId from './pages/GetUserId';
@@ -23,7 +22,6 @@ const App = ()=>{
 
         <Route exact path="/" element={<LandingPage/>}/>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/about" element={<About/>}/>
         <Route path="/contacts" element={<Contacts/>}/>
         <Route path="*" element={<Error />}/>
         <Route path="/addUser" element={<AddUser />}/>

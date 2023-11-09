@@ -41,7 +41,7 @@ const GetVideos = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [file, setFile] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const { filters, videos, setVideos } = useContext(PostProvider);
+  const { filters, videos, setVideos, categories } = useContext(PostProvider);
   const [confirmedDeletion, setConfirmedDeletion] = useState(false);
 
   const onChangeSetFile = (e) => {
@@ -69,31 +69,6 @@ const GetVideos = () => {
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
-
-  const categories = [
-    "cuoco",
-    "insegnante",
-    "infermiere",
-    "programmatore",
-    "avvocato",
-    "elettricista",
-    "idraulico",
-    "barista",
-    "autista",
-    "architetto",
-    "muratore",
-    "giornalista",
-    "artista",
-    "pompiere",
-    "commerciante",
-    "personal trainer",
-    "medico",
-    "ingegnere",
-    "psicologo",
-    "agricoltore",
-    "falegname",
-    "altro...",
-  ];
 
   const toggleFavorite = (videoId) => {
     const index = favoriteVideos.indexOf(videoId);

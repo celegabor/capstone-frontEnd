@@ -10,8 +10,6 @@ import { Document, Page, pdfjs } from "react-pdf";
 import Modal from "react-bootstrap/Modal";
 import "./user.css";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
 function User() {
   const token = localStorage.getItem("loggedInUser");
   const token2 = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -24,8 +22,12 @@ function User() {
     email: "",
     dob: "",
     address: "",
+    provincia: "",
+    cap: "",
     avatar: "",
     doc: "",
+    gender: "",
+    work: "",
   });
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
@@ -36,12 +38,40 @@ function User() {
   const navigate = useNavigate();
   const [pageNumber, setPageNumber] = useState(1);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [updateCredential, setUpdateCredential] = useState({
     userId: decodedToken.id,
     email: "",
     newPassword: "",
     confirmNewPassword: "",
   });
+
+  const categories = [
+    "cuoco",
+    "insegnante",
+    "infermiere",
+    "programmatore",
+    "avvocato",
+    "elettricista",
+    "idraulico",
+    "barista",
+    "autista",
+    "architetto",
+    "muratore",
+    "giornalista",
+    "artista",
+    "pompiere",
+    "commerciante",
+    "personal trainer",
+    "medico",
+    "ingegnere",
+    "psicologo",
+    "agricoltore",
+    "falegname",
+    "altro...",
+  ];
+
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
   const getVideos = async () => {
     setIsLoading(true);
@@ -123,6 +153,10 @@ function User() {
           dob: currentUser.dob,
           address: currentUser.address,
           avatar: currentUser.avatar,
+          provincia: currentUser.provincia,
+          cap: currentUser.cap,
+          gender: currentUser.gender,
+          work: currentUser.work,
         });
       }
     }
@@ -196,6 +230,7 @@ function User() {
     const updatedData = {
       ...userFormData,
       dob: dobAsNumber,
+      categoryWork: selectedCategory,
     };
 
     if (file || fileDoc || updatedData) {
@@ -225,12 +260,15 @@ function User() {
           setUserFormData({
             name: "",
             lastName: "",
-            avatar: "",
-            address: "",
-            dob: "",
             email: "",
-            password: "",
+            dob: "",
+            address: "",
+            provincia: "",
+            cap: "",
+            avatar: "",
             doc: "",
+            gender: "",
+            work: "",
           });
           setTimeout(() => {
             setMessage("Complimenti!!! Utente MODIFICATO correttamente !!!!");
@@ -338,12 +376,15 @@ function User() {
           setUserFormData({
             name: "",
             lastName: "",
-            avatar: "",
-            address: "",
-            dob: "",
             email: "",
-            password: "",
+            dob: "",
+            address: "",
+            provincia: "",
+            cap: "",
+            avatar: "",
             doc: "",
+            gender: "",
+            work: "",
           });
           setUpdateCredential({
             newPassword: "",
@@ -412,7 +453,7 @@ function User() {
         <>
           <MyNavbar />
           <div
-            className="bg-user-custom text-light container-user-put"
+            className="overflow-x-hidden bg-user-custom text-light container-user-put"
             key={decodedToken.lastName}
           >
             <h2 className="p-3 filter-custom" key="user-info-title">
@@ -430,6 +471,8 @@ function User() {
                 key="home-icon"
               />
             </Button>
+
+            {/* form dati utente */}
             <form className="w-100 text-center form-user-put" key="user-form">
               <div className="container" key="user-form-container">
                 <div className="row" key="user-form-row-1">
@@ -558,7 +601,7 @@ function User() {
                           className="filter-custom text-center text-dark bg-info rounded-top-3"
                           key="doc-details-name-label"
                         >
-                          Carica il tuo documento pdf
+                          Carica il tuo documento (oppure screen del CV)
                         </label>
                         <input
                           className="filter-custom bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
@@ -620,8 +663,8 @@ function User() {
                   </div>
                 </div>
                 <div className="row" key="user-form-row-3">
+                  {/* Data di Nascita */}
                   <div className="col-md-6" key="user-form-address-col">
-                    {/* Data di Nascita */}
                     <div
                       className="p-2 d-flex flex-column filter-custom"
                       key="dob-container"
@@ -642,8 +685,8 @@ function User() {
                       />
                     </div>
                   </div>
+                  {/* Indirizzo */}
                   <div className="col-md-6" key="user-form-address-col">
-                    {/* Indirizzo */}
                     <div
                       className="w-100 p-2 d-flex flex-column filter-custom"
                       key="address-container"
@@ -665,6 +708,113 @@ function User() {
                     </div>
                   </div>
                 </div>
+                <div className="row" key="user-form-row-3">
+                  {/* Provincia */}
+                  <div className="col-md-6" key="user-form-provincia-col">
+                    <div
+                      className="p-2 d-flex flex-column filter-custom"
+                      key="provincia-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="provincia-label"
+                      >
+                        Provincia:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="text"
+                        name="provincia"
+                        value={userFormData.provincia}
+                        onChange={handleFormChange}
+                        key="provincia-input"
+                      />
+                    </div>
+                  </div>
+                  {/* Cap */}
+                  <div className="col-md-6" key="user-form-cap-col">
+                    <div
+                      className="w-100 p-2 d-flex flex-column filter-custom"
+                      key="cap-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="cap-label"
+                      >
+                        Cap:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="text"
+                        name="cap"
+                        value={userFormData.cap}
+                        onChange={handleFormChange}
+                        key="cap-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row" key="user-form-row-3">
+                  {/* Work */}
+                  <div className="col-md-6" key="user-form-work-col">
+                    <div
+                      className="p-2 d-flex flex-column filter-custom"
+                      key="work-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="work-label"
+                      >
+                        Il tuo lavoro:
+                      </label>
+                      <select
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="text"
+                        name="work"
+                        value={userFormData.work}
+                        onChange={handleFormChange}
+                        key="work-input"
+                      >
+                        {selectedCategory ? (
+                          <option>{selectedCategory}</option>
+                        ) : (
+                          <option>Seleziona una categoria</option>
+                        )}
+
+                        {categories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  {/* Gender */}
+                  <div className="col-md-6" key="user-form-gender-col">
+                    <div
+                      className="w-100 p-2 d-flex flex-column filter-custom"
+                      key="gender-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="gender-label"
+                      >
+                        Sesso:
+                      </label>
+                      <select
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        name="gender"
+                        value={userFormData.gender}
+                        onChange={handleFormChange}
+                        key="gender-select"
+                      >
+                        <option value="maschio">Maschio</option>
+                        <option value="femmina">Femmina</option>
+                        <option value="altro">Altro</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div className="row" key="user-form-row-5">
                   <div className="col-md-12" key="submit-button-col">
                     <Button
@@ -681,98 +831,103 @@ function User() {
               </div>
             </form>
 
-            <h2>modifica credenziali</h2>
-            <form className="w-100">
-              <div className="row">
-                <div className="col-md-6">
-                  {/* Nuova Password */}
-                  <div
-                    className="w-100 p-2 d-flex flex-column filter-custom"
-                    key="newPassword-container"
-                  >
-                    <label className="text-center text-dark bg-info rounded-top-3">
-                      Nuova Password:
-                    </label>
-                    <input
-                      className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
-                      type="password"
-                      name="newPassword"
-                      value={updateCredential.newPassword}
-                      onChange={(e) =>
-                        setUpdateCredential({
-                          ...updateCredential,
-                          newPassword: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  {/* Email */}
-                  <div
-                    className="w-100 p-2 d-flex flex-column text-center filter-custom"
-                    key="email-container"
-                  >
-                    <label
-                      className="text-center text-dark bg-info rounded-top-3"
-                      key="name-label"
+            {/* form cambio credenziali */}
+            <div className="border border-danger border-3 rounded-2 filter-custom p-2">
+              <h2 className="filter-custom">modifica credenziali</h2>
+              <form className="w-100 ms-0">
+                <div className="row">
+                  <div className="col-md-6">
+                    {/* Nuova Password */}
+                    <div
+                      className="w-100 p-2 d-flex flex-column filter-custom"
+                      key="newPassword-container"
                     >
-                      Email:
-                    </label>
-                    <input
-                      className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
-                      type="text"
-                      name="email"
-                      onChange={(e) =>
-                        setUpdateCredential({
-                          ...updateCredential,
-                          email: e.target.value,
-                        })
-                      }
-                      key="email-input"
-                    />
+                      <label className="text-center text-dark bg-info rounded-top-3">
+                        Nuova Password:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="password"
+                        name="newPassword"
+                        value={updateCredential.newPassword}
+                        onChange={(e) =>
+                          setUpdateCredential({
+                            ...updateCredential,
+                            newPassword: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    {/* Email */}
+                    <div
+                      className="w-100 p-2 d-flex flex-column text-center filter-custom"
+                      key="email-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="name-label"
+                      >
+                        Email:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="text"
+                        name="email"
+                        onChange={(e) =>
+                          setUpdateCredential({
+                            ...updateCredential,
+                            email: e.target.value,
+                          })
+                        }
+                        key="email-input"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  {/* Conferma Nuova Password */}
-                  <div
-                    className="w-100 p-2 d-flex flex-column filter-custom"
-                    key="confirmNewPassword-container"
-                  >
-                    <label className="text-center text-dark bg-info rounded-top-3">
-                      Conferma Nuova Password:
-                    </label>
-                    <input
-                      className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
-                      type="password"
-                      name="confirmNewPassword"
-                      value={updateCredential.confirmNewPassword}
-                      onChange={(e) =>
-                        setUpdateCredential({
-                          ...updateCredential,
-                          confirmNewPassword: e.target.value,
-                        })
-                      }
-                    />
+                <div className="row">
+                  <div className="col-md-6">
+                    {/* Conferma Nuova Password */}
+                    <div
+                      className="w-100 p-2 d-flex flex-column filter-custom"
+                      key="confirmNewPassword-container"
+                    >
+                      <label className="text-center text-dark bg-info rounded-top-3">
+                        Conferma Nuova Password:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="password"
+                        name="confirmNewPassword"
+                        value={updateCredential.confirmNewPassword}
+                        onChange={(e) =>
+                          setUpdateCredential({
+                            ...updateCredential,
+                            confirmNewPassword: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  <Button
-                    className="border border-2 border-info text-success p-2 my-3 w-100 filter-custom"
-                    variant="dark"
-                    type="submit"
-                    onClick={handleChangeCredentials}
-                    key="submit-button-credentials"
-                  >
-                    Modifica Credenziali
-                  </Button>
+                <div className="row">
+                  <div className="col-md-12">
+                    <Button
+                      className="border border-2 border-info text-danger p-2 my-3 w-100 filter-custom"
+                      variant="dark"
+                      type="submit"
+                      onClick={handleChangeCredentials}
+                      key="submit-button-credentials"
+                    >
+                      Modifica Credenziali
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+
+            {/* messaggio chiamate crud */}
             <div className="message-container" key="message-container">
               {message && (
                 <div
@@ -788,10 +943,10 @@ function User() {
               )}
             </div>
 
-            <h4 className="m-5 px-5" key="user-videos-title">
+            {/* sezione video */}
+            <h4 className="m-5 px-5 filter-custom" key="user-videos-title">
               I tuoi video :
             </h4>
-
             {videos.map((video) => (
               <>
                 <Modal
@@ -824,7 +979,10 @@ function User() {
                     </Button>
                   </Modal.Footer>
                 </Modal>
-                <div className="row" key={`video-row-${video._id}/${video.name}`}>
+                <div
+                  className="row"
+                  key={`video-row-${video._id}/${video.name}`}
+                >
                   <div key={`video-col-${video._id}`}>
                     <div
                       className="col-3 col-md-0"
