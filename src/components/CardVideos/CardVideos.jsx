@@ -18,9 +18,15 @@ const CardVideos = ({ video }) => {
   const [message, setMessage] = useState('');
   const [showMessageModal, setShowMessageModal] = useState(false);
 
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+
   const getComments = () => {
     if (showComments) {
-      fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comment/get`, {}).then((response) =>
+      fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comment/get`, {
+        headers:{
+          'Authorization': token,
+        }
+      }).then((response) =>
         response.json()
       ).then((data) => {
         const filteredComments = data.comments.filter((comment) => comment.videoId === video._id);
@@ -43,6 +49,7 @@ const CardVideos = ({ video }) => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/${video._id}/comment/post`, {
       method: 'POST',
       headers: {
+        'Authorization': token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -62,6 +69,9 @@ const CardVideos = ({ video }) => {
   const deleteComment = (commentId) => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comment/delete/${commentId}`, {
       method: 'DELETE',
+      headers:{
+        'Authorization': token,
+      }
     }).then((response) => response.json()
     ).then((data) => {
       getComments();
@@ -85,6 +95,7 @@ const CardVideos = ({ video }) => {
     fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/comment/put/${commentId}`, {
       method: 'PUT',
       headers: {
+        'Authorization': token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

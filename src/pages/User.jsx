@@ -1,86 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MyNavbar from '../components/navbar/MyNavbar';
-import { Navigate, useNavigate } from 'react-router-dom'; 
-import { jwtDecode } from 'jwt-decode';
-import Spinner from 'react-bootstrap/Spinner';
-import { faHammer, faFile, faHome } from '@fortawesome/free-solid-svg-icons'; 
-import './user.css'
+import React, { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MyNavbar from "../components/navbar/MyNavbar";
+import { Navigate, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import Spinner from "react-bootstrap/Spinner";
+import { faHammer, faFile, faHome } from "@fortawesome/free-solid-svg-icons";
+import { Document, Page, pdfjs } from "react-pdf";
+import Modal from "react-bootstrap/Modal";
+import "./user.css";
 
-
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function User() {
+  const token = localStorage.getItem("loggedInUser");
+  const token2 = JSON.parse(localStorage.getItem("loggedInUser"));
+  const decodedToken = jwtDecode(token);
+
   const [users, setUsers] = useState([]);
   const [userFormData, setUserFormData] = useState({
-    name: '',
-    lastName: '',
-    email: '',
-    dob: '',
-    address: '',
-    avatar: '',
-    doc:'',
+    name: "",
+    lastName: "",
+    email: "",
+    dob: "",
+    address: "",
+    avatar: "",
+    doc: "",
   });
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
   const [fileDoc, setFileDoc] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate();
-
-  const token = localStorage.getItem('loggedInUser');
-  const token2 = JSON.parse(localStorage.getItem('loggedInUser'))
-  const decodedToken = jwtDecode(token);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [updateCredential, setUpdateCredential] = useState({
+    userId: decodedToken.id,
+    email: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
 
   const getVideos = async () => {
     setIsLoading(true);
 
     try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/get`,{
-        headers:{
-          'Authorization': token2,
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/video/get`,
+        {
+          headers: {
+            Authorization: token2,
+          },
         }
-      });
-
+      );
 
       if (response.ok) {
         const data = await response.json();
-        const filteredVideos = data.videos.filter((video) => video.author._id === decodedToken.id);
+        const filteredVideos = data.videos.filter(
+          (video) => video.author._id === decodedToken.id
+        );
         setVideos([...filteredVideos]);
-  
+
         setTimeout(() => {
           setIsLoading(false);
         }, 300);
       }
-
     } catch (error) {
-      console.error('Errore nel recupero dei video:', error);
+      console.error("Errore nel recupero dei video:", error);
       setTimeout(() => {
         setIsLoading(false);
       }, 300);
     }
-  }
+  };
 
   const getUsers = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get`);
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/users2/get`,
+        {
+          headers: {
+            Authorization: token2,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
-        const filteredUsers = data.users.filter((user) => user._id === decodedToken.id);
+        const filteredUsers = data.users.filter(
+          (user) => user._id === decodedToken.id
+        );
         setUsers([...filteredUsers]);
-
-
       } else {
-        console.error('Errore nella richiesta GET:', response.status);
+        console.error("Errore nella richiesta GET:", response.status);
         setTimeout(() => {
           setIsLoading(false);
         }, 300);
       }
-
     } catch (error) {
-      console.error('Errore nel recupero dei dati:', error);
+      console.error("Errore nel recupero dei dati:", error);
       setTimeout(() => {
         setIsLoading(false);
       }, 300);
@@ -89,7 +108,7 @@ function User() {
 
   useEffect(() => {
     getUsers();
-    getVideos()
+    getVideos();
   }, []);
 
   useEffect(() => {
@@ -103,7 +122,7 @@ function User() {
           email: currentUser.email,
           dob: currentUser.dob,
           address: currentUser.address,
-          avatar: currentUser.avatar
+          avatar: currentUser.avatar,
         });
       }
     }
@@ -122,149 +141,158 @@ function User() {
   };
 
   const uploadFileDoc = async (img) => {
-    setIsLoading(true)
+    setIsLoading(true);
     const formData = new FormData();
-    formData.append('doc', img);
+    formData.append("doc", img);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/docUpload`, {
-        method: "POST",
-        body: formData
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/docUpload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         return await response.json();
       } else {
-        throw new Error('Errore durante il caricamento dell\'avatar.');
-        
+        throw new Error("Errore durante il caricamento dell'avatar.");
       }
-
     } catch (e) {
-      console.error('Errore durante il caricamento dell\'avatar:', e);
+      console.error("Errore durante il caricamento dell'avatar:", e);
       throw e;
     }
-  }
+  };
 
   const uploadFile = async (img) => {
-    setIsLoading(true)
+    setIsLoading(true);
     const formData = new FormData();
-    formData.append('avatar', img);
+    formData.append("avatar", img);
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/upload`, {
-        method: "POST",
-        body: formData
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/users2/post/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         return await response.json();
       } else {
-        throw new Error('Errore durante il caricamento dell\'avatar.');
-        
+        throw new Error("Errore durante il caricamento dell'avatar.");
       }
-
     } catch (e) {
-      console.error('Errore durante il caricamento dell\'avatar:', e);
+      console.error("Errore durante il caricamento dell'avatar:", e);
       throw e;
     }
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-  
+
     const dobAsNumber = parseInt(userFormData.dob);
     const updatedData = {
       ...userFormData,
       dob: dobAsNumber,
     };
-  
-    if (file || fileDoc) {
+
+    if (file || fileDoc || updatedData) {
       try {
         if (file) {
           const uploadAvatar = await uploadFile(file);
           updatedData.avatar = uploadAvatar.avatar;
         }
-        
+
         if (fileDoc) {
           const uploadDoc = await uploadFileDoc(fileDoc);
           updatedData.doc = uploadDoc.docUrl;
         }
-  
-        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/put/${decodedToken.id}`, {
-          method: "PUT",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedData),
-        });
-  
+
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_BASE_URL}/users2/put/${decodedToken.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedData),
+          }
+        );
+
         if (response.ok) {
           setUserFormData({
-            name: '',
-            lastName: '',
-            avatar: '',
-            address: '',
-            dob: '',
-            email: '',
-            password: '',
-            doc: '',
+            name: "",
+            lastName: "",
+            avatar: "",
+            address: "",
+            dob: "",
+            email: "",
+            password: "",
+            doc: "",
           });
-          setMessage('Complimenti!!! Utente MODIFICATO correttamente !!!!');
           setTimeout(() => {
-            setMessage('');
+            setMessage("Complimenti!!! Utente MODIFICATO correttamente !!!!");
+          }, 400);
+          setTimeout(() => {
+            setMessage("");
             setIsSuccessful(true);
-            navigate('/home');
+            navigate("/home");
           }, 1500);
         } else {
-          setMessage('Mi dispiace.... L\'aggiornamento NON è andato a buon fine !!!!!');
+          setMessage(
+            "Mi dispiace.... L'aggiornamento NON è andato a buon fine !!!!!"
+          );
           setTimeout(() => {
-            setMessage('');
+            setMessage("");
             setIsSuccessful(true);
           }, 3000);
         }
-  
+
         setIsLoading(false);
       } catch (error) {
-        console.error('Errore durante l\'aggiornamento:', error);
-        setMessage('Mi dispiace.... L\'aggiornamento NON è andato a buon fine !!!!!');
+        console.error("Errore durante l'aggiornamento:", error);
+        setMessage(
+          "Mi dispiace.... L'aggiornamento NON è andato a buon fine !!!!!"
+        );
         setTimeout(() => {
-          setMessage('');
+          setMessage("");
         }, 4000);
       }
-    } else {
-      setMessage('Nessuna modifica effettuata.');
-      setIsLoading(false);
     }
   };
-  
-  
+
   const deleteVideo = async (videoId) => {
-    const confirmDelete = window.confirm('Sei sicuro di voler cancellare questo video?');
-    if (!confirmDelete) {
-      return;
-    }
+    setShowDeleteConfirmation(true);
+    setIsLoading(true);
 
     try {
-      setIsLoading(true);
-      await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/video/delete/${videoId}`, {
-        method: 'DELETE',
-      });
-      
-      setMessage('Complimenti!!! Il cancellamento è andato a buon fine !!!!!');
-          setTimeout(() => {
-            setMessage('')
-          }, 2500);
-    
-          getVideos();
-        
-      console.log('cancellato');
+      await fetch(
+        `${process.env.REACT_APP_SERVER_BASE_URL}/video/delete/${videoId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      setMessage("Complimenti!!! Il cancellamento è andato a buon fine !!!!!");
+      setTimeout(() => {
+        setMessage("");
+      }, 2500);
+
+      getVideos();
+
+      console.log("cancellato");
     } catch (error) {
+      setMessage(
+        "Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!",
+        error
+      );
+      setTimeout(() => {
+        setMessage("");
+      }, 4000);
 
-      setMessage('Mi dispiace.... Il caricamento NON è andato a buon fine !!!!!', error);
-        setTimeout(() => {
-          setMessage('');
-        }, 4000);
-
-      console.error('Errore nella cancellazione del video:', error);
+      console.error("Errore nella cancellazione del video:", error);
     } finally {
       setTimeout(() => {
         setIsLoading(false);
@@ -276,61 +304,264 @@ function User() {
     const docFile = e.target.files[0];
     setFileDoc(docFile);
   };
-  
+
+  const handlePageChangeUp = (e) => {
+    e.preventDefault();
+    setPageNumber(pageNumber + 1);
+  };
+
+  const handlePageChangeDown = (e) => {
+    e.preventDefault();
+    setPageNumber(pageNumber - 1);
+  };
+
+  const handleChangeCredentials = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (
+        updateCredential.newPassword === updateCredential.confirmNewPassword
+      ) {
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_BASE_URL}/update`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: token2,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updateCredential),
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          setUserFormData({
+            name: "",
+            lastName: "",
+            avatar: "",
+            address: "",
+            dob: "",
+            email: "",
+            password: "",
+            doc: "",
+          });
+          setUpdateCredential({
+            newPassword: "",
+            email: "",
+          });
+          setMessage(
+            "Complimenti!!! CREDENZIALI MODIFICATE correttamente !!!!"
+          );
+          setTimeout(() => {
+            setMessage("");
+            setIsSuccessful(true);
+            navigate("/home");
+          }, 1500);
+        } else {
+          setMessage(
+            "Mi dispiace.... L'aggiornamento NON è andato a buon fine !!!!!"
+          );
+          setTimeout(() => {
+            setMessage("");
+            setIsSuccessful(true);
+          }, 3000);
+        }
+      } else {
+        setMessage("Password e Conferma-Password NON coincidono!!");
+
+        setTimeout(() => {
+          setMessage("");
+        }, 1500);
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Errore durante l'aggiornamento:", error);
+      setMessage(
+        "Mi dispiace.... L'aggiornamento NON è andato a buon fine !!!!!"
+      );
+      setTimeout(() => {
+        setMessage("");
+      }, 4000);
+    }
+  };
 
   return (
     <>
       {isLoading ? (
+        <div
+          className="spinner-container bg-dark d-flex flex-column justify-content-center align-items-center text-white"
+          key="spinner-container"
+        >
+          <Spinner
+            className="fs-5"
+            animation="border"
+            role="status"
+            key="spinner"
+          >
+            <span className="sr-only" key="spinner-text"></span>
+          </Spinner>
+          <p key="loading-text">Caricamento...</p>
+          <p className="mt-2" key="loading-wait-text">
+            ..attendi qualche secondo!
+          </p>
+        </div>
+      ) : isSuccessful ? (
+        <Navigate to="/home" key="success-navigation" />
+      ) : (
         <>
-          <div className="spinner-container bg-dark d-flex flex-column justify-content-center align-items-center text-white">
-            <Spinner className='fs-5' animation="border" role="status">
-              <span className="sr-only"></span>
-            </Spinner>
-            <p>Caricamento...</p>
-            <p className='mt-2'>..attendi qualche secondo!</p>
-          </div>
-        </>
-    
-        ) : isSuccessful ? ( 
-
-          <Navigate to="/home" />
-
-        ) : (  
-          <>
-            <div className='bg-dark text-light container-user-put' key="container-user-put">
-              <MyNavbar key="navbar" />
-              <h2 className='p-3' key="user-info-title">Informazioni sull'utente:</h2>
-              <Button className='px-3' variant='secondary' onClick={() => navigate('/home')} key="home-button">
-                <FontAwesomeIcon icon={faHome} key="home-icon" />
-              </Button>
-              <form className='w-100 text-center form-user-put' key="user-form">
-                <div className="container" key="user-form-container">
-                  <div className="row" key="user-form-row-1">
-                    <div className="col-md-6" key="user-form-col-1">
-                      <div className='w-100 p-2 m-2 d-flex flex-column' key="user-avatar-container">
-                        {/* Immagine profilo */}
-                        <label key="avatar-label">Immagine profilo:</label>
-                        <div className='w-100 d-flex flex-column align-items-center' key="avatar-input-container">
-                          {file ? (
-                            <img className='border border-4' width={'70%'} height={'80%'} src={URL.createObjectURL(file)} alt="documento" key="avatar-image" />
-                          ) : (
-                            <img className='border border-4' width={'70%'} height={'80%'} src={users.map((user) => user.avatar)} alt="immagine profilo" key="avatar-image-default" />
-                          )}
-                          <input className='w-100 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2' type="file" name='avatar' onChange={onChangeSetFile} key="avatar-input" />
+          <MyNavbar />
+          <div
+            className="bg-user-custom text-light container-user-put"
+            key={decodedToken.lastName}
+          >
+            <h2 className="p-3 filter-custom" key="user-info-title">
+              Informazioni sull'utente:
+            </h2>
+            <Button
+              className="px-3 border border-info filter-custom"
+              variant="secondary"
+              onClick={() => navigate("/home")}
+              key="home-button"
+            >
+              <FontAwesomeIcon
+                className="text-info"
+                icon={faHome}
+                key="home-icon"
+              />
+            </Button>
+            <form className="w-100 text-center form-user-put" key="user-form">
+              <div className="container" key="user-form-container">
+                <div className="row" key="user-form-row-1">
+                  <div className="col-md-6" key="user-form-col-1">
+                    {/* Immagine profilo */}
+                    <div
+                      className="w-100 p-2 m-2 d-flex flex-column"
+                      key="user-avatar-container"
+                    >
+                      <label className="fs-4 text-info" key="avatar-label">
+                        Immagine profilo:
+                      </label>
+                      <div
+                        className="w-100 d-flex flex-column align-items-center mt-4 filter-custom"
+                        key="avatar-input-container"
+                      >
+                        {file ? (
+                          <img
+                            className="border border-4"
+                            width="90%"
+                            src={URL.createObjectURL(file)}
+                            alt="documento"
+                            key="avatar-image"
+                          />
+                        ) : (
+                          <img
+                            className="border border-4"
+                            width={"90%"}
+                            src={users.map((user) => user.avatar)}
+                            alt="immagine profilo"
+                            key="avatar-image-default"
+                          />
+                        )}
+                        <div
+                          className="w-100 p-2 d-flex flex-column text-center"
+                          key="avatar-details"
+                        >
+                          <label
+                            className="filter-custom text-center text-dark bg-info rounded-top-3"
+                            key="avatar-details-name-label"
+                          >
+                            Carica la tua immagine
+                          </label>
+                          <input
+                            className="filter-custom bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                            type="file"
+                            name="avatar"
+                            onChange={onChangeSetFile}
+                            key="avatar-input"
+                          />
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6 uploadDoc" key="user-form-col-2">
-                      {/* caricamento immagini "doc" */}
-                      <div className='w-100 p-2 m-2 d-flex flex-column align-items-center' key="doc-container">
-                        <label key="doc-label">Carica immagini "doc":</label>
+                  </div>
+                  {/* caricamento immagini "doc" */}
+                  <div className="col-md-6 uploadDoc" key="user-form-col-2">
+                    <div
+                      className="w-100 p-2 m-2 d-flex flex-column align-items-center"
+                      key="doc-container"
+                    >
+                      <label className="text-info fs-4" key="doc-label">
+                        Documento della tua carriera
+                      </label>
+
+                      <div
+                        className="w-100 d-flex flex-column align-items-center mt-4 filter-custom doc-size-custom"
+                        key="doc-input-container"
+                      >
                         {fileDoc ? (
-                          <img className='border border-4' width={'70%'} height={'80%'} src={URL.createObjectURL(fileDoc)} alt="documento" key="doc-image" />
+                          fileDoc.name.toLowerCase().endsWith(".pdf") ? (
+                            <>
+                              <div key="pdf-buttons">
+                                <button
+                                  onClick={(e) => handlePageChangeUp(e)}
+                                  key="page-up-button"
+                                >
+                                  Pagina successiva
+                                </button>
+                                <button
+                                  onClick={(e) => handlePageChangeDown(e)}
+                                  key="page-down-button"
+                                >
+                                  Pagina precedente
+                                </button>
+
+                                <Document
+                                  file={URL.createObjectURL(fileDoc)}
+                                  options={{
+                                    workerSrc:
+                                      pdfjs.GlobalWorkerOptions.workerSrc,
+                                  }}
+                                  key="pdf-document"
+                                >
+                                  <Page
+                                    pageNumber={pageNumber}
+                                    width={400}
+                                    key="pdf-page"
+                                  />
+                                </Document>
+                              </div>
+                            </>
+                          ) : (
+                            <img
+                              className="border border-4"
+                              width={"90%"}
+                              src={URL.createObjectURL(fileDoc)}
+                              alt="documento"
+                              key="doc-image"
+                            />
+                          )
                         ) : (
-                          <img className='border border-4' width={'70%'} height={'80%'} src={users.map((user) => user.doc)} alt="documento" key="doc-image-default" />
+                          <img
+                            className="border border-4"
+                            width={"90%"}
+                            src={users.map((user) => user.doc)}
+                            alt="documento"
+                            key="doc-image-default"
+                          />
                         )}
+                      </div>
+                      <div
+                        className="w-100 p-2 d-flex flex-column text-center"
+                        key="doc-details"
+                      >
+                        <label
+                          className="filter-custom text-center text-dark bg-info rounded-top-3"
+                          key="doc-details-name-label"
+                        >
+                          Carica il tuo documento pdf
+                        </label>
                         <input
-                          className='w-100 mt-3 bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          className="filter-custom bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
                           type="file"
                           name="doc"
                           onChange={handleDocUpload}
@@ -339,137 +570,352 @@ function User() {
                       </div>
                     </div>
                   </div>
-                  <div className="row" key="user-form-row-2">
-                    {/* Nome */}
-                    <div className="col-md-6" key="user-form-name-col">
-                      <div className='w-100 p-2 d-flex flex-column text-center' key="name-container">
-                        <label className='text-start' key="name-label">Nome:</label>
+                </div>
+                <div className="row" key="user-form-row-2">
+                  {/* Nome */}
+                  <div className="col-md-6" key="user-form-name-col">
+                    <div
+                      className="w-100 p-2 d-flex flex-column text-center filter-custom"
+                      key="name-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="name-label"
+                      >
+                        Nome:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="text"
+                        name="name"
+                        value={userFormData.name}
+                        onChange={handleFormChange}
+                        key="name-input"
+                      />
+                    </div>
+                  </div>
+                  {/* Cognome */}
+                  <div className="col-md-6" key="user-form-lastName-col">
+                    <div className="d-flex" key="lastName-container">
+                      <div
+                        className="w-100 p-2 d-flex flex-column filter-custom"
+                        key="lastName-column"
+                      >
+                        <label
+                          className="text-center text-dark bg-info rounded-top-3"
+                          key="lastName-label"
+                        >
+                          Cognome:
+                        </label>
                         <input
-                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
+                          className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
                           type="text"
-                          name="name"
-                          value={userFormData.name}
+                          name="lastName"
+                          value={userFormData.lastName}
                           onChange={handleFormChange}
-                          key="name-input"
+                          key="lastName-input"
                         />
                       </div>
-                    </div>
-                    {/* Cognome */}
-                    <div className="col-md-6" key="user-form-lastName-col">
-                      <div className='d-flex' key="lastName-container">
-                        <div className='w-100 p-2 d-flex flex-column' key="lastName-column">
-                          <label key="lastName-label">Cognome:</label>
-                          <input
-                            className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                            type="text"
-                            name="lastName"
-                            value={userFormData.lastName}
-                            onChange={handleFormChange}
-                            key="lastName-input"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row" key="user-form-row-3">
-                    {/* Email */}
-                    <div className="col-md-6" key="user-form-email-col">
-                      <div className='w-100 p-2 d-flex flex-column' key="email-container">
-                        <label key="email-label">Email:</label>
-                        <input
-                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                          type="email"
-                          name="email"
-                          value={userFormData.email}
-                          onChange={handleFormChange}
-                          key="email-input"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6" key="user-form-address-col">
-                      {/* Indirizzo */}
-                      <div className='w-100 p-2 d-flex flex-column' key="address-container">
-                        <label key="address-label">Indirizzo:</label>
-                        <input
-                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                          type="text"
-                          name="address"
-                          value={userFormData.address}
-                          onChange={handleFormChange}
-                          key="address-input"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row" key="user-form-row-4">
-                    <div className="col-md-6" key="user-form-dob-col">
-                      {/* Data di Nascita */}
-                      <div className='p-2 d-flex flex-column' key="dob-container">
-                        <label key="dob-label">Data di nascita:</label>
-                        <input
-                          className='bg-secondary text-white p-2 rounded-3 border-bottom border-2'
-                          type="date"
-                          name="dob"
-                          value={userFormData.dob}
-                          onChange={handleFormChange}
-                          key="dob-input"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row" key="user-form-row-5">
-                    <div className="col-md-12" key="submit-button-col">
-                      <Button className='border border-2 border-secondary my-3 w-100' variant='dark' type="submit" onClick={handleSubmit} key="submit-button">
-                        Modifica Dati
-                      </Button>
                     </div>
                   </div>
                 </div>
-              </form>
-          
-              <div className="message-container" key="message-container">
-                {message && <div className={message.includes('NON') ? 'NOT-success-message-put-user' : 'success-message-put-user'} key="message">{message}</div>}
+                <div className="row" key="user-form-row-3">
+                  <div className="col-md-6" key="user-form-address-col">
+                    {/* Data di Nascita */}
+                    <div
+                      className="p-2 d-flex flex-column filter-custom"
+                      key="dob-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="dob-label"
+                      >
+                        Data di nascita:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="date"
+                        name="dob"
+                        value={userFormData.dob}
+                        onChange={handleFormChange}
+                        key="dob-input"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6" key="user-form-address-col">
+                    {/* Indirizzo */}
+                    <div
+                      className="w-100 p-2 d-flex flex-column filter-custom"
+                      key="address-container"
+                    >
+                      <label
+                        className="text-center text-dark bg-info rounded-top-3"
+                        key="address-label"
+                      >
+                        Indirizzo:
+                      </label>
+                      <input
+                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                        type="text"
+                        name="address"
+                        value={userFormData.address}
+                        onChange={handleFormChange}
+                        key="address-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row" key="user-form-row-5">
+                  <div className="col-md-12" key="submit-button-col">
+                    <Button
+                      className="border border-2 border-info text-success p-2 my-3 w-100 filter-custom"
+                      variant="dark"
+                      type="submit"
+                      onClick={handleSubmit}
+                      key="submit-button"
+                    >
+                      Modifica Dati
+                    </Button>
+                  </div>
+                </div>
               </div>
-          
-              <h4 className='m-5 px-5' key="user-videos-title">I tuoi video :</h4>
-          
-              {videos.map((video) => (
-                <div key={`video-${video._id}`}>
-                  <div className='col-3 col-md-0' key={`video-col-1-${video._id}`}></div>
-                  <div className='col-12 col-md-6 mb-4' key={`video-${video._id}`}>
-                    <div key={`video-container-${video._id}`}>
-                      <div className="dettails-post mb-3" key={`video-post-${video._id}`}>
-                        <video controls width="100%" height="315" src={video.video} key={`video-source-${video._id}`}></video>
-                        <div key={`video-details-${video._id}`}>
-                          <h4 key={`video-title-${video._id}`}>{video.title}</h4>
-                          <p className='m-0' key={`video-category-${video._id}`}>
-                            <FontAwesomeIcon className='mx-2' icon={faHammer} key={`video-category-icon-${video._id}`} />
-                            <span className='wrap-text' key={`video-category-text-${video._id}`}>{video.categoryWork}</span>
-                          </p>
-                          <p className='m-0 mb-3' key={`video-content-${video._id}`}>
-                            <FontAwesomeIcon className='mx-2' icon={faFile} key={`video-content-icon-${video._id}`} />
-                            <span className='wrap-text' key={`video-content-text-${video._id}`}>{video.content}</span>
-                          </p>
-                          <div className="w-100 text-center p-3" key={`delete-video-button-${video._id}`}>
-                            <Button className="w-50" variant="danger" onClick={() => deleteVideo(video._id)} key={`delete-video-button-${video._id}`}>
-                              Cancella video
-                            </Button>
+            </form>
+
+            <h2>modifica credenziali</h2>
+            <form className="w-100">
+              <div className="row">
+                <div className="col-md-6">
+                  {/* Nuova Password */}
+                  <div
+                    className="w-100 p-2 d-flex flex-column filter-custom"
+                    key="newPassword-container"
+                  >
+                    <label className="text-center text-dark bg-info rounded-top-3">
+                      Nuova Password:
+                    </label>
+                    <input
+                      className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                      type="password"
+                      name="newPassword"
+                      value={updateCredential.newPassword}
+                      onChange={(e) =>
+                        setUpdateCredential({
+                          ...updateCredential,
+                          newPassword: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  {/* Email */}
+                  <div
+                    className="w-100 p-2 d-flex flex-column text-center filter-custom"
+                    key="email-container"
+                  >
+                    <label
+                      className="text-center text-dark bg-info rounded-top-3"
+                      key="name-label"
+                    >
+                      Email:
+                    </label>
+                    <input
+                      className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                      type="text"
+                      name="email"
+                      onChange={(e) =>
+                        setUpdateCredential({
+                          ...updateCredential,
+                          email: e.target.value,
+                        })
+                      }
+                      key="email-input"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  {/* Conferma Nuova Password */}
+                  <div
+                    className="w-100 p-2 d-flex flex-column filter-custom"
+                    key="confirmNewPassword-container"
+                  >
+                    <label className="text-center text-dark bg-info rounded-top-3">
+                      Conferma Nuova Password:
+                    </label>
+                    <input
+                      className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
+                      type="password"
+                      name="confirmNewPassword"
+                      value={updateCredential.confirmNewPassword}
+                      onChange={(e) =>
+                        setUpdateCredential({
+                          ...updateCredential,
+                          confirmNewPassword: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <Button
+                    className="border border-2 border-info text-success p-2 my-3 w-100 filter-custom"
+                    variant="dark"
+                    type="submit"
+                    onClick={handleChangeCredentials}
+                    key="submit-button-credentials"
+                  >
+                    Modifica Credenziali
+                  </Button>
+                </div>
+              </div>
+            </form>
+            <div className="message-container" key="message-container">
+              {message && (
+                <div
+                  className={
+                    message.includes("NON")
+                      ? "NOT-success-message-put-user"
+                      : "success-message-put-user"
+                  }
+                  key="message"
+                >
+                  {message}
+                </div>
+              )}
+            </div>
+
+            <h4 className="m-5 px-5" key="user-videos-title">
+              I tuoi video :
+            </h4>
+
+            {videos.map((video) => (
+              <>
+                <Modal
+                  className="bg-light"
+                  show={showDeleteConfirmation}
+                  onHide={() => setShowDeleteConfirmation(false)}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Conferma la cancellazione</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Sei sicuro di voler cancellare questo video?
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setShowDeleteConfirmation(false)}
+                      key={`modal-delete-${video._id}`}
+                    >
+                      Annulla
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={() => {
+                        setShowDeleteConfirmation(false);
+                        deleteVideo(video._id);
+                      }}
+                    >
+                      Conferma
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+                <div className="row" key={`video-row-${video._id}/${video.name}`}>
+                  <div key={`video-col-${video._id}`}>
+                    <div
+                      className="col-3 col-md-0"
+                      key={`video-col-1-${video._id}`}
+                    ></div>
+                    <div
+                      className="col-12 col-md-6 mb-4 border border-dark border-4 filter-custom p-3 bg-light rounded-3 text-dark"
+                      key={`video-${video._id}`}
+                    >
+                      <div
+                        className="w-100"
+                        key={`video-container-a-${video._id}`}
+                      >
+                        <div
+                          className="dettails-post mb-3"
+                          key={`video-post-a-${video._id}`}
+                        >
+                          <video
+                            className="rounded-3 border border-dark border-4"
+                            controls
+                            width="100%"
+                            height="315"
+                            src={video.video}
+                            key={`video-source-${video._id}`}
+                          ></video>
+                          <div key={`video-details-${video._id}`}>
+                            <h4 key={`video-title-${video._id}`}>
+                              {video.title}
+                            </h4>
+                            <p
+                              className="m-0"
+                              key={`video-category-${video._id}`}
+                            >
+                              <FontAwesomeIcon
+                                className="mx-2 text-info"
+                                icon={faHammer}
+                                key={`video-category-icon-${video._id}`}
+                              />
+                              <span
+                                className="wrap-text"
+                                key={`video-category-text-${video._id}`}
+                              >
+                                {video.categoryWork}
+                              </span>
+                            </p>
+                            <p
+                              className="m-0 mb-3"
+                              key={`video-content-${video._id}`}
+                            >
+                              <FontAwesomeIcon
+                                className="mx-2 text-info"
+                                icon={faFile}
+                                key={`video-content-icon-${video._id}`}
+                              />
+                              <span
+                                className="wrap-text"
+                                key={`video-content-text-${video._id}`}
+                              >
+                                {video.content}
+                              </span>
+                            </p>
+                            <div
+                              className="w-100 text-center p-3"
+                              key={`delete-video-button-${video._id}`}
+                            >
+                              <Button
+                                className="w-50 border rounded-3 border-info border-3 text-info "
+                                variant="dark"
+                                onClick={() => deleteVideo(video._id)}
+                                key={`delete-video-button-${video._id}`}
+                              >
+                                Cancella video
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    <div
+                      className="col-3 col-md-0"
+                      key={`video-col-2-${video._id}`}
+                    ></div>
                   </div>
-                  <div className='col-3 col-md-0' key={`video-col-2-${video._id}`}></div>
                 </div>
-              ))}
-            </div>
+              </>
+            ))}
+          </div>
         </>
-        
-          
-      )
-    }
+      )}
     </>
   );
-};
+}
 
 export default User;

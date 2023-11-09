@@ -2,14 +2,13 @@
     padding: 0 30px;
 }
 
-.doc-custom{
-    width: 100px;
-    object-fit: contain;
-    transition: all 0.3s linear;
+.doc-size-custom{
+    max-height: 400px;
+    overflow: scroll;
 }
-.doc-custom:hover{
-    width: 80%;
-    object-fit: contain;
+
+.bg-user-custom{
+    background-color: rgb(231, 227, 227);
 }
 
 @media screen and (max-width:700px) {

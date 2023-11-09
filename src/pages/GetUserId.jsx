@@ -54,7 +54,11 @@ function GetUserId() {
   const getUsers = async ()=>{
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get/${userId}`)
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get/${userId}`,{
+        headers:{
+          'Authorization': token,
+        }
+      })
 
       const data = await response.json()
       if (response.ok) {
@@ -86,11 +90,11 @@ function GetUserId() {
         </>
     
         ) : (
-        <div className="bg-dark text-light">
+        <div className="text-light">
           <MyNavbar />
           <div className='div-container-getUserId bg-getUserId-custom' key="user-details-container">
-            <h2>Dettagli dell'utente:</h2>
-            <Button className='px-3 border border-info' variant='secondary' onClick={() => navigate('/home')}>
+            <h2 className='filter-custom'>Dettagli dell'utente:</h2>
+            <Button className='px-3 border border-info filter-custom' variant='secondary' onClick={() => navigate('/home')}>
               <FontAwesomeIcon className='text-info' icon={faHome} key="home-icon" />
             </Button>
             {user ? (
@@ -196,16 +200,16 @@ function GetUserId() {
                   </div>
                 </form>
 
-                <h4 className='title-videos-from' key="user-videos-title">i video di
+                <h4 className='filter-custom title-videos-from' key="user-videos-title">i video di
                   <i className='ms-2' key="user-videos-username"><b>{user.name} {user.lastName}</b></i> :</h4>
 
                 {videos.map((video) => (
                   <div className='row' key={video._id}>
                     <div className='col-3 col-md-0' key="video-col-1"></div>
-                    <div className='col-12 col-md-6 mb-4' key={`video-${video._id}`}>
+                    <div className='col-12 col-md-6 mb-4 border border-dark border-4 filter-custom p-3 bg-light rounded-3 text-dark' key={`video-${video._id}`}>
                       <div className="w-100" key={`video-details-${video._id}`}>
                         <div className="dettails-post mb-3" key={`video-post-details-${video._id}`}>
-                          <video controls width='100%' height="315" src={video.video} key={`video-source-${video._id}`}></video>
+                          <video className='rounded-3 border border-dark border-4' controls width='100%' height="315" src={video.video} key={`video-source-${video._id}`}></video>
                           <div key={`video-details-${video._id}`}>
                             <h4 key={`video-title-${video._id}`}>{video.title}</h4>
                             <p className="m-0" key={`video-category-${video._id}`}>

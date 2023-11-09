@@ -29,10 +29,16 @@ const OffCanvasRight = ({ name, ...props }) => {
 
   };
 
+  const token = JSON.parse(localStorage.getItem('loggedInUser'))
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get`)
+    fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/users2/get`,{
+      headers:{
+        'Authorization': token,
+      }
+    })
       .then((response) => response.json())
       .then((data) => {
         setUsers(data.users);
