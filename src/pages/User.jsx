@@ -1049,7 +1049,7 @@ function User() {
                               key={`delete-video-button-${video._id}`}
                             >
                               <Button
-                                className="w-50 border rounded-3 border-info border-3 text-info "
+                                className="w-50 border rounded-3 border-info border-3 text-danger "
                                 variant="dark"
                                 onClick={() => deleteVideo(video._id)}
                                 key={`delete-video-button-${video._id}`}
