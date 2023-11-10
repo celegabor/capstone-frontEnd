@@ -1,0 +1,42 @@
+.bg-error-custom{
+    background-color: rgb(231, 227, 227);
+    height: 100vh;
+}
+
+.container-error{
+    height: 40vh;
+    width: 40vw;
+}
+
+.font-size-custom{
+    font-size: 1.6em;
+}
+
+@media screen and (max-width: 900px) {
+    .container-error{
+        height: 50vh;
+        width: 70vw;
+
+    }
+    
+}
+@media screen and (max-width: 550px) {
+    .container-error{
+        height: 50vh;
+        width: 70vw;
+    }
+    .font-size-custom{
+        font-size: 1.3em;
+    }
+    
+}
+@media screen and (max-width: 350px) {
+    .container-error{
+        height: 50vh;
+        width: 90vw;
+    }
+    .font-size-custom{
+        font-size: 0.9em;
+    }
+    
+}
