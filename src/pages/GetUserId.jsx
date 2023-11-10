@@ -266,7 +266,7 @@ function GetUserId() {
                           className="text-center text-dark bg-info rounded-top-3"
                           key="user-details-name-label"
                         >
-                          Cognome:
+                          Data di nascita:
                         </label>{" "}
                         <input
                           className="text-center bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
