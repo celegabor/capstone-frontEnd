@@ -27,7 +27,7 @@ const AddUser = () => {
   const [emails, setEmails] = useState([]);
 
   const dobAsDate = new Date(userData.dob);
-  const dobFormatted = dobAsDate.toISOString().split('T')[0];  
+  // const dobFormatted = dobAsDate.toISOString().split('T')[0];  
 
   const navigate = useNavigate();
 
@@ -93,7 +93,7 @@ const AddUser = () => {
         const finalBody = {
           ...userData,
           avatar: uploadAvatar.avatar,
-          dob: dobFormatted,
+          dob: dobAsDate,
         };
 
         const response = await fetch(
