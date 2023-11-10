@@ -18,7 +18,6 @@ import "react-responsive-pagination/themes/classic.css";
 import { PostProvider } from "../../context/context";
 import { jwtDecode } from "jwt-decode";
 
-
 const GetVideos = () => {
   const token = JSON.parse(localStorage.getItem("loggedInUser"));
   const session = useSession();
@@ -49,6 +48,7 @@ const GetVideos = () => {
   };
 
   const uploadFile = async (video) => {
+    setIsLoading(true);
     const fileData = new FormData();
     fileData.append("video", video);
     try {
@@ -59,9 +59,18 @@ const GetVideos = () => {
           body: fileData,
         }
       );
+      setIsLoading(false);
 
       return response.json();
     } catch (e) {
+      setIsLoading(false);
+      setNewVideo({
+        title: "",
+        video: "",
+        categoryWork: "",
+        content: "",
+      });
+
       console.log("errore in uploadFile: ", e);
     }
   };
@@ -200,7 +209,7 @@ const GetVideos = () => {
 
           setTimeout(() => {
             setIsLoading(false);
-            window.location.reload()
+            window.location.reload();
           }, 300);
           console.log("aggiunto");
         } else {
@@ -314,67 +323,92 @@ const GetVideos = () => {
 
   const renderAddVideoForm = () => {
     return (
-      <Form encType="multipart/form-data">
-        {/* -------------------------------------------- */}
+      <>
+        {isLoading ? (
+          <div className="h-25 d-flex flex-column align-items-center justify-content-center text-dark spinner-custom p-3">
+            <Spinner
+              className="text-info"
+              animation="border"
+              role="status"
+              key="spinner"
+            />
+            <p
+              className="fs-5 text-info m-3"
+              key={`${decodedToken.id}/${decodedToken}`}
+            >
+              Caricamento video in corso...
+            </p>
+            <p
+              className="fs-5 text-info m-3"
+              key={`${decodedToken.id}/${decodedToken}/${decodedToken.name}`}
+            >
+              Attendi qualche minuto senza ricaricare la pag...
+            </p>
+          </div>
+        ) : (
+          <Form encType="multipart/form-data">
+            {/* -------------------------------------------- */}
 
-        <Form.Group controlId="formTitle">
-          <Form.Label>Titolo</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Inserisci il titolo del video"
-            value={newVideo.title}
-            onChange={(e) =>
-              setNewVideo({ ...newVideo, title: e.target.value })
-            }
-          />
-        </Form.Group>
+            <Form.Group controlId="formTitle">
+              <Form.Label>Titolo</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci il titolo del video"
+                value={newVideo.title}
+                onChange={(e) =>
+                  setNewVideo({ ...newVideo, title: e.target.value })
+                }
+              />
+            </Form.Group>
 
-        {/* -------------------------------------------- */}
+            {/* -------------------------------------------- */}
 
-        <Form.Group controlId="formCategoryWork">
-          <Form.Label>Categoria di Lavoro</Form.Label>
-          <Form.Control as="select" onChange={handleCategoryChange}>
-            {selectedCategory ? (
-              <option>{selectedCategory}</option>
-            ) : (
-              <option>Seleziona una categoria</option>
-            )}
+            <Form.Group controlId="formCategoryWork">
+              <Form.Label>Categoria di Lavoro</Form.Label>
+              <Form.Control as="select" onChange={handleCategoryChange}>
+                {selectedCategory ? (
+                  <option>{selectedCategory}</option>
+                ) : (
+                  <option>Seleziona una categoria</option>
+                )}
 
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
 
-        {/* -------------------------------------------- */}
+            {/* -------------------------------------------- */}
 
-        <Form.Group controlId="formVideo">
-          <Form.Label>File Video</Form.Label>
-          <Form.Control
-            name="video"
-            type="file"
-            onChange={onChangeSetFile}
-            required
-          />
-        </Form.Group>
+            <Form.Group controlId="formVideo">
+              <Form.Label>File Video</Form.Label>
+              <Form.Control
+                name="video"
+                type="file"
+                onChange={onChangeSetFile}
+                required
+              />
+            </Form.Group>
 
-        {/* -------------------------------------------- */}
+            {/* -------------------------------------------- */}
 
-        <Form.Group controlId="formContent">
-          <Form.Label>Contenuto</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={4}
-            placeholder="Inserisci il contenuto del video"
-            value={newVideo.content}
-            onChange={(e) =>
-              setNewVideo({ ...newVideo, content: e.target.value })
-            }
-          />
-        </Form.Group>
-      </Form>
+            <Form.Group controlId="formContent">
+              <Form.Label>Contenuto</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={4}
+                placeholder="Inserisci il contenuto del video"
+                value={newVideo.content}
+                onChange={(e) =>
+                  setNewVideo({ ...newVideo, content: e.target.value })
+                }
+              />
+            </Form.Group>
+          </Form>
+        )}
+      </>
     );
   };
 
@@ -388,7 +422,10 @@ const GetVideos = () => {
             role="status"
             key="spinner"
           />
-          <p className="fs-5 text-dark m-3" key={`${decodedToken.id}/${decodedToken}`}>
+          <p
+            className="fs-5 text-dark m-3"
+            key={`${decodedToken.id}/${decodedToken}`}
+          >
             Caricamento...
           </p>
         </div>
@@ -397,7 +434,15 @@ const GetVideos = () => {
           <div className="w-100 custom-button-addVideo d-flex justify-content-end p-3">
             <Button
               variant="light border-2 border-dark button-custom"
-              onClick={() => setShowModal(true)}
+              onClick={() => {
+                setShowModal(true);
+                window.alert(
+                  "Per questa versione DEMO di JobWork l'upload di un video può arrivare a durare fino a 5/7 min in base alla dimensione!!"
+                );
+                window.alert(
+                  "Attendi perfavore senza ricaricare la pag o cliccare ripetutamente 'Salva Video'! "
+                );
+              }}
             >
               <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
             </Button>
@@ -568,19 +613,25 @@ const GetVideos = () => {
           >
             Chiudi
           </Button>
-          {editingVideo ? (
-            <Button variant="primary" onClick={saveEditedVideo}>
-              Aggiorna Video
-            </Button>
+          {isLoading ? (
+            null
           ) : (
-            <Button variant="primary" onClick={addVideo}>
-              Salva Video
-            </Button>
+            <>
+              {editingVideo ? (
+                <Button variant="primary" onClick={saveEditedVideo}>
+                  Aggiorna Video
+                </Button>
+              ) : (
+                <Button variant="primary" onClick={addVideo}>
+                  Salva Video
+                </Button>
+              )}
+            </>
           )}
         </Modal.Footer>
       </Modal>
 
-      <div className="bg-light p-1 border border-5 border-dark m-0">
+      <div className="bg-light p-1 m-0">
         <ResponsivePagination
           current={currentPage}
           total={totalPages}

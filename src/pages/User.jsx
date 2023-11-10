@@ -46,6 +46,15 @@ function User() {
     confirmNewPassword: "",
   });
 
+  const dobAsDate = new Date(userFormData.dob);
+  const year = dobAsDate.getFullYear();
+  const month = String(dobAsDate.getMonth() + 1).padStart(2, '0'); 
+  const day = String(dobAsDate.getDate()).padStart(2, '0');
+  
+  const dobFormatted = `${day}-${month}-${year}`;
+  console.log(dobFormatted);
+  console.log(userFormData.dob);
+  
   const categories = [
     "cuoco",
     "insegnante",
@@ -226,7 +235,7 @@ function User() {
     event.preventDefault();
     setIsLoading(true);
 
-    const dobAsNumber = parseInt(userFormData.dob);
+    const dobAsNumber = parseInt(dobFormatted);
     const updatedData = {
       ...userFormData,
       dob: dobAsNumber,

@@ -5,7 +5,7 @@ import './landing.css';
 import Logo from '../img/JobWork.png';
 import Button from 'react-bootstrap/Button';
 import ScambioIMG from '../img/scambio.jpeg';
-import Screen from '../img/screen1.png';
+import Screen from '../img/screen.png';
 import Cash from '../img/cash.jpeg';
 import Nav from 'react-bootstrap/Nav';
 
@@ -52,11 +52,11 @@ function LandingPage() {
           <h1 className="display-4 w-100 text-center">
             Benvenuti in <b className="border border-dark px-3 p-1">Job<i>Work</i></b>
           </h1>
-          <p>
-            Questo è un esempio di un Jumbotron in React con Bootstrap.
+          <p className='text-center fs-5'>
+            Condividi le tue abilità lavorative con gli altri utenti.
           </p>
           <hr className="my-4 text-info" />
-          <p>Puoi personalizzare questo contenuto come desideri.</p>
+          <p className='text-center'>Chiedi informazioni per svolgere un lavoro in tutta sicurezza e per completare al meglio e in autonomia il lavoro che devi svolgere!</p>
         </div>
         <div className="button-container-create w-100 d-flex justify-content-center">
           <Button variant="dark" className="w-50 border border-info p-2 px-4 m-5 text-info" onClick={() => navigate('/login')}>
@@ -91,7 +91,7 @@ function LandingPage() {
           <div className="col-md-6">
             <h2 className="text-center">Come funziona?</h2>
             <p className="text-custom p-4">
-              Ti basterà creare un tuo profilo personale e caricare i tuoi video, dove spieghi come si possono fare piccoli lavori del tuo settore a livello amatoriale. <br />Puoi navigare nel sito, vedere tutti i contenuti che vuoi, lasciare commenti e inoltre puoi aprire una chat privata con un'altro utente per scambiarvi pareri e opinioni... e perchè no? magari anche brevi video per aiutarvi reciprocamente in piccoli intoppi!
+              Ti basterà creare un tuo profilo personale e caricare i tuoi video, dove spieghi come si possono fare piccoli lavori del tuo settore a livello amatoriale. <br />Puoi navigare nel sito, vedere tutti i contenuti che vuoi, lasciare commenti e inoltre puoi aprire una chat privata con un'altro utente per scambiarvi pareri e opinioni.
             </p>
           </div>
         </div>
@@ -102,7 +102,7 @@ function LandingPage() {
           <div className="col-md-6">
             <h2 className="text-center">Quanto costa JobWork?</h2>
             <p className="text-custom p-4">
-              JobWork è un <i>SITO WEB</i> completamente gratuito pensato principalmente per un fine didattico. La community ha solo il compito
+              JobWork è un <i>SITO WEB</i> completamente gratuito ideato principalmente per un fine didattico. La community ha solo il 'compito' di condividere brevi video contenenti chicche che potrebbero essere utili per svolgere in autonomia e in totale sicurezza piccoli lavori nella propria quotidianità. 
             </p>
           </div>
           <div className="col-md-6 text-center">
