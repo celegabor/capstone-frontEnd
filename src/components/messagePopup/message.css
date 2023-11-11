@@ -12,3 +12,45 @@
     font-size: 0.6em;
     color: rgb(184, 180, 180);
 }
+
+.width-message-custom{
+    width: 35% !important;
+}
+
+.input-message-section{
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 1000px) {
+    .width-message-custom{
+        width: 50% !important;
+    } 
+}
+@media screen and (max-width: 700px) {
+    .width-message-custom{
+        width: 50% !important;
+    } 
+}
+@media screen and (max-width: 630px) {
+    .input-message-section{
+        display: flex;
+        flex-direction: column;
+    }
+    .input-message-section div{
+        width: 100%;
+    }
+    .input-message-section Button{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 700px) {
+    .width-message-custom{
+        width: 50% !important;
+    } 
+}
+@media screen and (max-width: 500px) {
+    .width-message-custom{
+        width: 80% !important;
+    } 
+}
