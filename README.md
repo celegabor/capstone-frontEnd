@@ -1,5 +1,7 @@
 JobWork
 
+Link: https://main--fantastic-florentine-b750a4.netlify.app
+
 * Gli utenti accedono a una landing page (da perfezionare) dove possono accedere alla pag di Login o direttamente alla pag per creare un profilo.
 
 * Nella pag login si può inoltre fare il login guest dove viene fatta l'autenticazione o con GitHub o con Google. All'interno del sito però non si può interagire in alcun modo si possono solo visualizzare i post e gli utenti.
