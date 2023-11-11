@@ -27,9 +27,6 @@ const AddUser = () => {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [emails, setEmails] = useState([]);
 
-  // const dobAsDate = new Date(userData.dob);
-  // const dobFormatted = dobAsDate.toISOString().split('T')[0];
-  console.log(userData.dob);
   const navigate = useNavigate();
 
   const onChangeSetFile = (e) => {
@@ -278,8 +275,13 @@ const AddUser = () => {
                 <Form.Label>Data di Nascita</Form.Label>
                 <DatePicker
                   selected={userData.dob}
-                  onChange={(date) => setUserData({ ...userData, dob: date })}
+                  onChange={(date) =>
+                    setUserData({ ...userData, dob: new Date(date) })
+                  }
                   dateFormat="dd/MM/yyyy"
+                  showYearDropdown
+                  yearDropdownItemNumber={100}
+                  scrollableYearDropdown
                 />
               </Form.Group>
 

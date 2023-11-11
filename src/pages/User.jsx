@@ -666,7 +666,10 @@ function User() {
                 </div>
                 <div className="row" key="user-form-row-33">
                   {/* Data di Nascita */}
-                  <div className="z-index-custom col-md-6" key="user-form-dob-col">
+                  <div
+                    className="z-index-custom col-md-6"
+                    key="user-form-dob-col"
+                  >
                     <div
                       className="p-2 d-flex flex-column filter-custom"
                       key="dob-container"
@@ -679,8 +682,15 @@ function User() {
                       </label>
                       <DatePicker
                         className="z-index-custom bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2 w-100 text-center"
-                        selected={userFormData.dob ? new Date(userFormData.dob) : null}
-                        onChange={(date) =>  setUserFormData({ ...userFormData, dob: new Date(date) })}
+                        selected={
+                          userFormData.dob ? new Date(userFormData.dob) : null
+                        }
+                        onChange={(date) =>
+                          setUserFormData({
+                            ...userFormData,
+                            dob: new Date(date),
+                          })
+                        }
                         dateFormat="dd/MM/yyyy"
                         showYearDropdown
                         yearDropdownItemNumber={100}
