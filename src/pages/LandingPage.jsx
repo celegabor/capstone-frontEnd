@@ -128,7 +128,7 @@ function LandingPage() {
         <div className="custom-background p-3">
           <Nav className=" justify-content-center" activeKey="/home">
             <Nav.Item>
-              <Nav.Link className='text-light border-bottom mx-2 rounded-5 border-2' href='/contacts'>Contact Us</Nav.Link>
+              <Nav.Link className='text-dark border-bottom border-dark mx-2 rounded-5 border-2' href='/contacts'>Contact Us</Nav.Link>
             </Nav.Item>
           </Nav>
           <div className='w-100 text-center'>

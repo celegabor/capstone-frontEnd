@@ -173,9 +173,9 @@ const AddUser = () => {
   return (
     <>
       <nav className="d-flex justify-content-between nav-add-user">
-        <img className="logo-add-user-nav" src={Logo} alt="logo site"></img>
-        <Button
-          variant="dark border border-light px-4 my-2"
+        <img className="logo-add-user-nav border border-info border-2" src={Logo} alt="logo site"></img>
+        <Button className=" border border-info border-2 text-info px-4 my-2"
+          variant="dark"
           onClick={() => navigate("/")}
         >
           Torna indietro
@@ -199,9 +199,9 @@ const AddUser = () => {
         <>
           <main className="w-100 d-flex justify-content-center align-items-center flex-column bg-dark py-3 text-light">
             <h2>Aggiungi Utente</h2>
-            <Form className="bg-secondary" noValidate>
+            <Form className="bg-secondary border-info border-2 border" noValidate>
               {/* name */}
-              <Form.Group className="elementsForm" as={Col} controlId="name">
+              <Form.Group className="elementsForm text-info mt-3" as={Col} controlId="name">
                 <Form.Label>Nome</Form.Label>
                 <Form.Control
                   required
@@ -220,7 +220,7 @@ const AddUser = () => {
 
               {/* lastname */}
               <Form.Group
-                className="elementsForm"
+                className="elementsForm text-info mt-3"
                 as={Col}
                 controlId="lastName"
               >
@@ -242,7 +242,7 @@ const AddUser = () => {
               </Form.Group>
 
               {/* address */}
-              <Form.Group className="elementsForm" as={Col} controlId="address">
+              <Form.Group className="elementsForm text-info mt-3" as={Col} controlId="address">
                 <Form.Label>Indirizzo</Form.Label>
                 <Form.Control
                   required
@@ -260,7 +260,7 @@ const AddUser = () => {
               </Form.Group>
 
               {/* avatar */}
-              <Form.Group className="elementsForm" as={Col} controlId="avatar">
+              <Form.Group className="elementsForm text-info mt-3" as={Col} controlId="avatar">
                 <Form.Label>link di internet di un avatar</Form.Label>
                 <Form.Control
                   required
@@ -271,9 +271,11 @@ const AddUser = () => {
               </Form.Group>
 
               {/* dob */}
-              <Form.Group className="elementsForm" as={Col} controlId="dob">
-                <Form.Label>Data di Nascita</Form.Label>
+              <Form.Group className="elementsForm text-info mt-3 w-100" as={Col} controlId="dob">
+                <Form.Label className="w-100">Data di Nascita</Form.Label>
                 <DatePicker
+                  className="dob-custom"
+                  required
                   selected={userData.dob}
                   onChange={(date) =>
                     setUserData({ ...userData, dob: new Date(date) })
@@ -286,7 +288,7 @@ const AddUser = () => {
               </Form.Group>
 
               {/* email */}
-              <Form.Group className="elementsForm" as={Col} controlId="email">
+              <Form.Group className="elementsForm text-info mt-3" as={Col} controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   required
@@ -307,7 +309,7 @@ const AddUser = () => {
 
               {/* password */}
               <Form.Group
-                className="elementsForm"
+                className="elementsForm text-info mt-3"
                 as={Col}
                 controlId="password"
               >
@@ -330,7 +332,7 @@ const AddUser = () => {
 
               {/* confirm password */}
               <Form.Group
-                className="elementsForm"
+                className="elementsForm text-info mt-3"
                 as={Col}
                 controlId="confirmPassword"
               >
@@ -352,13 +354,15 @@ const AddUser = () => {
               </Form.Group>
 
               <Button
-                className="border border-2 border-secondary my-3 w-100"
+                className="border border-2 border-success my-3 w-100  text-info"
                 variant="dark"
                 type="submit"
                 onClick={handleSubmit}
               >
                 Aggiungi Utente
               </Button>
+
+
               <div className="message-container">
                 {message && (
                   <div
@@ -372,6 +376,8 @@ const AddUser = () => {
                   </div>
                 )}
               </div>
+
+              
             </Form>
           </main>
         </>

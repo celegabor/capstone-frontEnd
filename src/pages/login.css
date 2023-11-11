@@ -38,8 +38,9 @@
     border-left: 1px solid white;
 }
 
-form{
+.form-login{
     width: 400px;
+    padding: 4em;
 }
 
 @media screen and (max-width: 700px) {
@@ -49,8 +50,9 @@ form{
 
     }
 
-    form{
+    .form-login{
         margin: 10px;
+        padding: 60px;
     }
     
     .custom-login img{
@@ -62,8 +64,9 @@ form{
 
 
 @media screen and (max-width: 500px) {
-    form{
+    .form-login{
         width: 70%;
+        padding: 50px;
     }
     .jumbotron{
         height: auto !important;
@@ -72,7 +75,8 @@ form{
 
 
 @media screen and (max-width: 400px) {
-    form{
+    .form-login{
         width: 90%;
+        padding: 40px;
     }
 }

@@ -95,7 +95,7 @@ function Login() {
         </div>
         <form
           onSubmit={onSubmit}
-          className="z-3 bg-form-custom border border-3 border-secondary d-flex flex-column p-3 p-md-5 rounded-5"
+          className="z-3 form-login bg-form-custom border border-3 border-secondary d-flex flex-column p-md-5 rounded-5"
         >
           <label htmlFor="email">Inserisci la tua Email</label>
           <input
