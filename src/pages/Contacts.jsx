@@ -23,9 +23,9 @@ const Contacts = ()=> {
         <img className='logo' src={Logo} alt="" />
         <Button variant='dark' className='border border-info border-3 text-info p-2 px-5' onClick={() => navigate('/home')}>Torna indietro</Button>
       </nav>
-      <main className='main-contacts-height bg-secondary d-flex flex-column justify-content-center align-items-center'>
+      <main className='main-contacts-height bg-secondary d-flex flex-column justify-content-center align-items-center w-100'>
         <h1 className='text-info p-3'>CONTATTI:</h1>
-        <div className='border border-info border-5 bg-dark w-50 h-50 border rounded-4 text-white d-flex flex-column justify-content-center align-items-center'>
+        <div className='border border-info border-5 bg-dark w-100 w-contacts-custom h-50 border rounded-4 text-white d-flex flex-column justify-content-center align-items-center'>
             <p>tel. : 3463760556</p>
             <p>e-mail : celegabor@gmail.com</p>
             <div className='d-flex align-items-center'>

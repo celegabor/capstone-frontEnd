@@ -44,6 +44,8 @@ function LandingPage() {
         onEnded={handleVideoEnded}
         src={Video}
         autoPlay
+        playsInline
+        loop
         muted={true}
       ></video>
       <div className="filter-video"></div>

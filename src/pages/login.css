@@ -65,6 +65,9 @@ form{
     form{
         width: 70%;
     }
+    .jumbotron{
+        height: auto !important;
+    }
 }
 
 

@@ -1,3 +1,20 @@
 .main-contacts-height{
     height: 90vh;
 }
+
+.w-contacts-custom{
+    width: 50% !important;
+}
+
+@media screen and (max-width: 800px) {
+    .w-contacts-custom{
+        width: 70% !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .w-contacts-custom{
+        width: 85% !important;
+        font-size: 0.9em;
+    }
+}

@@ -5,9 +5,10 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import FooterElement from "../components/footer/MyFooter";
 import Spinner from "react-bootstrap/Spinner";
+import DatePicker from "react-datepicker";
 import { Navigate, useNavigate } from "react-router-dom";
 import Logo from "../img/JobWork.png";
-
+import "react-datepicker/dist/react-datepicker.css";
 import "./addUser.css";
 
 const AddUser = () => {
@@ -18,7 +19,7 @@ const AddUser = () => {
     name: "",
     lastName: "",
     address: "",
-    dob: "",
+    dob: new Date(),
     avatar: "",
     email: "",
     password: "",
@@ -26,9 +27,9 @@ const AddUser = () => {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [emails, setEmails] = useState([]);
 
-  const dobAsDate = new Date(userData.dob);
-  // const dobFormatted = dobAsDate.toISOString().split('T')[0];  
-
+  // const dobAsDate = new Date(userData.dob);
+  // const dobFormatted = dobAsDate.toISOString().split('T')[0];
+  console.log(userData.dob);
   const navigate = useNavigate();
 
   const onChangeSetFile = (e) => {
@@ -93,7 +94,7 @@ const AddUser = () => {
         const finalBody = {
           ...userData,
           avatar: uploadAvatar.avatar,
-          dob: dobAsDate,
+          dob: userData.dob,
         };
 
         const response = await fetch(
@@ -275,12 +276,10 @@ const AddUser = () => {
               {/* dob */}
               <Form.Group className="elementsForm" as={Col} controlId="dob">
                 <Form.Label>Data di Nascita</Form.Label>
-                <Form.Control
-                  required
-                  type="date"
-                  name="dob"
-                  value={userData.dob}
-                  onChange={handleChange}
+                <DatePicker
+                  selected={userData.dob}
+                  onChange={(date) => setUserData({ ...userData, dob: date })}
+                  dateFormat="dd/MM/yyyy"
                 />
               </Form.Group>
 
@@ -384,3 +383,5 @@ const AddUser = () => {
 };
 
 export default AddUser;
+
+// react date peacker

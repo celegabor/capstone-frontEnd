@@ -8,6 +8,8 @@ import Spinner from "react-bootstrap/Spinner";
 import { faHammer, faFile, faHome } from "@fortawesome/free-solid-svg-icons";
 import { Document, Page, pdfjs } from "react-pdf";
 import Modal from "react-bootstrap/Modal";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "./user.css";
 
 function User() {
@@ -20,7 +22,7 @@ function User() {
     name: "",
     lastName: "",
     email: "",
-    dob: "",
+    dob: new Date(),
     address: "",
     provincia: "",
     cap: "",
@@ -29,6 +31,7 @@ function User() {
     gender: "",
     work: "",
   });
+  console.log(userFormData);
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
   const [fileDoc, setFileDoc] = useState(null);
@@ -46,15 +49,6 @@ function User() {
     confirmNewPassword: "",
   });
 
-  const dobAsDate = new Date(userFormData.dob);
-  const year = dobAsDate.getFullYear();
-  const month = String(dobAsDate.getMonth() + 1).padStart(2, '0'); 
-  const day = String(dobAsDate.getDate()).padStart(2, '0');
-  
-  const dobFormatted = `${day}-${month}-${year}`;
-  console.log(dobFormatted);
-  console.log(userFormData.dob);
-  
   const categories = [
     "cuoco",
     "insegnante",
@@ -235,11 +229,10 @@ function User() {
     event.preventDefault();
     setIsLoading(true);
 
-    const dobAsNumber = parseInt(dobFormatted);
     const updatedData = {
       ...userFormData,
-      dob: dobAsNumber,
       categoryWork: selectedCategory,
+      dob: new Date(userFormData.dob),
     };
 
     if (file || fileDoc || updatedData) {
@@ -671,9 +664,9 @@ function User() {
                     </div>
                   </div>
                 </div>
-                <div className="row" key="user-form-row-3">
+                <div className="row" key="user-form-row-33">
                   {/* Data di Nascita */}
-                  <div className="col-md-6" key="user-form-address-col">
+                  <div className="z-index-custom col-md-6" key="user-form-dob-col">
                     <div
                       className="p-2 d-flex flex-column filter-custom"
                       key="dob-container"
@@ -684,16 +677,19 @@ function User() {
                       >
                         Data di nascita:
                       </label>
-                      <input
-                        className="bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
-                        type="date"
-                        name="dob"
-                        value={userFormData.dob}
-                        onChange={handleFormChange}
+                      <DatePicker
+                        className="z-index-custom bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2 w-100 text-center"
+                        selected={userFormData.dob ? new Date(userFormData.dob) : null}
+                        onChange={(date) =>  setUserFormData({ ...userFormData, dob: new Date(date) })}
+                        dateFormat="dd/MM/yyyy"
+                        showYearDropdown
+                        yearDropdownItemNumber={100}
+                        scrollableYearDropdown
                         key="dob-input"
                       />
                     </div>
                   </div>
+
                   {/* Indirizzo */}
                   <div className="col-md-6" key="user-form-address-col">
                     <div
@@ -763,7 +759,7 @@ function User() {
                     </div>
                   </div>
                 </div>
-                <div className="row" key="user-form-row-3">
+                <div className="row" key="user-form-row-333">
                   {/* Work */}
                   <div className="col-md-6" key="user-form-work-col">
                     <div
@@ -817,9 +813,9 @@ function User() {
                         onChange={handleFormChange}
                         key="gender-select"
                       >
-                        <option value="maschio">Maschio</option>
-                        <option value="femmina">Femmina</option>
-                        <option value="altro">Altro</option>
+                        <option value="Maschio">Maschio</option>
+                        <option value="Femmina">Femmina</option>
+                        <option value="Altro">Altro</option>
                       </select>
                     </div>
                   </div>

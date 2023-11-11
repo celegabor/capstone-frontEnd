@@ -14,13 +14,13 @@ const MyFooter = ()=> {
     <div className="custom-background p-3">
       <Nav className=" justify-content-center" activeKey="/home">
         <Nav.Item>
-          <Nav.Link className='text-light border-bottom mx-2 rounded-5 border-2' href="/home">Home</Nav.Link>
+          <Nav.Link className='text-dark border-bottom border-dark mx-2 rounded-5 border-2' href="/home">Home</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link className='text-light border-bottom mx-2 rounded-5 border-2' href='/contacts'>Contacts</Nav.Link>
+          <Nav.Link className='text-dark border-bottom border-dark mx-2 rounded-5 border-2' href='/contacts'>Contacts</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link className='text-light border-bottom mx-2 rounded-5 border-2' href='/'>Landing Page</Nav.Link>
+          <Nav.Link className='text-dark border-bottom border-dark mx-2 rounded-5 border-2' href='/'>Landing Page</Nav.Link>
         </Nav.Item>
       </Nav>
       <div className='w-100 text-center'>

@@ -7,6 +7,8 @@ import { faHammer, faFile, faHome } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "./getUserId.css";
 
 function GetUserId() {
@@ -115,7 +117,7 @@ function GetUserId() {
                   key="user-details-form"
                 >
                   <div className="row" key="user-details-row-1">
-                      {/* Immagine del profilo */}
+                    {/* Immagine del profilo */}
                     <div className="col-md-6" key="user-details-col-1">
                       <div className="w-100 p-2 m-2 d-flex flex-column mt-2">
                         <label
@@ -256,28 +258,28 @@ function GetUserId() {
                     </div>
                   </div>
                   <div className="row" key="user-details-row-4">
+
                     {/* Data di Nascita */}
-                    <div className="col-md-6" key="user-details-dob-col">
+                    <div className="col-md-6" key="user-form-address-col">
                       <div
-                        className="w-100 p-2 d-flex flex-column filter-custom"
-                        key="user-details-dob-div"
+                        className="p-2 d-flex flex-column filter-custom"
+                        key="dob-container"
                       >
                         <label
                           className="text-center text-dark bg-info rounded-top-3"
-                          key="user-details-name-label"
+                          key="dob-label"
                         >
                           Data di nascita:
-                        </label>{" "}
-                        <input
-                          className="text-center bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2"
-                          type="date"
-                          name="dob"
-                          value={user.dob}
-                          readOnly
-                          key="user-dob-input"
+                        </label>
+                        <DatePicker
+                          className="z-index-custom bg-secondary text-white p-2 rounded-bottom-3 border-bottom border-2 w-100 text-center"
+                          selected={user.dob ? new Date(user.dob) : null}
+                          key="dob-input"
+                          dateFormat="dd/MM/yyyy"
                         />
                       </div>
                     </div>
+
                     {/* provincia */}
                     <div className="col-md-6" key="user-details-provincia-col">
                       <div
@@ -301,7 +303,7 @@ function GetUserId() {
                       </div>
                     </div>
                   </div>
-                  <div className="row" key="user-details-row-4">
+                  <div className="row" key="user-details-row-444">
                     {/* work */}
                     <div className="col-md-6" key="user-details-work-col">
                       <div
