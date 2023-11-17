@@ -391,5 +391,3 @@ const AddUser = () => {
 };
 
 export default AddUser;
-
-// react date peacker

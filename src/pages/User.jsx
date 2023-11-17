@@ -31,7 +31,6 @@ function User() {
     gender: "",
     work: "",
   });
-  console.log(userFormData);
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
   const [fileDoc, setFileDoc] = useState(null);

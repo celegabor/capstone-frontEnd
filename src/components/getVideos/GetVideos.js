@@ -447,8 +447,8 @@ const GetVideos = () => {
               <FontAwesomeIcon icon={faEdit} /> Aggiungi Video
             </Button>
           </div>
-          {videos.map((video) => (
-            <>
+          {videos.map((video, index) => (
+            <div key={index}>
               {/* Modale per conferma cancellazione */}
               <Modal
                 className="bg-light"
@@ -576,7 +576,7 @@ const GetVideos = () => {
                   </>
                 )}
               </div>
-            </>
+            </div>
           ))}
 
           <div className="message-container">
