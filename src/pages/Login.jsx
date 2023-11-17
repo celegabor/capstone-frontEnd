@@ -72,6 +72,7 @@ function Login() {
 
   useEffect(() => {
     setVideoStarted(true);
+    localStorage.removeItem('loggedInUser');
   }, []);
 
   const handleVideoEnded = () => {

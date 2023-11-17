@@ -17,6 +17,7 @@ function LandingPage() {
 
   useEffect(() => {
     setVideoStarted(true);
+    localStorage.removeItem('loggedInUser');
   }, []);
 
   const navigate = useNavigate();
@@ -45,8 +46,7 @@ function LandingPage() {
         src={Video}
         autoPlay
         playsInline
-        loop
-        muted={true}
+        muted
       ></video>
       <div className="filter-video"></div>
       <div className="jumbotron-container d-flex align-items-center justify-content-center">
