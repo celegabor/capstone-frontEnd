@@ -146,7 +146,8 @@ function Login() {
           onEnded={handleVideoEnded}
           src={Video}
           autoPlay
-          muted={true}
+          muted
+          playsInline
         ></video>
         <div className="filter-video border-top border-bottom border-3 border-secondary"></div>
         <div className="mt-2 mt-md-2 w-100 text-center z-3">
